@@ -697,7 +697,7 @@ if ('IntersectionObserver' in window){
    snapshot need: totals, 24h change, drop counts, per-player tallies.
    Previously each panel looped the whole list separately. */
 function computeStats(drops){
-  const cutoff = Date.now() - 86400000;
+  const cutoff = FINAL_DROPS.length ? Math.max(...FINAL_DROPS.map(d => d.ts)) - 86400000 : Date.now() - 86400000;
   const total = new Map(), today = new Map(), count = new Map();
   for (const t of TEAMS){ total.set(t,0); today.set(t,0); count.set(t,0); }
 
@@ -788,7 +788,7 @@ function drawChart(asc){
   }
 
   const start = asc[0].ts;
-  const end   = Math.max(Date.now(), asc[asc.length-1].ts);
+  const end   = asc[asc.length-1].ts;
   const span  = Math.max(end - start, 3600000);
 
   const STEPS = 60;
