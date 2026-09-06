@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Millions — Raids to Riches · Final Results & Point Values</title>
+<meta name="description" content="Final results for the Millions clan Raids to Riches event.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&family=Barlow+Condensed:wght@400;600&family=IM+Fell+English:ital@1&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   MILLIONS — Raids to Riches
+   Shared visual identity. Kept deliberately cheap to render:
+   no blend modes, no runtime color-mix, no box-shadow on
+   anything that animates.
+   ============================================================ */
+
+:root{
+  --void:#06070a; --ink:#0b0d12; --panel:#11141a;
+  --gold:#c9a227; --gold-hi:#eed595; --gold-lo:#5c4810;
+  --parch:#c4bca8; --dim:#7a7365; --line:#201c14;
+
+  --t-legendary:#e7cd88;
+  --t-mythic:#a774d8;
+  --t-epic:#a63f2c;
+  --t-rare:#7190b6;
+  --t-uncommon:#82925a;
+  --t-bonus:#c9a227;
+
+  --team-1:#c9a227;
+  --team-2:#7190b6;
+  --team-3:#a63f2c;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:
+    radial-gradient(100% 30% at 50% 0%, rgba(201,162,39,.08), rgba(201,162,39,0) 60%),
+    linear-gradient(#080a0e, var(--void) 45%, #040507 100%);
+  background-repeat:no-repeat;
+  color:var(--parch);
+  font-family:'Barlow Condensed',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px 64px}
+
+/* ── Masthead ─────────────────────────────────────────────── */
+.mast{padding:38px 0 0;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.mast .clan{font-family:'Cinzel',serif;font-weight:900;font-size:15px;
+  letter-spacing:.4em;text-indent:.4em;color:var(--gold)}
+.mast .ev{font-family:'Cinzel',serif;font-weight:900;font-size:30px;line-height:1;margin-top:8px;
+  text-transform:uppercase;letter-spacing:.05em;
+  background:linear-gradient(178deg,#fdf2d6 6%,var(--gold-hi) 40%,var(--gold) 64%,#7d6214 98%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.mastrule{margin-top:16px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold-lo) 12%,var(--gold) 50%,var(--gold-lo) 88%,transparent)}
+
+nav{display:flex;gap:20px;align-items:center}
+nav a{font-family:'Cinzel',serif;font-weight:600;font-size:13px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--dim);text-decoration:none;padding-bottom:3px;
+  border-bottom:1px solid transparent}
+nav a:hover{color:var(--gold-hi)}
+nav a.on{color:var(--gold-hi);border-bottom-color:var(--gold)}
+
+/* ── Live pill ────────────────────────────────────────────── */
+.live{display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--dim)}
+.dot{width:7px;height:7px;border-radius:50%;background:#4caf50;animation:pulse 2.4s ease-in-out infinite}
+.dot.stale{background:#a63f2c;animation:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+
+/* ── Section heading ──────────────────────────────────────── */
+h2.sec{font-family:'Cinzel',serif;font-weight:900;font-size:22px;text-transform:uppercase;
+  letter-spacing:.13em;color:#ddd1b1;margin:40px 0 4px}
+.sec-rule{height:1px;background:linear-gradient(90deg,var(--gold),rgba(0,0,0,0) 55%);margin-bottom:22px}
+
+/* ── Scoreboard bars ──────────────────────────────────────── */
+.goalrow{display:flex;justify-content:space-between;align-items:baseline;
+  font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:18px}
+
+.team{margin-bottom:22px}
+.team .top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:7px}
+.team .nm{font-family:'Cinzel',serif;font-weight:900;font-size:21px;letter-spacing:.06em;color:var(--tc)}
+.team .rank{font-size:13px;letter-spacing:.2em;color:#514c40;text-transform:uppercase;margin-left:10px}
+.team .val{font-family:'Cinzel',serif;font-weight:900;font-size:24px;color:#e2d8bd}
+.team .val span{font-size:14px;color:var(--dim);letter-spacing:.14em;margin-left:8px}
+
+.track{position:relative;height:26px;background:#0d1015;border:1px solid var(--line);overflow:hidden}
+.fill{position:absolute;inset:0 auto 0 0;width:0;
+  background:linear-gradient(90deg,var(--tc),color-mix(in srgb,var(--tc) 55%, #000));
+  transition:width 900ms cubic-bezier(.22,.8,.3,1)}
+.fill::after{content:'';position:absolute;top:0;right:0;bottom:0;width:2px;background:#fff;opacity:.5}
+/* goal ticks at 25/50/75% */
+.track .tick{position:absolute;top:0;bottom:0;width:1px;background:rgba(255,255,255,.11)}
+
+/* ── Drop log ─────────────────────────────────────────────── */
+table.log{width:100%;border-collapse:collapse;font-size:16px}
+table.log th{font-family:'Cinzel',serif;font-weight:600;font-size:12px;letter-spacing:.16em;
+  text-transform:uppercase;color:#514c40;text-align:left;padding:0 10px 10px;border-bottom:1px solid var(--line)}
+table.log td{padding:9px 10px;border-bottom:1px solid #14110c;color:#cbc1a8;vertical-align:middle}
+table.log tr:last-child td{border-bottom:none}
+table.log img{width:22px;height:22px;vertical-align:middle;margin-right:9px}
+.pill{display:inline-block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+  padding:3px 9px;border:1px solid var(--tc);color:var(--tc);white-space:nowrap}
+td.pts{font-family:'Cinzel',serif;font-weight:900;color:var(--gold-hi);text-align:right;white-space:nowrap}
+td.when{color:#6b6558;font-size:14px;white-space:nowrap}
+tr.fresh{animation:flash 2.5s ease-out}
+@keyframes flash{from{background:rgba(201,162,39,.16)}to{background:transparent}}
+
+.empty{padding:40px 0;text-align:center;color:#5c5648;
+  font-family:'IM Fell English',serif;font-style:italic;font-size:17px}
+
+/* ── Point values page ────────────────────────────────────── */
+.tier{margin-top:26px}
+.tier .head{display:flex;align-items:baseline;justify-content:space-between;gap:18px}
+.tier .name{font-family:'Cinzel',serif;font-weight:900;font-size:23px;text-transform:uppercase;
+  letter-spacing:.11em;color:var(--tc)}
+.tier .pts{white-space:nowrap;display:flex;align-items:baseline;gap:9px}
+.tier .pts .n{font-family:'Cinzel',serif;font-weight:900;font-size:20px;color:#e2d8bd}
+.tier .pts .n em{font-style:normal;color:var(--tc)}
+.tier .pts .d{font-size:11px;letter-spacing:.2em;color:#514c40;text-transform:uppercase}
+.tier .rule{margin:9px 0 13px;height:1px;background:linear-gradient(90deg,var(--tc),rgba(0,0,0,0) 55%)}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:6px 14px}
+.item{display:flex;align-items:center;gap:9px;min-height:38px;padding:5px 9px;
+  background:linear-gradient(90deg,rgba(255,255,255,.022),rgba(255,255,255,0));
+  border-left:2px solid var(--tc)}
+.item img{width:24px;height:24px;flex:0 0 24px}
+.item .nm{font-size:16px;color:#cbc1a8;line-height:1.15}
+
+/* ── Forms / admin ────────────────────────────────────────── */
+.card{background:linear-gradient(#11141a,#0a0c10);border:1px solid #1f1b13;
+  border-top:1px solid #302719;padding:26px 24px;margin-top:22px}
+label{display:block;font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+  color:#6b6558;margin-bottom:7px;font-weight:600}
+input,select,button{font-family:'Barlow Condensed',system-ui,sans-serif;font-size:17px}
+input,select{width:100%;background:#0a0c10;border:1px solid #2a2418;color:#e2d8bd;
+  padding:11px 12px;outline:none}
+input:focus,select:focus{border-color:var(--gold);}
+.field{margin-bottom:18px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+button{background:linear-gradient(#1a1610,#0f0d09);border:1px solid var(--gold-lo);
+  color:var(--gold-hi);padding:13px 26px;letter-spacing:.18em;text-transform:uppercase;
+  font-weight:600;cursor:pointer;font-family:'Cinzel',serif}
+button:hover{border-color:var(--gold);color:#fff6d8}
+button:disabled{opacity:.45;cursor:not-allowed}
+button.ghost{background:none;border-color:#2a2418;color:#6b6558;padding:7px 14px;font-size:12px}
+button.ghost:hover{border-color:#a63f2c;color:#c0705f}
+
+.msg{margin-top:16px;padding:11px 14px;font-size:16px;border-left:2px solid}
+.msg.ok{border-color:#4caf50;color:#8fbf92;background:rgba(76,175,80,.07)}
+.msg.err{border-color:#a63f2c;color:#c0705f;background:rgba(166,63,44,.08)}
+
+.hint{font-size:14px;color:#5c5648;margin-top:7px;line-height:1.45}
+
+footer{margin-top:50px;text-align:center}
+footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:16px;letter-spacing:.42em;
+  text-indent:.42em;color:var(--gold)}
+footer .note{margin-top:9px;font-size:12px;letter-spacing:.14em;color:#4f4a3d;text-transform:uppercase}
+
+@media (max-width:640px){
+  .grid2{grid-template-columns:1fr}
+  .mast .ev{font-size:23px}
+  .team .val{font-size:20px}
+  table.log .hide-sm{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .fill{transition:none}
+  .dot{animation:none}
+  tr.fresh{animation:none}
+}
+
+/* ── Ticker animation: compositor-only, zero main-thread cost per frame ──
+   translate3d promotes it to its own layer; the browser animates it off the
+   main thread, so it can't drop frames even while the page is busy. */
+@keyframes tape-scroll{
+  from{ transform:translate3d(0,0,0) }
+  to  { transform:translate3d(-50%,0,0) }
+}
+.tape-inner{
+  animation:tape-scroll var(--tape-dur,60s) linear infinite;
+  will-change:transform;
+}
+.tape-inner.paused{ animation-play-state:paused }
+
+/* Isolate expensive subtrees so a change inside one can't force the whole
+   page to re-layout. */
+.quote{ contain:content }
+.chartwrap{ contain:layout paint }
+
+/* Rows below the fold aren't rendered until scrolled near. */
+table.log tbody tr{ content-visibility:auto; contain-intrinsic-size:0 40px }
+
+@media (prefers-reduced-motion:reduce){
+  .tape-inner{ animation:none }
+}
+
+</style>
+<style>
+  .tape{margin-top:18px;background:#080a0e;border-top:1px solid #1c1f26;border-bottom:1px solid #1c1f26;
+    overflow:hidden;padding:9px 0}
+  .tape-inner{display:flex;gap:28px;white-space:nowrap;font-family:ui-monospace,SFMono-Regular,monospace;
+    font-size:13px;letter-spacing:.04em}
+  .tick{color:#8b8371}
+  .tick b{font-weight:400;color:var(--tc)}
+  .tick .up{color:#4caf50}
+  .tick .sep{color:#3a3d45}
+  .tick .who{color:#e2d8bd}
+
+  .final-banner{margin-top:18px;text-align:center;background:linear-gradient(#12151b,#0a0c10);
+    border:1px solid var(--gold-lo);border-top:2px solid var(--gold);padding:16px 20px}
+  .final-banner .fb-title{font-family:'Cinzel',serif;font-weight:900;font-size:1.1rem;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--gold-hi)}
+  .final-banner .fb-sub{margin-top:5px;font-size:14px;color:#8b8371;letter-spacing:.04em}
+
+  .quotes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:22px}
+  .quote{background:#12151b;border-top:2px solid var(--tc);padding:14px 15px}
+  .quote .qtop{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .quote .qn{font-family:'Cinzel',serif;font-weight:600;font-size:15px;letter-spacing:.05em;color:var(--tc)}
+  .quote .qr{font-size:12px;color:#5f5949;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+  .quote .qv{font-family:'Cinzel',serif;font-weight:900;font-size:27px;color:#e2d8bd;margin-top:7px;line-height:1}
+  .quote .qc{font-size:14px;margin-top:5px;letter-spacing:.04em;color:#4caf50}
+  .quote .qc.flat{color:#5f5949}
+  .quote .qd{font-size:13px;margin-top:3px;color:#6b6558}
+
+  .chartwrap{margin-top:10px;background:#0a0c11;border:1px solid #1c1f26;padding:14px 10px 6px}
+  .legend{display:flex;flex-wrap:wrap;gap:18px;margin-top:10px;font-size:13px;color:#8b8371;
+    justify-content:center}
+  .legend i{display:inline-block;width:14px;height:0;border-top:2px solid;vertical-align:middle;margin-right:6px}
+
+  .snap{background:#12151b;border-top:2px solid var(--tc);padding:14px 15px}
+  .snap .sh{font-family:'Cinzel',serif;font-weight:600;font-size:15px;letter-spacing:.05em;color:var(--tc)}
+  .snap .sbig{font-family:'Cinzel',serif;font-weight:900;font-size:26px;color:#e2d8bd;margin-top:6px;line-height:1}
+  .snap .sbig span{font-family:'Barlow Condensed',sans-serif;font-weight:400;font-size:14px;
+    color:#6b6558;letter-spacing:.16em;text-transform:uppercase;margin-left:7px}
+  .snap .lbl{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#514c40;
+    margin-top:14px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+  .snap ol{list-style:none;margin-top:8px}
+  .snap ol li{display:flex;justify-content:space-between;gap:10px;font-size:15px;
+    color:#cbc1a8;padding:3px 0;line-height:1.3}
+  .snap ol li b{font-weight:400;color:#6b6558;font-family:ui-monospace,monospace;font-size:12px;
+    margin-right:7px}
+  .snap ol li .v{color:#6b6558;font-family:ui-monospace,monospace;font-size:12px;white-space:nowrap}
+  .snap .none{font-family:'IM Fell English',serif;font-style:italic;color:#5c5648;
+    font-size:15px;padding:6px 0}
+
+  .segwrap{display:flex;border:1px solid #2a2418}
+  .seg{background:none;border:none;color:#6b6558;padding:7px 15px;cursor:pointer;
+    font-family:'Cinzel',serif;font-size:12px;letter-spacing:.13em;text-transform:uppercase}
+  .seg + .seg{border-left:1px solid #2a2418}
+  .seg:hover{color:var(--gold-hi)}
+  .seg.on{background:rgba(201,162,39,.13);color:var(--gold-hi)}
+
+  .logbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .logbar select,.logbar input{background:#0a0c10;border:1px solid #2a2418;color:#e2d8bd;
+    padding:8px 11px;outline:none;font-family:'Barlow Condensed',system-ui,sans-serif;font-size:16px}
+  .logbar select{min-width:150px}
+  .logbar input{flex:1;min-width:180px}
+  .logbar select:focus,.logbar input:focus{border-color:var(--gold)}
+  .lbtn{background:none;border:1px solid #2a2418;color:#8b8371;padding:8px 15px;font-size:12px;
+    letter-spacing:.14em;text-transform:uppercase;cursor:pointer;
+    font-family:'Cinzel',serif}
+  .lbtn:hover{border-color:var(--gold-lo);color:var(--gold-hi)}
+  #moreWrap .lbtn{padding:11px 30px;font-size:13px}
+
+  @media (max-width:640px){
+    .quotes{grid-template-columns:1fr;gap:8px}
+    .quote .qv{font-size:23px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap" id="top">
+
+  <header class="mast">
+    <div>
+      <div class="clan">MILLIONS</div>
+      <div class="ev">Raids to Riches</div>
+    </div>
+    <nav>
+      <a href="#top" class="on">Board</a>
+      <a href="#points">Point Values</a>
+    </nav>
+  </header>
+  <div class="mastrule"></div>
+
+  <div class="final-banner">
+    <div class="fb-title">🏆 Winner: Mc Hawk — 3.45B points</div>
+    <div class="fb-sub">I Sriracha 3.23B (46 drops) · BobbyPeroni 2.66B (44 drops) · Event complete</div>
+  </div>
+
+  <div class="tape"><div class="tape-inner" id="tape"></div></div>
+
+  <div id="quotes" class="quotes"></div>
+
+
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:34px">
+    <h2 class="sec" style="margin:0">Points Over Time</h2>
+    <span class="live"><span class="dot stale" id="dot" style="background:var(--gold);animation:none"></span><span id="liveTxt">Final</span></span>
+  </div>
+  <div class="sec-rule"></div>
+
+  <div class="chartwrap">
+    <svg id="chart" viewBox="0 0 640 220" style="width:100%;height:auto" role="img"
+         aria-label="Cumulative points over time for each team"></svg>
+  </div>
+  <div class="legend" id="legend"></div>
+
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:34px;gap:12px;flex-wrap:wrap">
+    <h2 class="sec" style="margin:0">Snapshot</h2>
+    <div class="segwrap">
+      <button class="seg on" data-sort="n">By drops</button>
+      <button class="seg" data-sort="pts">By points</button>
+    </div>
+  </div>
+  <div class="sec-rule"></div>
+  <div id="snapshot" class="quotes"></div>
+
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:34px;gap:12px;flex-wrap:wrap">
+    <h2 class="sec" style="margin:0">Drop Log</h2>
+    <span id="logCount" class="live"></span>
+  </div>
+  <div class="sec-rule"></div>
+
+  <div class="logbar">
+    <select id="fTeam"><option value="">All teams</option></select>
+    <input id="fPlayer" type="search" placeholder="Search player or item&hellip;" autocomplete="off">
+    <button class="lbtn" id="clearF">Clear</button>
+  </div>
+
+  <div id="logWrap"><div class="empty">Loading drops&hellip;</div></div>
+  <div id="moreWrap" style="text-align:center;margin-top:16px"></div>
+
+  
+<div id="points" style="margin-top:46px">
+<h2 class="sec">Point Values</h2>
+  <div class="sec-rule"></div>
+
+      <section class="tier" style="--tc:var(--t-legendary)">
+        <div class="head"><div class="name">Legendary</div>
+          <div class="pts"><span class="n">+<em>175M</em></span><span class="d">per drop</span></div></div>
+        <div class="rule"></div>
+        <div class="items">
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Twisted_bow.png" alt="" onerror="this.remove()"><span class="nm">Twisted Bow</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Tumeken%27s_shadow_(uncharged).png" alt="" onerror="this.remove()"><span class="nm">Tumeken's Shadow</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Scythe_of_vitur_(uncharged).png" alt="" onerror="this.remove()"><span class="nm">Scythe of Vitur</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Kodai_insignia.png" alt="" onerror="this.remove()"><span class="nm">Kodai Insignia</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Elder_maul.png" alt="" onerror="this.remove()"><span class="nm">Elder Maul</span></div>
+        </div>
+      </section>
+
+      <section class="tier" style="--tc:var(--t-mythic)">
+        <div class="head"><div class="name">Mythic</div>
+          <div class="pts"><span class="n">+<em>125M</em></span><span class="d">per drop</span></div></div>
+        <div class="rule"></div>
+        <div class="items">
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Eldritch_orb.png" alt="" onerror="this.remove()"><span class="nm">Any Nightmare Orb</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Ancient_hilt.png" alt="" onerror="this.remove()"><span class="nm">Ancient Hilt</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Nihil_horn.png" alt="" onerror="this.remove()"><span class="nm">Nihil Horn</span></div>
+        </div>
+      </section>
+
+      <section class="tier" style="--tc:var(--t-epic)">
+        <div class="head"><div class="name">Epic</div>
+          <div class="pts"><span class="n">+<em>90M</em></span><span class="d">per drop</span></div></div>
+        <div class="rule"></div>
+        <div class="items">
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Masori_body.png" alt="" onerror="this.remove()"><span class="nm">Masori Armour — any</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Torva_platebody.png" alt="" onerror="this.remove()"><span class="nm">Torva Armour — any</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Inquisitor%27s_hauberk.png" alt="" onerror="this.remove()"><span class="nm">Inquisitor's Armour — any</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Oathplate_chest.png" alt="" onerror="this.remove()"><span class="nm">Oathplate Armour — any</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Inquisitor%27s_mace.png" alt="" onerror="this.remove()"><span class="nm">Inquisitor's Mace</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Dragon_claws.png" alt="" onerror="this.remove()"><span class="nm">Dragon Claws</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Dinh%27s_bulwark.png" alt="" onerror="this.remove()"><span class="nm">Dinh's Bulwark</span></div>
+        </div>
+      </section>
+
+      <section class="tier" style="--tc:var(--t-rare)">
+        <div class="head"><div class="name">Rare</div>
+          <div class="pts"><span class="n">+<em>60M</em></span><span class="d">per drop</span></div></div>
+        <div class="rule"></div>
+        <div class="items">
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Ancestral_robe_top.png" alt="" onerror="this.remove()"><span class="nm">Ancestral Armour — any</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Justiciar_chestguard.png" alt="" onerror="this.remove()"><span class="nm">Justiciar Armour — any</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Elidinis%27_ward.png" alt="" onerror="this.remove()"><span class="nm">Elidinis' Ward</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Sanguinesti_staff_(uncharged).png" alt="" onerror="this.remove()"><span class="nm">Sanguinesti Staff</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Crimson_kisten.png" alt="" onerror="this.remove()"><span class="nm">Crimson Kisten</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Twisted_buckler.png" alt="" onerror="this.remove()"><span class="nm">Twisted Buckler</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Nightmare_staff.png" alt="" onerror="this.remove()"><span class="nm">Nightmare Staff</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Ghrazi_rapier.png" alt="" onerror="this.remove()"><span class="nm">Ghrazi Rapier</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Dragon_hunter_crossbow.png" alt="" onerror="this.remove()"><span class="nm">Dragon Hunter Crossbow</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Zaryte_vambraces.png" alt="" onerror="this.remove()"><span class="nm">Zaryte Vambraces</span></div>
+        </div>
+      </section>
+
+      <section class="tier" style="--tc:var(--t-uncommon)">
+        <div class="head"><div class="name">Uncommon</div>
+          <div class="pts"><span class="n">+<em>30M</em></span><span class="d">per drop</span></div></div>
+        <div class="rule"></div>
+        <div class="items">
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Lightbearer.png" alt="" onerror="this.remove()"><span class="nm">Lightbearer</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Osmumten%27s_fang.png" alt="" onerror="this.remove()"><span class="nm">Osmumten's Fang</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Soulflame_horn.png" alt="" onerror="this.remove()"><span class="nm">Soulflame Horn</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Elder_venator_fang.png" alt="" onerror="this.remove()"><span class="nm">Elder Venator Fang</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Avernic_defender_hilt.png" alt="" onerror="this.remove()"><span class="nm">Avernic Defender Hilt</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Parasitic_egg.png" alt="" onerror="this.remove()"><span class="nm">Parasitic Egg</span></div>
+        <div class="item"><img width="24" height="24" loading="lazy" decoding="async" fetchpriority="low" src="https://oldschool.runescape.wiki/images/Dexterous_prayer_scroll.png" alt="" onerror="this.remove()"><span class="nm">Dexterous / Arcane Scroll</span></div>
+        </div>
+      </section>
+
+  <h2 class="sec">Bonus Points</h2>
+  <div class="sec-rule"></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px">
+        <div class="card" style="margin-top:0"><div style="font-family:'Cinzel',serif;font-weight:600;font-size:15px;text-transform:uppercase;letter-spacing:.1em;color:#ddd1b1">Ornament Kits</div>
+          <div style="margin-top:8px;font-size:15px;color:#8b8371;line-height:1.35">Holy · Twisted · Sanguine</div>
+          <div style="margin-top:11px;font-family:'Cinzel',serif;font-weight:900;font-size:20px;color:var(--gold-hi)">+60M</div></div>
+        <div class="card" style="margin-top:0"><div style="font-family:'Cinzel',serif;font-weight:600;font-size:15px;text-transform:uppercase;letter-spacing:.1em;color:#ddd1b1">Pets</div>
+          <div style="margin-top:8px;font-size:15px;color:#8b8371;line-height:1.35">ToA · CoX · ToB · Nex<br>Nightmare · Yami<br>Maggot Marquess</div>
+          <div style="margin-top:11px;font-family:'Cinzel',serif;font-weight:900;font-size:20px;color:var(--gold-hi)">+90M</div></div>
+        <div class="card" style="margin-top:0"><div style="font-family:'Cinzel',serif;font-weight:600;font-size:15px;text-transform:uppercase;letter-spacing:.1em;color:#ddd1b1">Dusts</div>
+          <div style="margin-top:8px;font-size:15px;color:#8b8371;line-height:1.35">Metamorphic · Sanguine</div>
+          <div style="margin-top:11px;font-family:'Cinzel',serif;font-weight:900;font-size:20px;color:var(--gold-hi)">+90M</div></div>
+        <div class="card" style="margin-top:0"><div style="font-family:'Cinzel',serif;font-weight:600;font-size:15px;text-transform:uppercase;letter-spacing:.1em;color:#ddd1b1">Collection Log</div>
+          <div style="margin-top:8px;font-size:15px;color:#8b8371;line-height:1.35">Any drop that fills a collection log slot<span style="display:block;font-size:13px;color:#544f42;margin-top:4px">Stacks on top of its tier value</span></div>
+          <div style="margin-top:11px;font-family:'Cinzel',serif;font-weight:900;font-size:20px;color:var(--gold-hi)">+25M</div></div>
+  </div>
+
+  <p style="text-align:center;margin-top:24px;font-family:'IM Fell English',serif;font-style:italic;font-size:16px;color:#5c5648">
+    Duplicates count. Every drop, every time.</p>
+</div>
+
+<footer>
+    <div class="mark">MILLIONS</div>
+    <div class="note">Final results · See point values for scoring</div>
+  </footer>
+</div>
+
+<script>
+// Auto-generated from the point values board. Edit here to change the event.
+const TEAMS = ["Mc Hawk", "I Sriracha", "BobbyPeroni"];  // <-- your team names
+
+const DATA = {
+  "tiers": [
+    {
+      "name": "Legendary",
+      "key": "legendary",
+      "points": 175000000,
+      "items": [
+        {
+          "name": "Twisted Bow",
+          "img": "https://oldschool.runescape.wiki/images/Twisted_bow.png"
+        },
+        {
+          "name": "Tumeken's Shadow",
+          "img": "https://oldschool.runescape.wiki/images/Tumeken%27s_shadow_(uncharged).png"
+        },
+        {
+          "name": "Scythe of Vitur",
+          "img": "https://oldschool.runescape.wiki/images/Scythe_of_vitur_(uncharged).png"
+        },
+        {
+          "name": "Kodai Insignia",
+          "img": "https://oldschool.runescape.wiki/images/Kodai_insignia.png"
+        },
+        {
+          "name": "Elder Maul",
+          "img": "https://oldschool.runescape.wiki/images/Elder_maul.png"
+        }
+      ]
+    },
+    {
+      "name": "Mythic",
+      "key": "mythic",
+      "points": 125000000,
+      "items": [
+        {
+          "name": "Any Nightmare Orb",
+          "img": "https://oldschool.runescape.wiki/images/Eldritch_orb.png"
+        },
+        {
+          "name": "Ancient Hilt",
+          "img": "https://oldschool.runescape.wiki/images/Ancient_hilt.png"
+        },
+        {
+          "name": "Nihil Horn",
+          "img": "https://oldschool.runescape.wiki/images/Nihil_horn.png"
+        }
+      ]
+    },
+    {
+      "name": "Epic",
+      "key": "epic",
+      "points": 90000000,
+      "items": [
+        {
+          "name": "Masori Armour \u2014 any",
+          "img": "https://oldschool.runescape.wiki/images/Masori_body.png"
+        },
+        {
+          "name": "Torva Armour \u2014 any",
+          "img": "https://oldschool.runescape.wiki/images/Torva_platebody.png"
+        },
+        {
+          "name": "Inquisitor's Armour \u2014 any",
+          "img": "https://oldschool.runescape.wiki/images/Inquisitor%27s_hauberk.png"
+        },
+        {
+          "name": "Oathplate Armour \u2014 any",
+          "img": "https://oldschool.runescape.wiki/images/Oathplate_chest.png"
+        },
+        {
+          "name": "Inquisitor's Mace",
+          "img": "https://oldschool.runescape.wiki/images/Inquisitor%27s_mace.png"
+        },
+        {
+          "name": "Dragon Claws",
+          "img": "https://oldschool.runescape.wiki/images/Dragon_claws.png"
+        },
+        {
+          "name": "Dinh's Bulwark",
+          "img": "https://oldschool.runescape.wiki/images/Dinh%27s_bulwark.png"
+        }
+      ]
+    },
+    {
+      "name": "Rare",
+      "key": "rare",
+      "points": 60000000,
+      "items": [
+        {
+          "name": "Ancestral Armour \u2014 any",
+          "img": "https://oldschool.runescape.wiki/images/Ancestral_robe_top.png"
+        },
+        {
+          "name": "Justiciar Armour \u2014 any",
+          "img": "https://oldschool.runescape.wiki/images/Justiciar_chestguard.png"
+        },
+        {
+          "name": "Elidinis' Ward",
+          "img": "https://oldschool.runescape.wiki/images/Elidinis%27_ward.png"
+        },
+        {
+          "name": "Sanguinesti Staff",
+          "img": "https://oldschool.runescape.wiki/images/Sanguinesti_staff_(uncharged).png"
+        },
+        {
+          "name": "Crimson Kisten",
+          "img": "https://oldschool.runescape.wiki/images/Crimson_kisten.png"
+        },
+        {
+          "name": "Twisted Buckler",
+          "img": "https://oldschool.runescape.wiki/images/Twisted_buckler.png"
+        },
+        {
+          "name": "Nightmare Staff",
+          "img": "https://oldschool.runescape.wiki/images/Nightmare_staff.png"
+        },
+        {
+          "name": "Ghrazi Rapier",
+          "img": "https://oldschool.runescape.wiki/images/Ghrazi_rapier.png"
+        },
+        {
+          "name": "Dragon Hunter Crossbow",
+          "img": "https://oldschool.runescape.wiki/images/Dragon_hunter_crossbow.png"
+        },
+        {
+          "name": "Zaryte Vambraces",
+          "img": "https://oldschool.runescape.wiki/images/Zaryte_vambraces.png"
+        }
+      ]
+    },
+    {
+      "name": "Uncommon",
+      "key": "uncommon",
+      "points": 30000000,
+      "items": [
+        {
+          "name": "Lightbearer",
+          "img": "https://oldschool.runescape.wiki/images/Lightbearer.png"
+        },
+        {
+          "name": "Osmumten's Fang",
+          "img": "https://oldschool.runescape.wiki/images/Osmumten%27s_fang.png"
+        },
+        {
+          "name": "Soulflame Horn",
+          "img": "https://oldschool.runescape.wiki/images/Soulflame_horn.png"
+        },
+        {
+          "name": "Elder Venator Fang",
+          "img": "https://oldschool.runescape.wiki/images/Elder_venator_fang.png"
+        },
+        {
+          "name": "Avernic Defender Hilt",
+          "img": "https://oldschool.runescape.wiki/images/Avernic_defender_hilt.png"
+        },
+        {
+          "name": "Parasitic Egg",
+          "img": "https://oldschool.runescape.wiki/images/Parasitic_egg.png"
+        },
+        {
+          "name": "Dexterous / Arcane Scroll",
+          "img": "https://oldschool.runescape.wiki/images/Dexterous_prayer_scroll.png"
+        }
+      ]
+    }
+  ],
+  "bonuses": [
+    {
+      "name": "Ornament Kit (Holy / Twisted / Sanguine)",
+      "points": 60000000
+    },
+    {
+      "name": "Pet (ToA / CoX / ToB / Nex / Nightmare / Yami / Maggot Marquess)",
+      "points": 90000000
+    },
+    {
+      "name": "Dust (Metamorphic / Sanguine)",
+      "points": 90000000
+    },
+    {
+      "name": "Collection Log slot",
+      "points": 25000000
+    }
+  ]
+};
+
+// Flat lookup: item name -> points, used by the admin autofill.
+const ITEM_POINTS = (() => {
+  const m = new Map();
+  for (const t of DATA.tiers) for (const it of t.items) m.set(it.name, {points:t.points, tier:t.name, img:it.img});
+  for (const b of DATA.bonuses) m.set(b.name, {points:b.points, tier:"Bonus", img:null});
+  return m;
+})();
+
+const fmt = n => {
+  if (n >= 1e9) return (n/1e9).toFixed(2).replace(/\.?0+$/,'') + 'B';
+  if (n >= 1e6) return Math.round(n/1e6) + 'M';
+  return n.toLocaleString();
+};
+
+
+const TAPE_PPS = 82;                       // ticker speed, pixels per second
+const COLORS = ['var(--team-1)','var(--team-2)','var(--team-3)'];
+const HEX    = ['#c9a227','#7190b6','#a63f2c'];
+const DASH   = ['none','6 3','2 3'];
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c =>
+  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const teamVar = name => COLORS[TEAMS.indexOf(name)] || COLORS[0];
+
+function ago(ts){
+  const s = Math.floor((Date.now()-ts)/1000);
+  if (s < 60)    return s + 's ago';
+  if (s < 3600)  return Math.floor(s/60) + 'm ago';
+  if (s < 86400) return Math.floor(s/3600) + 'h ago';
+  return Math.floor(s/86400) + 'd ago';
+}
+
+let seen = new Set(), first = true, signature = '';
+
+/* ═══ Ticker ════════════════════════════════════════════════════════════
+   Built once per data change. The scroll itself is a CSS animation running
+   on the compositor, so no JavaScript executes per frame. */
+function buildTape(drops){
+  const src = drops.length ? drops.slice(0,20) : [];
+  const row = src.length
+    ? src.map(d =>
+        `<span class="tick" style="--tc:${teamVar(d.team)}">` +
+          `<span class="who">${esc((d.player||'?').toUpperCase())}</span> ` +
+          `${esc((d.item||'Drop').toUpperCase())} ` +
+          `<b>${esc(d.team.toUpperCase())}</b> ` +
+          `<span class="up">&#9650;${fmt(d.points)}</span>` +
+        `</span>`).join('')
+    : `<span class="tick">AWAITING FIRST DROP</span>`;
+
+  const el = $('tape');
+  el.innerHTML = row + row;                        // doubled = seamless loop
+  // Duration scales with content so speed stays constant regardless of length.
+  const half = el.scrollWidth / 2;
+  el.style.setProperty('--tape-dur', Math.max(20, half / TAPE_PPS) + 's');
+}
+
+/* Stop the animation entirely when the tape is scrolled out of view. */
+if ('IntersectionObserver' in window){
+  new IntersectionObserver(entries => {
+    $('tape').classList.toggle('paused', !entries[0].isIntersecting);
+  }, { threshold: 0 }).observe(document.querySelector('.tape'));
+}
+
+/* ═══ Stats ═════════════════════════════════════════════════════════════
+   One pass over the drop list produces everything the quote cards and the
+   snapshot need: totals, 24h change, drop counts, per-player tallies.
+   Previously each panel looped the whole list separately. */
+function computeStats(drops){
+  const cutoff = Date.now() - 86400000;
+  const total = new Map(), today = new Map(), count = new Map();
+  for (const t of TEAMS){ total.set(t,0); today.set(t,0); count.set(t,0); }
+
+  const byPlayer = new Map();
+  for (let i = 0; i < drops.length; i++){
+    const d = drops[i];
+    if (!total.has(d.team)) continue;
+    total.set(d.team, total.get(d.team) + d.points);
+    count.set(d.team, count.get(d.team) + 1);
+    if (d.ts >= cutoff) today.set(d.team, today.get(d.team) + d.points);
+
+    const key = d.team + '\u0000' + d.player;
+    const e = byPlayer.get(key);
+    if (e){ e.n++; e.pts += d.points; }
+    else byPlayer.set(key, { team:d.team, player:d.player, n:1, pts:d.points });
+  }
+
+  // Full per-team tallies. The snapshot slices these on demand, so flipping
+  // the sort is a re-render rather than another pass over the drop list.
+  const roster = new Map(TEAMS.map(t => [t, []]));
+  for (const e of byPlayer.values()){
+    const arr = roster.get(e.team);
+    if (arr) arr.push(e);
+  }
+
+  return { total, today, count, roster };
+}
+
+/* ═══ Quote cards ═══════════════════════════════════════════════════════ */
+function drawQuotes(st){
+  const ranked = TEAMS.map(t => ({ name:t, pts:st.total.get(t), chg:st.today.get(t) }))
+                      .sort((a,b) => b.pts - a.pts);
+  const lead = ranked[0].pts;
+
+  $('quotes').innerHTML = ranked.map((t,i) => {
+    const rank = ['1st','2nd','3rd'][i] || (i+1)+'th';
+    const gap  = i === 0 ? 'Leading' : '&minus;' + fmt(lead - t.pts) + ' behind';
+    return '<div class="quote" style="--tc:'+teamVar(t.name)+'">'+
+      '<div class="qtop"><span class="qn">'+esc(t.name)+'</span><span class="qr">'+rank+'</span></div>'+
+      '<div class="qv">'+fmt(t.pts)+'</div>'+
+      '<div class="qc '+(t.chg?'':'flat')+'">'+(t.chg?'&#9650; '+fmt(t.chg)+' today':'No drops today')+'</div>'+
+      '<div class="qd">'+gap+'</div>'+
+    '</div>';
+  }).join('');
+}
+
+/* ═══ Snapshot: drop counts and each team's top five ═══════════════════
+   Sorted by number of drops or by points contributed; the other value always
+   stays visible so the toggle reframes the list rather than hiding data. */
+const TOP_N = 5;
+let snapSort = 'n';           // 'n' = drops, 'pts' = points
+let lastStats = null;
+
+function drawSnapshot(st){
+  lastStats = st;
+  $('snapshot').innerHTML = TEAMS.map(t => {
+    const all = (st.roster.get(t) || []).slice();
+    all.sort(snapSort === 'n'
+      ? (a,b) => b.n - a.n || b.pts - a.pts
+      : (a,b) => b.pts - a.pts || b.n - a.n);
+    const top = all.slice(0, TOP_N);
+    const n = st.count.get(t) || 0;
+    return '<div class="snap" style="--tc:'+teamVar(t)+'">'+
+      '<div class="sh">'+esc(t)+'</div>'+
+      '<div class="sbig">'+n+'<span>'+(n===1?'drop':'drops')+'</span></div>'+
+      '<div class="lbl">'+(snapSort === 'n' ? 'Most drops logged' : 'Most points earned')+'</div>'+
+      (top.length
+        ? '<ol>'+top.map((p,i)=>
+            '<li><span><b>'+(i+1)+'</b>'+esc(p.player)+'</span>'+
+            '<span class="v">'+(snapSort === 'n'
+                ? p.n+'&times; &middot; '+fmt(p.pts)
+                : fmt(p.pts)+' &middot; '+p.n+'&times;')+'</span></li>').join('')+'</ol>'
+        : '<div class="none">Nobody on the board yet.</div>')+
+    '</div>';
+  }).join('');
+}
+
+/* ═══ Chart ═════════════════════════════════════════════════════════════ */
+function drawChart(asc){
+  const svg = $('chart');
+  const W = 640, H = 220, L = 46, R = 12, T = 14, B = 30;
+
+  if (!asc.length){
+    svg.innerHTML = `<text x="${W/2}" y="${H/2}" text-anchor="middle" fill="#5c5648"
+      font-size="15" font-family="serif" font-style="italic">Chart begins with the first drop</text>`;
+    $('legend').innerHTML = '';
+    return;
+  }
+
+  const start = asc[0].ts;
+  const end   = Math.max(Date.now(), asc[asc.length-1].ts);
+  const span  = Math.max(end - start, 3600000);
+
+  const STEPS = 60;
+  const running = new Map(TEAMS.map(t => [t,0]));
+  const series  = new Map(TEAMS.map(t => [t,[]]));
+  let di = 0;
+  for (let s = 0; s <= STEPS; s++){
+    const at = start + (span * s / STEPS);
+    while (di < asc.length && asc[di].ts <= at){
+      if (running.has(asc[di].team)) running.set(asc[di].team, running.get(asc[di].team) + asc[di].points);
+      di++;
+    }
+    for (const t of TEAMS) series.get(t).push(running.get(t));
+  }
+
+  const peak = Math.max(1, ...TEAMS.map(t => running.get(t)));
+  const mag  = Math.pow(10, Math.floor(Math.log10(peak)));
+  const top  = Math.ceil(peak / mag) * mag;
+
+  const x = i => L + (W - L - R) * (i / STEPS);
+  const y = v => (H - B) - (H - B - T) * (v / top);
+
+  let out = '';
+  for (let g = 0; g <= 4; g++){
+    const v = top * g / 4, yy = y(v);
+    out += `<line x1="${L}" y1="${yy.toFixed(1)}" x2="${W-R}" y2="${yy.toFixed(1)}"
+             stroke="${g === 0 ? '#33373f' : '#1c1f26'}"/>`;
+    out += `<text x="${L-8}" y="${(yy+3).toFixed(1)}" text-anchor="end" fill="#5f6570"
+             font-size="11" font-family="monospace">${g === 0 ? '0' : fmt(v)}</text>`;
+  }
+
+  TEAMS.forEach((t,i) => {
+    const pts = series.get(t).map((v,s) => `${x(s).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+    out += `<polyline fill="none" stroke="${HEX[i]}" stroke-width="2" stroke-linejoin="round"
+             stroke-linecap="round" stroke-dasharray="${DASH[i]}" points="${pts}"/>`;
+    out += `<circle cx="${x(STEPS).toFixed(1)}" cy="${y(running.get(t)).toFixed(1)}" r="4"
+             fill="${HEX[i]}" stroke="#0a0c11" stroke-width="2"/>`;
+  });
+
+  const lbl = d => d.toLocaleDateString(undefined,{month:'short',day:'numeric'});
+  out += `<text x="${L}" y="${H-8}" fill="#5f6570" font-size="11" font-family="monospace">${lbl(new Date(start))}</text>`;
+  out += `<text x="${W-R}" y="${H-8}" text-anchor="end" fill="#5f6570" font-size="11"
+           font-family="monospace">${lbl(new Date(end))}</text>`;
+
+  svg.innerHTML = out;
+  $('legend').innerHTML = TEAMS.map((t,i) =>
+    `<span><i style="border-color:${HEX[i]};border-top-style:${i===0?'solid':'dashed'}"></i>${esc(t)}</span>`
+  ).join('');
+}
+
+/* ═══ Drop log ══════════════════════════════════════════════════════════
+   Every drop the server holds is available here. Rendered in pages of 50 so a
+   long event doesn't build thousands of rows at once; "Show more" extends the
+   window. Filters apply across the whole history, not just the visible page. */
+const PAGE = 50;
+let allDrops = [], shown = PAGE;
+
+function filtered(){
+  const team = $('fTeam').value;
+  const q = $('fPlayer').value.trim().toLowerCase();
+  return allDrops.filter(d =>
+    (!team || d.team === team) &&
+    (!q || (d.player||'').toLowerCase().includes(q) || (d.item||'').toLowerCase().includes(q))
+  );
+}
+
+function drawLog(){
+  const list = filtered();
+
+  $('logCount').textContent = list.length === allDrops.length
+    ? allDrops.length + ' drops logged'
+    : list.length + ' of ' + allDrops.length + ' drops';
+
+  if (!allDrops.length){
+    $('logWrap').innerHTML = '<div class="empty">No drops logged yet. Get in there.</div>';
+    $('moreWrap').innerHTML = '';
+    return;
+  }
+  if (!list.length){
+    $('logWrap').innerHTML = '<div class="empty">Nothing matches that filter.</div>';
+    $('moreWrap').innerHTML = '';
+    return;
+  }
+
+  const page = list.slice(0, shown);
+  $('logWrap').innerHTML = `<table class="log">
+    <thead><tr><th>When</th><th>Player</th><th>Item</th>
+      <th class="hide-sm">Team</th><th style="text-align:right">Points</th></tr></thead>
+    <tbody>${page.map(d => {
+      const meta = ITEM_POINTS.get(d.item);
+      const img  = meta && meta.img
+        ? `<img src="${meta.img}" alt="" width="22" height="22" loading="lazy" decoding="async" onerror="this.remove()">`
+        : '';
+      const fresh = !first && !seen.has(d.id) ? 'fresh' : '';
+      return `<tr class="${fresh}" style="--tc:${teamVar(d.team)}">
+        <td class="when" data-ts="${d.ts}">${esc(ago(d.ts))}</td>
+        <td>${esc(d.player)}</td>
+        <td>${img}${esc(d.item)}</td>
+        <td class="hide-sm"><span class="pill">${esc(d.team)}</span></td>
+        <td class="pts">+${fmt(d.points)}</td>
+      </tr>`;
+    }).join('')}</tbody></table>`;
+
+  const left = list.length - page.length;
+  $('moreWrap').innerHTML = left > 0
+    ? '<button class="lbtn" id="more">Show ' + Math.min(left, PAGE) + ' more &middot; ' + left + ' remaining</button>'
+    : (list.length > PAGE ? '<div class="empty" style="padding:18px 0">That is the whole event.</div>' : '');
+
+  const btn = $('more');
+  if (btn) btn.onclick = () => { shown += PAGE; drawLog(); };
+}
+
+function render(drops){
+  // Skip all DOM work when the data hasn't actually changed. Most polls
+  // return an identical list, so this is the common path.
+  const sig = drops.length + ':' + (drops[0] ? drops[0].id : '');
+  if (sig === signature){ return; }
+  signature = sig;
+
+  allDrops = drops;
+  const st = computeStats(drops);
+  // Chart wants oldest-first; sort once here instead of inside the chart.
+  const asc = drops.slice().sort((a,b) => a.ts - b.ts);
+  buildTape(drops);
+  drawQuotes(st);
+  drawSnapshot(st);
+  drawChart(asc);
+  drawLog();
+  seen = new Set(drops.map(d => d.id));
+  first = false;
+}
+
+document.querySelectorAll('.seg[data-sort]').forEach(b => {
+  b.onclick = () => {
+    snapSort = b.dataset.sort;
+    document.querySelectorAll('.seg[data-sort]').forEach(x =>
+      x.classList.toggle('on', x === b));
+    if (lastStats) drawSnapshot(lastStats);   // re-sort in place, no refetch
+  };
+});
+
+TEAMS.forEach(t => $('fTeam').add(new Option(t, t)));
+$('fTeam').onchange = () => { shown = PAGE; drawLog(); };
+$('fPlayer').oninput = () => { shown = PAGE; drawLog(); };
+$('clearF').onclick = () => { $('fTeam').value=''; $('fPlayer').value=''; shown = PAGE; drawLog(); };
+
+// ── Final archived data (baked in — event is over, no live server) ──────
+const FINAL_DROPS = [{"id":"drop-1","ts":1786729572936,"player":"Hogboomster","item":"Masori Armour \u2014 any","team":"I Sriracha","points":90000000},{"id":"drop-2","ts":1786729589963,"player":"BiscottiBody","item":"Dexterous / Arcane Scroll","team":"Mc Hawk","points":30000000},{"id":"drop-3","ts":1786730832304,"player":"Satd","item":"Parasitic Egg","team":"I Sriracha","points":55000000},{"id":"drop-4","ts":1786730959042,"player":"Bobbyperoni","item":"Osmumten's Fang","team":"BobbyPeroni","points":30000000},{"id":"drop-5","ts":1786732107290,"player":"Barthalonoob","item":"Elidinis' Ward","team":"Mc Hawk","points":60000000},{"id":"drop-6","ts":1786732197181,"player":"Skillossus","item":"Soulflame Horn","team":"Mc Hawk","points":55000000},{"id":"drop-7","ts":1786739823698,"player":"Omen","item":"Elder Venator Fang","team":"Mc Hawk","points":55000000},{"id":"drop-8","ts":1786742084611,"player":"MrAlphaChad","item":"Lightbearer","team":"I Sriracha","points":30000000},{"id":"drop-9","ts":1786742145555,"player":"Jonteb II","item":"Ancestral Armour \u2014 any","team":"I Sriracha","points":60000000},{"id":"drop-10","ts":1786743929731,"player":"Y ork","item":"Dragon Hunter Crossbow","team":"Mc Hawk","points":85000000},{"id":"drop-11","ts":1786758722473,"player":"xLaGs","item":"Twisted Buckler","team":"I Sriracha","points":85000000},{"id":"drop-12","ts":1786759155543,"player":"satd","item":"Parasitic Egg","team":"I Sriracha","points":30000000},{"id":"drop-13","ts":1786770794792,"player":"Nike y","item":"Masori Armour \u2014 any","team":"BobbyPeroni","points":90000000},{"id":"drop-14","ts":1786770827529,"player":"ZnarkaanRS","item":"Masori Armour \u2014 any","team":"Mc Hawk","points":115000000},{"id":"drop-15","ts":1786770862358,"player":"Deathswarden","item":"Twisted Bow","team":"Mc Hawk","points":200000000},{"id":"drop-16","ts":1786804415954,"player":"OzwldRichard","item":"Lightbearer","team":"Mc Hawk","points":55000000},{"id":"drop-17","ts":1786807812307,"player":"Allurt","item":"Osmumten's Fang","team":"BobbyPeroni","points":30000000},{"id":"drop-18","ts":1786823036878,"player":"ZnarkaanRS","item":"Twisted Buckler","team":"Mc Hawk","points":85000000},{"id":"drop-19","ts":1786823071598,"player":"Allurt","item":"Masori Armour \u2014 any","team":"BobbyPeroni","points":90000000},{"id":"drop-20","ts":1786825559597,"player":"RallekRho","item":"Ornament Kit (Holy / Twisted / Sanguine)","team":"Mc Hawk","points":85000000},{"id":"drop-21","ts":1786831470266,"player":"Allurt","item":"Elder Venator Fang","team":"BobbyPeroni","points":30000000},{"id":"drop-22","ts":1786831481615,"player":"Puzzled Life","item":"Dexterous / Arcane Scroll","team":"BobbyPeroni","points":30000000},{"id":"drop-23","ts":1786835644238,"player":"Hogboomster","item":"Dragon Hunter Crossbow","team":"I Sriracha","points":85000000},{"id":"drop-24","ts":1786841315890,"player":"Puzzled Life","item":"Ancestral Armour \u2014 any","team":"BobbyPeroni","points":85000000},{"id":"drop-25","ts":1786842816732,"player":"satd","item":"Dexterous / Arcane Scroll","team":"I Sriracha","points":30000000},{"id":"drop-26","ts":1786848529744,"player":"Allurt","item":"Parasitic Egg","team":"BobbyPeroni","points":55000000},{"id":"drop-27","ts":1786851456391,"player":"Puzzled Life","item":"Masori Armour \u2014 any","team":"BobbyPeroni","points":115000000},{"id":"drop-28","ts":1786853924782,"player":"HughHefticle","item":"Elidinis' Ward","team":"Mc Hawk","points":85000000},{"id":"drop-29","ts":1786856600641,"player":"Mc Hawk","item":"Pet (ToA / CoX / ToB / Nex / Nightmare / Yami / Maggot Marquess)","team":"Mc Hawk","points":115000000},{"id":"drop-30","ts":1786895736502,"player":"satd","item":"Parasitic Egg","team":"I Sriracha","points":30000000},{"id":"drop-31","ts":1786895776814,"player":"Blue Tele","item":"Pet (ToA / CoX / ToB / Nex / Nightmare / Yami / Maggot Marquess)","team":"I Sriracha","points":115000000},{"id":"drop-32","ts":1786896272127,"player":"Hadeees","item":"Dragon Claws","team":"Mc Hawk","points":90000000},{"id":"drop-33","ts":1786896283759,"player":"Hadeees","item":"Dust (Metamorphic / Sanguine)","team":"Mc Hawk","points":90000000},{"id":"drop-34","ts":1786896307605,"player":"Badattrade","item":"Lightbearer","team":"BobbyPeroni","points":30000000},{"id":"drop-35","ts":1786896354932,"player":"Allurt","item":"Nightmare Staff","team":"BobbyPeroni","points":60000000},{"id":"drop-36","ts":1786896411747,"player":"PushPullLegs","item":"Elidinis' Ward","team":"BobbyPeroni","points":60000000},{"id":"drop-37","ts":1786897680295,"player":"Spideroni","item":"Lightbearer","team":"Mc Hawk","points":55000000},{"id":"drop-38","ts":1786897694882,"player":"Bozwollocks","item":"Crimson Kisten","team":"BobbyPeroni","points":85000000},{"id":"drop-39","ts":1786897708041,"player":"I Sriracha","item":"Dexterous / Arcane Scroll","team":"I Sriracha","points":30000000},{"id":"drop-40","ts":1786900936950,"player":"Badattrade","item":"Lightbearer","team":"BobbyPeroni","points":30000000},{"id":"drop-41","ts":1786902106760,"player":"Bone Quarter","item":"Dexterous / Arcane Scroll","team":"Mc Hawk","points":30000000},{"id":"drop-42","ts":1786904437037,"player":"Mc Hawk","item":"Justiciar Armour \u2014 any","team":"Mc Hawk","points":60000000},{"id":"drop-43","ts":1786905902155,"player":"Puzzled Life","item":"Lightbearer","team":"BobbyPeroni","points":55000000},{"id":"drop-44","ts":1786905916455,"player":"Allurt","item":"Pet (ToA / CoX / ToB / Nex / Nightmare / Yami / Maggot Marquess)","team":"BobbyPeroni","points":90000000},{"id":"drop-45","ts":1786905959619,"player":"Blue Tele","item":"Zaryte Vambraces","team":"I Sriracha","points":85000000},{"id":"drop-46","ts":1786912221149,"player":"BPM","item":"Dexterous / Arcane Scroll","team":"I Sriracha","points":30000000},{"id":"drop-47","ts":1786978512532,"player":"Omen","item":"Ornament Kit (Holy / Twisted / Sanguine)","team":"Mc Hawk","points":60000000},{"id":"drop-48","ts":1786978523817,"player":"Omen","item":"Dexterous / Arcane Scroll","team":"Mc Hawk","points":30000000},{"id":"drop-49","ts":1786978558598,"player":"NoPurple","item":"Dexterous / Arcane Scroll","team":"Mc Hawk","points":30000000},{"id":"drop-50","ts":1786978580157,"player":"BPM","item":"Dexterous / Arcane Scroll","team":"I Sriracha","points":30000000},{"id":"drop-51","ts":1786978609645,"player":"One Big SeaI","item":"Parasitic Egg","team":"I Sriracha","points":55000000},{"id":"drop-52","ts":1786978634818,"player":"Puzzled Life","item":"Dexterous / Arcane Scroll","team":"BobbyPeroni","points":30000000},{"id":"drop-53","ts":1786978663073,"player":"Deathswarden","item":"Ornament Kit (Holy / Twisted / Sanguine)","team":"Mc Hawk","points":85000000},{"id":"drop-54","ts":1786978692251,"player":"H atchy","item":"Masori Armour \u2014 any","team":"Mc Hawk","points":115000000},{"id":"drop-55","ts":1786978735899,"player":"OzwldRichard","item":"Tumeken's Shadow","team":"Mc Hawk","points":200000000},{"id":"drop-56","ts":1786979055589,"player":"Blue Tele","item":"Pet (ToA / CoX / ToB / Nex / Nightmare / Yami / Maggot Marquess)","team":"I Sriracha","points":90000000},{"id":"drop-57","ts":1786980207794,"player":"Puzzled Life","item":"Dexterous / Arcane Scroll","team":"BobbyPeroni","points":30000000},{"id":"drop-58","ts":1786984243701,"player":"StuffMyVoid","item":"Masori Armour \u2014 any","team":"I Sriracha","points":115000000},{"id":"drop-59","ts":1786985076934,"player":"Allurt  - Jar of Dreams","item":"Collection Log slot","team":"BobbyPeroni","points":50000000},{"id":"drop-60","ts":1786991950485,"player":"Nike-y","item":"Tumeken's Shadow","team":"BobbyPeroni","points":175000000},{"id":"drop-61","ts":1786997440065,"player":"BPM","item":"Elidinis' Ward","team":"I Sriracha","points":60000000},{"id":"drop-62","ts":1787014759139,"player":"Hvega","item":"Inquisitor's Armour \u2014 any","team":"I Sriracha","points":90000000},{"id":"drop-63","ts":1787014804912,"player":"allurt","item":"Tumeken's Shadow","team":"BobbyPeroni","points":175000000},{"id":"drop-64","ts":1787014838148,"player":"SleepyGrant","item":"Dexterous / Arcane Scroll","team":"Mc Hawk","points":30000000},{"id":"drop-65","ts":1787025496284,"player":"Monty Zumaa","item":"Dexterous / Arcane Scroll","team":"I Sriracha","points":30000000},{"id":"drop-66","ts":1787027837860,"player":"Barthalonoob","item":"Osmumten's Fang","team":"Mc Hawk","points":30000000},{"id":"drop-67","ts":1787031919059,"player":"PushPullLegs","item":"Osmumten's Fang","team":"BobbyPeroni","points":30000000},{"id":"drop-68","ts":1787031928938,"player":"Nike-y","item":"Osmumten's Fang","team":"BobbyPeroni","points":30000000},{"id":"drop-69","ts":1787056362726,"player":"satd","item":"Inquisitor's Mace","team":"I Sriracha","points":115000000},{"id":"drop-70","ts":1787056380513,"player":"satd","item":"Parasitic Egg","team":"I Sriracha","points":30000000},{"id":"drop-71","ts":1787056434684,"player":"D Azrael","item":"Elder Venator Fang","team":"BobbyPeroni","points":30000000},{"id":"drop-72","ts":1787056472503,"player":"Omen","item":"Masori Armour \u2014 any","team":"Mc Hawk","points":90000000},{"id":"drop-73","ts":1787058967930,"player":"Hogboomster","item":"Kodai Insignia","team":"I Sriracha","points":175000000},{"id":"drop-74","ts":1787059176491,"player":"BadAtTrade","item":"Masori Armour \u2014 any","team":"BobbyPeroni","points":115000000},{"id":"drop-75","ts":1787077808368,"player":"I Sriracha","item":"Parasitic Egg","team":"I Sriracha","points":30000000},{"id":"drop-76","ts":1787077878412,"player":"Bone Quarter","item":"Dexterous / Arcane Scroll","team":"Mc Hawk","points":30000000},{"id":"drop-77","ts":1787077888150,"player":"NoPurple","item":"Masori Armour \u2014 any","team":"Mc Hawk","points":90000000},{"id":"drop-78","ts":1787078828194,"player":"BPM","item":"Parasitic Egg","team":"I Sriracha","points":55000000},{"id":"drop-79","ts":1787081832923,"player":"Hogboomster","item":"Dragon Hunter Crossbow","team":"I Sriracha","points":60000000},{"id":"drop-80","ts":1787082645230,"player":"xLags","item":"Dexterous / Arcane Scroll","team":"I Sriracha","points":30000000},{"id":"drop-81","ts":1787093989345,"player":"6ixbeast","item":"Kodai Insignia","team":"BobbyPeroni","points":200000000},{"id":"drop-82","ts":1787093999571,"player":"Y ork","item":"Pet (ToA / CoX / ToB / Nex / Nightmare / Yami / Maggot Marquess)","team":"Mc Hawk","points":90000000},{"id":"drop-83","ts":1787099347155,"player":"Pekario","item":"Elidinis' Ward","team":"BobbyPeroni","points":85000000},{"id":"drop-84","ts":1787099359217,"player":"Bozwollocks","item":"Elder Venator Fang","team":"BobbyPeroni","points":55000000},{"id":"drop-85","ts":1787109803539,"player":"Hvega","item":"Parasitic Egg","team":"I Sriracha","points":30000000},{"id":"drop-86","ts":1787109833585,"player":"BoldPaladin","item":"Inquisitor's Armour \u2014 any","team":"I Sriracha","points":115000000},{"id":"drop-87","ts":1787109876893,"player":"Satd","item":"Twisted Buckler","team":"I Sriracha","points":60000000},{"id":"drop-88","ts":1787143899031,"player":"Hoghoomster","item":"Inquisitor's Armour \u2014 any","team":"I Sriracha","points":115000000},{"id":"drop-89","ts":1787157430092,"player":"NoPurple","item":"Inquisitor's Armour \u2014 any","team":"Mc Hawk","points":115000000},{"id":"drop-90","ts":1787157455920,"player":"Grap3juice01","item":"Osmumten's Fang","team":"Mc Hawk","points":55000000},{"id":"drop-91","ts":1787157471719,"player":"Hadeees","item":"Masori Armour \u2014 any","team":"Mc Hawk","points":90000000},{"id":"drop-92","ts":1787157764538,"player":"Nike-y","item":"Lightbearer","team":"BobbyPeroni","points":30000000},{"id":"drop-93","ts":1787160233521,"player":"BobbyPeroni","item":"Lightbearer","team":"BobbyPeroni","points":30000000},{"id":"drop-94","ts":1787160984901,"player":"Jonteb II","item":"Pet (ToA / CoX / ToB / Nex / Nightmare / Yami / Maggot Marquess)","team":"I Sriracha","points":115000000},{"id":"drop-95","ts":1787162529227,"player":"DJScrew","item":"Elidinis' Ward","team":"BobbyPeroni","points":60000000},{"id":"drop-96","ts":1787173009570,"player":"BPM","item":"Masori Armour \u2014 any","team":"I Sriracha","points":90000000},{"id":"drop-97","ts":1787179187543,"player":"MrAlphaChad","item":"Dexterous / Arcane Scroll","team":"I Sriracha","points":30000000},{"id":"drop-98","ts":1787180796033,"player":"Hikis Donger","item":"Elidinis' Ward","team":"BobbyPeroni","points":60000000},{"id":"drop-99","ts":1787184539247,"player":"I Sriracha","item":"Dexterous / Arcane Scroll","team":"I Sriracha","points":30000000},{"id":"drop-100","ts":1787184581407,"player":"BiscottiBody","item":"Dexterous / Arcane Scroll","team":"Mc Hawk","points":55000000},{"id":"drop-101","ts":1787185430823,"player":"MrAlphaChad","item":"Dexterous / Arcane Scroll","team":"I Sriracha","points":30000000},{"id":"drop-102","ts":1787188082430,"player":"Puzzled Life","item":"Sanguinesti Staff","team":"BobbyPeroni","points":60000000},{"id":"drop-103","ts":1787188099517,"player":"Hikis Donger","item":"Lightbearer","team":"BobbyPeroni","points":30000000},{"id":"drop-104","ts":1787190543311,"player":"Allurt","item":"Pet (ToA / CoX / ToB / Nex / Nightmare / Yami / Maggot Marquess)","team":"BobbyPeroni","points":90000000},{"id":"drop-105","ts":1787194684853,"player":"Hikis Donger","item":"Avernic Defender Hilt","team":"BobbyPeroni","points":30000000},{"id":"drop-106","ts":1787194690270,"player":"Allurt","item":"Parasitic Egg","team":"BobbyPeroni","points":30000000},{"id":"drop-107","ts":1787196726635,"player":"Hikis Donger","item":"Avernic Defender Hilt","team":"BobbyPeroni","points":30000000},{"id":"drop-108","ts":1787196733699,"player":"Oopsea","item":"Osmumten's Fang","team":"BobbyPeroni","points":30000000},{"id":"drop-109","ts":1787203969735,"player":"Im W ill","item":"Zaryte Vambraces","team":"BobbyPeroni","points":60000000},{"id":"drop-110","ts":1787243341446,"player":"Omen","item":"Ornament Kit (Holy / Twisted / Sanguine)","team":"Mc Hawk","points":60000000},{"id":"drop-111","ts":1787247166832,"player":"BPM","item":"Inquisitor's Armour \u2014 any","team":"I Sriracha","points":115000000},{"id":"drop-112","ts":1787247190047,"player":"SpoonedMonke","item":"Nihil Horn","team":"I Sriracha","points":150000000},{"id":"drop-113","ts":1787251808778,"player":"Barthalonoob","item":"Ancestral Armour \u2014 any","team":"Mc Hawk","points":85000000},{"id":"drop-114","ts":1787252551911,"player":"StuffMyVoid","item":"Lightbearer","team":"I Sriracha","points":30000000},{"id":"drop-115","ts":1787254992631,"player":"Omen","item":"Dexterous / Arcane Scroll","team":"Mc Hawk","points":30000000},{"id":"drop-116","ts":1787258061285,"player":"Omen","item":"Ornament Kit (Holy / Twisted / Sanguine)","team":"Mc Hawk","points":60000000},{"id":"drop-117","ts":1787258949503,"player":"PushPullLegs","item":"Elidinis' Ward","team":"BobbyPeroni","points":60000000},{"id":"drop-118","ts":1787260891009,"player":"ZnarkaanRS","item":"Ornament Kit (Holy / Twisted / Sanguine)","team":"Mc Hawk","points":85000000},{"id":"drop-119","ts":1787267877961,"player":"Niruuh","item":"Ornament Kit (Holy / Twisted / Sanguine)","team":"I Sriracha","points":85000000},{"id":"drop-120","ts":1787271522889,"player":"Niruuh","item":"Elder Maul","team":"I Sriracha","points":200000000},{"id":"drop-121","ts":1787271536138,"player":"BobbyPeroni","item":"Lightbearer","team":"BobbyPeroni","points":30000000},{"id":"drop-122","ts":1787271547785,"player":"Barthalonoob","item":"Elidinis' Ward","team":"Mc Hawk","points":60000000},{"id":"drop-123","ts":1787276857022,"player":"Hvega","item":"Nightmare Staff","team":"I Sriracha","points":85000000},{"id":"drop-124","ts":1787276868146,"player":"xLags","item":"Dexterous / Arcane Scroll","team":"I Sriracha","points":30000000},{"id":"drop-125","ts":1787283191118,"player":"PushPullLegs","item":"Osmumten's Fang","team":"BobbyPeroni","points":30000000},{"id":"drop-126","ts":1787283200473,"player":"xLags","item":"Parasitic Egg","team":"I Sriracha","points":55000000},{"id":"drop-127","ts":1787297343671,"player":"Hadeees","item":"Elidinis' Ward","team":"Mc Hawk","points":60000000},{"id":"drop-128","ts":1787317285338,"player":"ZnarkaanRS","item":"Masori Armour \u2014 any","team":"Mc Hawk","points":115000000},{"id":"drop-129","ts":1787317339099,"player":"RallekRho","item":"Twisted Buckler","team":"Mc Hawk","points":85000000},{"id":"drop-130","ts":1787319101429,"player":"OzwldRichard","item":"Pet (ToA / CoX / ToB / Nex / Nightmare / Yami / Maggot Marquess)","team":"Mc Hawk","points":115000000},{"id":"drop-131","ts":1787321345608,"player":"NoPurple","item":"Dexterous / Arcane Scroll","team":"Mc Hawk","points":30000000},{"id":"drop-132","ts":1787322705455,"player":"Bone Quarter","item":"Dexterous / Arcane Scroll","team":"Mc Hawk","points":30000000},{"id":"drop-133","ts":1787322722039,"player":"Fanta","item":"Lightbearer","team":"I Sriracha","points":30000000},{"id":"drop-134","ts":1787328027285,"player":"Allurt","item":"Parasitic Egg","team":"BobbyPeroni","points":30000000},{"id":"drop-135","ts":1787328041774,"player":"I Sriracha","item":"Inquisitor's Armour \u2014 any","team":"I Sriracha","points":115000000},{"id":"drop-136","ts":1787328061425,"player":"ZnarkaanRS","item":"Oathplate Armour \u2014 any","team":"Mc Hawk","points":90000000}];
+
+render(FINAL_DROPS);
+</script>
+</body>
+</html>
