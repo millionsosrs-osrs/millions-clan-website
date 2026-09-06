@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Millions – Battleship Final Results</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=IM+Fell+English&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07090e;--panel:#10131a;--border:#252830;
+  --gold:#c9a227;--gold-dim:#7a621a;--text:#c8c2b0;--text-dim:#a39d90;
+  --teamA:#22c55e;--teamB:#e0517a;--hit:rgba(210,35,35,0.9);--miss:rgba(25,70,180,0.84);
+  --cell:36px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'IM Fell English',serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 10px 48px;overflow-x:hidden;}
+#particles{position:fixed;inset:0;pointer-events:none;z-index:0;}
+header,.info-row,.bounty-section,.teams-wrap,.public-logs-section{position:relative;z-index:1;}
+header{text-align:center;padding:28px 0 8px;}
+header h1{font-family:'Cinzel',serif;font-size:clamp(1.8rem,4.5vw,2.7rem);font-weight:900;letter-spacing:.13em;color:var(--gold);text-shadow:0 0 35px #c9a22777,0 0 80px #c9a22733,0 2px 0 #000;animation:titlePulse 5s ease-in-out infinite;}
+@keyframes titlePulse{0%,100%{text-shadow:0 0 28px #c9a22766,0 0 60px #c9a22722,0 2px 0 #000;}50%{text-shadow:0 0 50px #c9a227aa,0 0 100px #c9a22755,0 2px 0 #000;}}
+header p{font-size:1rem;color:var(--text-dim);margin-top:5px;letter-spacing:.08em;}
+.drops-link{display:inline-block;margin-top:10px;font-family:'Cinzel',serif;font-size:.85rem;color:var(--gold-dim);text-decoration:none;border:1px solid var(--border);border-radius:4px;padding:6px 14px;}
+.drops-link:hover{border-color:var(--gold-dim);color:var(--gold);}
+.conn-status{position:fixed;top:8px;right:10px;font-size:.7rem;color:var(--text-dim);z-index:50;}
+.conn-status.ok{color:#4ade80;}
+.conn-status.err{color:#d06060;}
+.final-badge{position:fixed;top:8px;right:10px;font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.1em;color:var(--gold);z-index:50;border:1px solid var(--gold-dim);border-radius:4px;padding:3px 9px;background:#10131acc;}
+
+.result-banner{position:relative;z-index:1;width:100%;max-width:680px;margin:0 auto 22px;text-align:center;background:var(--panel);border:1px solid var(--gold-dim);border-radius:10px;padding:16px 20px;box-shadow:0 0 30px #c9a22722;}
+.result-banner .trophy-line{font-family:'Cinzel',serif;font-size:1.15rem;letter-spacing:.1em;color:var(--gold);text-shadow:0 0 20px #c9a22755;margin-bottom:8px;}
+.result-banner .result-stats{display:flex;justify-content:center;gap:26px;flex-wrap:wrap;font-size:.88rem;color:var(--text-dim);}
+.result-banner .result-stats strong{color:var(--text);}
+.result-banner .result-stats .win{color:#4ade80;}
+
+.info-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;max-width:960px;margin:6px auto 22px;}
+.info-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:14px 16px;}
+.info-card h3{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:.12em;color:var(--gold-dim);text-align:center;text-transform:uppercase;margin-bottom:8px;}
+.fleet-card{max-width:580px;}
+.sub-note{font-size:.85rem;color:var(--text-dim);text-align:center;margin-bottom:10px;line-height:1.45;}
+.fleet-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+.ship-entry{display:flex;flex-direction:column;align-items:center;gap:4px;width:80px;}
+.ship-entry .sname{font-family:'Cinzel',serif;font-size:.8rem;color:var(--gold);text-align:center;letter-spacing:.03em;}
+.ship-entry .scount{font-size:.75rem;color:var(--text-dim);}
+.tetris-grid{display:grid;gap:2px;margin:2px 0;}
+.tc{width:13px;height:13px;border-radius:2px;}
+.tc.off{background:transparent;}
+.ship-note{font-size:.7rem;color:var(--text-dim);text-align:center;}
+.fleet-total{font-family:'Cinzel',serif;font-size:.9rem;color:var(--gold);text-align:center;margin-top:10px;}
+.rules-card{max-width:320px;}
+.rules-block{font-size:.9rem;color:var(--text-dim);line-height:1.75;}
+.rules-block .rh{font-family:'Cinzel',serif;font-size:.82rem;color:var(--gold);margin:6px 0 2px;}
+
+.bounty-section{width:100%;max-width:760px;margin:0 auto 22px;text-align:center;}
+.bounty-label{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:.18em;color:var(--gold-dim);text-transform:uppercase;margin-bottom:8px;}
+.bounty-label span{color:var(--gold);font-size:.88rem;display:block;letter-spacing:.1em;margin-top:2px;opacity:.8;text-transform:none;}
+.bounty-row{display:flex;justify-content:center;gap:5px;flex-wrap:wrap;}
+.bounty-tile{width:46px;height:46px;border-radius:4px;border:2px solid var(--gold-dim);background:#0d1017;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:1.2rem;color:var(--gold-dim);transition:all .3s;}
+.bounty-tile.revealed{border-color:var(--gold);box-shadow:0 0 14px #c9a22766;color:var(--gold);animation:bountyPop .4s ease-out;}
+@keyframes bountyPop{0%{transform:scale(0.7);opacity:0;}60%{transform:scale(1.15);}100%{transform:scale(1);opacity:1;}}
+
+.teams-wrap{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:6px;}
+.board-glow-wrap{position:relative;}
+.board-glow-wrap::before{content:'';position:absolute;inset:-18px;background:radial-gradient(ellipse at center,#c9a2271a 0%,transparent 68%);border-radius:14px;pointer-events:none;animation:pulseGlow 4s ease-in-out infinite;}
+@keyframes pulseGlow{0%,100%{opacity:.5;}50%{opacity:1;}}
+.team-board{position:relative;z-index:1;background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:16px;}
+.team-board h2{font-family:'Cinzel',serif;font-size:1.2rem;letter-spacing:.1em;text-align:center;margin-bottom:10px;}
+.team-board.a h2{color:var(--teamA);}
+.team-board.b h2{color:var(--teamB);}
+.stat-line{font-size:.95rem;color:var(--text-dim);text-align:center;margin-bottom:10px;}
+.stat-line strong{color:var(--gold);}
+
+.fleet-status{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:12px;}
+.fleet-status-chip{display:flex;align-items:center;gap:5px;font-size:.72rem;padding:4px 9px;border-radius:4px;border:1px solid var(--border);background:#0b0e15;color:var(--text-dim);}
+.fleet-status-chip.all-sunk{border-color:#7c1010;background:#1a0808;color:#f87171;}
+.fleet-status-swatch{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+.fleet-status-chip.all-sunk .fleet-status-swatch{opacity:.5;}
+.col-headers,.grid{display:grid;grid-template-columns:20px repeat(16,var(--cell));gap:2px;}
+.col-headers{margin-bottom:2px;}
+.col-header,.row-header{font-family:'Cinzel',serif;font-size:.78rem;font-weight:700;color:var(--gold-dim);display:flex;align-items:center;justify-content:center;}
+.cell{width:var(--cell);height:var(--cell);position:relative;border-radius:3px;border:2px solid #252830;background:#0b0e15;cursor:pointer;transition:transform .12s,box-shadow .2s,border-color .2s;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.cell:hover{transform:scale(1.16);z-index:10;box-shadow:0 0 14px #c9a22755;}
+.cell img{width:27px;height:27px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 1px 3px rgba(0,0,0,1));}
+.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.1rem;opacity:0;border-radius:1px;}
+.cell[data-shot="hit"] .overlay{background:var(--hit);opacity:1;}
+.cell[data-shot="miss"] .overlay{background:var(--miss);opacity:1;}
+.cell[data-shot="hit"] .overlay::after{content:"💥";}
+.cell[data-shot="miss"] .overlay::after{content:"💨";}
+.tooltip{position:fixed;background:#12141c;border:1px solid var(--gold-dim);border-radius:4px;padding:6px 12px;font-size:.95rem;color:var(--text);pointer-events:none;opacity:0;transition:opacity .1s;z-index:999;max-width:260px;line-height:1.5;}
+
+.public-logs-section{width:100%;max-width:680px;margin:18px auto 28px;position:relative;z-index:1;}
+.public-logs-label{font-family:'Cinzel',serif;font-size:.9rem;letter-spacing:.16em;color:var(--gold-dim);text-transform:uppercase;text-align:center;margin-bottom:10px;}
+.log-subnote{color:var(--text-dim);font-weight:normal;font-size:.68rem;}
+
+.admin-logs{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:6px;}
+.admin-log-col{flex:1;min-width:220px;max-width:300px;}
+.admin-log-col h4{font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:.08em;text-align:center;margin-bottom:8px;}
+.admin-log-col.a h4{color:var(--teamA);}
+.admin-log-col.b h4{color:var(--teamB);}
+.admin-log-list{max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;background:#0b0e15;border:1px solid var(--border);border-radius:6px;padding:8px;}
+.admin-log-entry{font-size:.78rem;padding:6px 8px;border-radius:3px;display:flex;justify-content:space-between;gap:8px;color:var(--text-dim);}
+.admin-log-entry.hit{color:#e8716b;}
+.admin-log-entry.miss{color:#6fa8e0;}
+.admin-log-entry.undo{color:var(--text-dim);font-style:italic;}
+.admin-log-time{font-size:.66rem;color:var(--text-dim);flex-shrink:0;white-space:nowrap;}
+.admin-log-empty{font-size:.78rem;color:var(--text-dim);text-align:center;padding:10px 0;}
+</style>
+</head>
+<body>
+<canvas id="particles"></canvas>
+<div class="final-badge">🏁 FINAL RESULTS</div>
+
+<header>
+  <h1>⚔ MILLIONS BATTLESHIP — FINAL RESULTS ⚔</h1>
+  <p>Event Archive</p>
+</header>
+
+<div class="result-banner">
+  <div class="trophy-line">🏆 Winner: Monty's Milkers</div>
+  <div class="result-stats">
+    <span><strong>Monty's Milkers</strong> — 52 hits taken · 12/18 ships sunk</span>
+    <span><strong>Will's Willies</strong> — 63 hits taken · 17/18 ships sunk</span>
+  </div>
+</div>
+
+<div class="bounty-section">
+  <div class="bounty-label">Bounty Tiles<span>First team to hit a revealed bounty tile earns +1 bonus hit</span></div>
+  <div class="bounty-row" id="bounty-row"></div>
+</div>
+
+<div class="teams-wrap">
+  <div class="board-glow-wrap">
+    <div class="team-board a">
+      <h2 id="team-a-header">⚓ Team A</h2>
+      <div class="stat-line">Hits taken: <strong id="a-hits">0</strong> / Misses: <strong id="a-misses">0</strong></div>
+      <div class="fleet-status" id="a-fleet-status"></div>
+      <div class="col-headers" id="a-col-headers"></div>
+      <div class="grid" id="a-grid"></div>
+    </div>
+  </div>
+  <div class="board-glow-wrap">
+    <div class="team-board b">
+      <h2 id="team-b-header">⚓ Team B</h2>
+      <div class="stat-line">Hits taken: <strong id="b-hits">0</strong> / Misses: <strong id="b-misses">0</strong></div>
+      <div class="fleet-status" id="b-fleet-status"></div>
+      <div class="col-headers" id="b-col-headers"></div>
+      <div class="grid" id="b-grid"></div>
+    </div>
+  </div>
+</div>
+
+<div class="public-logs-section">
+  <div class="public-logs-label">📜 Fire Logs</div>
+  <div class="admin-logs">
+    <div class="admin-log-col a">
+      <h4>⚓ Team A's Log <span class="log-subnote">(shots fired at Team A)</span></h4>
+      <div class="admin-log-list" id="admin-log-a"></div>
+    </div>
+    <div class="admin-log-col b">
+      <h4>⚓ Team B's Log <span class="log-subnote">(shots fired at Team B)</span></h4>
+      <div class="admin-log-list" id="admin-log-b"></div>
+    </div>
+  </div>
+</div>
+
+<div class="info-row">
+  <div class="info-card fleet-card">
+    <h3>⚓ Fleet</h3>
+    <div class="sub-note">Ships may be placed horizontally or vertically. Tetris ships may also be rotated.</div>
+    <div class="fleet-row" id="fleet-list"></div>
+    <div class="fleet-total" id="fleet-total"></div>
+  </div>
+  <div class="info-card rules-card">
+    <h3>📋 Rules</h3>
+    <div class="rules-block">
+      <div class="rh">CALLING A TILE</div>
+      Call a coordinate (e.g. G7). Hit 💥 if it's a ship tile, Miss 💨 if not.
+      <div class="rh">SINKING</div>
+      Hit every tile a ship occupies to sink it.
+      <div class="rh">PLACEMENT</div>
+      Ships cannot touch each other, except diagonally. Tetris ships keep their shape but can be rotated and mirrored freely.
+      <div class="rh">BOUNTY</div>
+      Revealed bounty tiles award +1 bonus hit to the first team to land on them.
+      <div class="rh">WINNING</div>
+      First team to sink all opponent ships wins.
+    </div>
+  </div>
+</div>
+
+<div id="tooltip" class="tooltip"></div>
+
+<script>
+// ── Particles (matches original board) ──────────────────────
+(function(){
+  const canvas=document.getElementById('particles'),ctx=canvas.getContext('2d');
+  let W,H,P=[];const N=110;
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  window.addEventListener('resize',resize);resize();
+  function rnd(a,b){return a+Math.random()*(b-a);}
+  function mp(fe){
+    let x;if(fe||Math.random()<0.65){const ew=W*0.18;x=Math.random()<0.5?rnd(2,ew):rnd(W-ew,W-2);}else x=rnd(0,W);
+    const sz=Math.random()<0.15?rnd(2.5,4.5):rnd(0.8,2.2);
+    return{x,y:rnd(-20,H+20),size:sz,sy:-rnd(0.15,0.65),sx:rnd(-0.12,0.12),a:rnd(0.1,0.5),ad:Math.random()<0.5?1:-1,as:rnd(0.002,0.008),h:rnd(34,54),gr:sz*rnd(2.5,4.5)};
+  }
+  for(let i=0;i<N;i++)P.push(mp(i<N*0.65));
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    P.forEach(p=>{
+      p.y+=p.sy;p.x+=p.sx;p.a+=p.ad*p.as;if(p.a>0.55||p.a<0.04)p.ad*=-1;
+      if(p.y<-30||p.x<-20||p.x>W+20){Object.assign(p,mp(Math.random()<0.65));p.y=H+10;}
+      const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.gr);
+      g.addColorStop(0,`hsla(${p.h},88%,65%,${p.a})`);g.addColorStop(0.4,`hsla(${p.h},80%,52%,${p.a*0.45})`);g.addColorStop(1,`hsla(${p.h},70%,40%,0)`);
+      ctx.beginPath();ctx.arc(p.x,p.y,p.gr,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+    });requestAnimationFrame(draw);
+  }draw();
+})();
+
+// ── Final archived data (baked in — no live database) ────────
+const FINAL_DATA = {"teamAName":"Monty's Milkers","teamBName":"Will\u2019s Willies","teamAShots":[null,null,null,"miss",null,"miss",null,"hit","hit","hit","hit","miss","miss",null,"miss",null,null,null,null,null,"miss","miss","miss",null,null,"miss","miss","miss","miss",null,"miss",null,"miss",null,"miss","miss",null,"miss",null,"miss","miss",null,null,null,"hit",null,"miss","hit",null,null,null,"miss","hit","miss","miss",null,null,"miss",null,"miss","miss",null,"miss",null,null,null,null,null,"hit",null,null,"hit","hit","hit","hit",null,"miss",null,"hit","miss","miss","hit","hit",null,"hit","miss",null,"miss",null,"miss",null,"hit","miss","hit","hit","hit",null,"miss","miss","miss","miss",null,"miss","miss",null,null,null,"hit","miss",null,"hit","miss",null,"miss","hit",null,"miss","hit",null,null,"miss","miss",null,"hit",null,"miss","miss",null,"miss","hit","hit","hit","miss","hit","miss","miss",null,"miss","miss","hit",null,"hit","miss",null,null,"miss","miss","miss","miss","hit",null,null,"miss","miss",null,"hit",null,"hit","miss","miss","miss",null,"miss","miss",null,null,"miss",null,"miss","miss","miss","miss",null,"hit","miss",null,"miss",null,"miss",null,"miss",null,null,null,null,null,"miss",null,"miss",null,"miss",null,null,null,null,"miss","miss",null,"hit","hit","hit","miss","miss","miss",null,"miss","miss",null,"miss",null,null,"miss","miss","hit","miss",null,null,"miss",null,"miss",null,"miss","hit",null,"hit","hit","miss",null,"hit","hit","miss","miss","hit","hit","hit","hit","hit","miss","hit",null,"miss","miss","miss",null,"miss","hit","miss",null,"miss",null,null,"miss",null,"miss","hit","miss"],"teamBShots":[null,"miss","miss",null,"hit","miss",null,"miss","hit","hit","hit","miss",null,null,"miss",null,"miss",null,null,null,"hit",null,"miss","hit","miss","miss",null,"miss","miss","miss","hit","hit","miss",null,"hit",null,"hit","miss","hit","hit","miss",null,"hit","hit","hit","hit",null,null,null,null,"hit","miss","hit","miss","miss","hit","miss","hit",null,"miss",null,"miss",null,"hit",null,null,"hit",null,"miss",null,"miss","miss","hit","hit","miss","miss","miss","miss",null,"hit","miss",null,"hit",null,"hit",null,null,"miss","miss","hit","miss",null,"miss",null,"miss","hit","miss","miss",null,"miss","hit","miss","miss","miss",null,null,null,null,null,null,"miss","hit","miss","hit","hit","miss","hit",null,null,null,null,"hit","hit","hit","hit","hit","miss","miss",null,null,null,"miss",null,null,"miss","miss","hit",null,"miss",null,null,null,null,"miss","miss","hit","miss",null,null,"miss","hit","hit","hit","miss","miss",null,null,null,"miss","miss","miss","hit",null,null,"miss","miss","miss",null,null,"miss","miss",null,"miss","miss",null,"miss","miss","hit",null,null,"miss","miss",null,"miss","miss",null,"hit","hit","hit",null,"miss","miss",null,"miss","miss",null,null,"miss",null,null,null,"miss",null,"miss","miss","miss","miss","hit","miss","miss",null,null,"miss",null,null,"hit","miss","miss","hit","hit","hit","miss","miss","hit","hit","hit","miss","miss",null,null,"hit","hit","hit",null,"miss","miss","hit",null,null,"hit","miss","miss","miss",null,"miss",null,null,"hit",null,null,null,"miss",null,"miss",null,"miss"],"teamAShipInstances":{"inst0":{"hitsTaken":4,"name":"Cruiser","sunk":true,"totalTiles":4},"inst1":{"hitsTaken":1,"name":"Destroyer","sunk":false,"totalTiles":3},"inst10":{"hitsTaken":3,"name":"Destroyer","sunk":true,"totalTiles":3},"inst11":{"hitsTaken":3,"name":"Cruiser","sunk":false,"totalTiles":4},"inst12":{"hitsTaken":0,"name":"Patrol Boat","sunk":false,"totalTiles":2},"inst13":{"hitsTaken":3,"name":"Destroyer","sunk":true,"totalTiles":3},"inst14":{"hitsTaken":4,"name":"T-Shape","sunk":true,"totalTiles":4},"inst15":{"hitsTaken":3,"name":"L-Shape","sunk":false,"totalTiles":4},"inst16":{"hitsTaken":2,"name":"Patrol Boat","sunk":true,"totalTiles":2},"inst17":{"hitsTaken":5,"name":"Battleship","sunk":true,"totalTiles":5},"inst2":{"hitsTaken":0,"name":"L-Shape","sunk":false,"totalTiles":4},"inst3":{"hitsTaken":1,"name":"Cruiser","sunk":false,"totalTiles":4},"inst4":{"hitsTaken":3,"name":"Destroyer","sunk":true,"totalTiles":3},"inst5":{"hitsTaken":4,"name":"Cruiser","sunk":true,"totalTiles":4},"inst6":{"hitsTaken":5,"name":"Plus","sunk":true,"totalTiles":5},"inst7":{"hitsTaken":2,"name":"Patrol Boat","sunk":true,"totalTiles":2},"inst8":{"hitsTaken":5,"name":"Battleship","sunk":true,"totalTiles":5},"inst9":{"hitsTaken":4,"name":"T-Shape","sunk":true,"totalTiles":4}},"teamBShipInstances":{"inst0":{"hitsTaken":4,"name":"Cruiser","sunk":true,"totalTiles":4},"inst1":{"hitsTaken":3,"name":"Destroyer","sunk":true,"totalTiles":3},"inst10":{"hitsTaken":5,"name":"Battleship","sunk":true,"totalTiles":5},"inst11":{"hitsTaken":4,"name":"L-Shape","sunk":true,"totalTiles":4},"inst12":{"hitsTaken":3,"name":"Destroyer","sunk":true,"totalTiles":3},"inst13":{"hitsTaken":3,"name":"Battleship","sunk":false,"totalTiles":5},"inst14":{"hitsTaken":3,"name":"Destroyer","sunk":true,"totalTiles":3},"inst15":{"hitsTaken":5,"name":"Plus","sunk":true,"totalTiles":5},"inst16":{"hitsTaken":4,"name":"L-Shape","sunk":true,"totalTiles":4},"inst17":{"hitsTaken":2,"name":"Patrol Boat","sunk":true,"totalTiles":2},"inst2":{"hitsTaken":4,"name":"T-Shape","sunk":true,"totalTiles":4},"inst3":{"hitsTaken":2,"name":"Patrol Boat","sunk":true,"totalTiles":2},"inst4":{"hitsTaken":4,"name":"Cruiser","sunk":true,"totalTiles":4},"inst5":{"hitsTaken":4,"name":"Cruiser","sunk":true,"totalTiles":4},"inst6":{"hitsTaken":4,"name":"T-Shape","sunk":true,"totalTiles":4},"inst7":{"hitsTaken":4,"name":"Cruiser","sunk":true,"totalTiles":4},"inst8":{"hitsTaken":3,"name":"Destroyer","sunk":true,"totalTiles":3},"inst9":{"hitsTaken":2,"name":"Patrol Boat","sunk":true,"totalTiles":2}},"teamALog":[{"coord":"D7","result":"miss","time":1781889510335,"type":"fire"},{"coord":"K9","result":"miss","time":1781893513272,"type":"fire"},{"coord":"A14","result":"miss","time":1781894704362,"type":"fire"},{"coord":"L8","result":"hit","time":1781894970638,"type":"fire"},{"coord":"D4","result":"miss","time":1781896631305,"type":"fire"},{"coord":"J2","result":"miss","time":1781896632358,"type":"fire"},{"coord":"F3","result":"miss","time":1781901331090,"type":"fire"},{"coord":"P7","result":"miss","time":1781901361980,"type":"fire"},{"coord":"B6","result":"hit","time":1781901993188,"type":"fire"},{"coord":"L9","result":"hit","time":1781903380709,"type":"fire"},{"coord":"L10","result":"hit","time":1781908801851,"type":"fire"},{"coord":"C7","result":"miss","time":1781910159916,"type":"fire"},{"coord":"F1","result":"miss","time":1781910259482,"type":"fire"},{"coord":"H7","result":"miss","time":1781910306374,"type":"fire"},{"coord":"J11","result":"miss","time":1781910985359,"type":"fire"},{"coord":"J13","result":"miss","time":1781911821705,"type":"fire"},{"coord":"F4","result":"miss","time":1781912704439,"type":"fire"},{"coord":"J14","result":"miss","time":1781913352385,"type":"fire"},{"coord":"H15","result":"miss","time":1781913387757,"type":"fire"},{"coord":"C11","result":"miss","time":1781915385889,"type":"fire"},{"coord":"A16","result":"miss","time":1781915428809,"type":"fire"},{"coord":"P6","result":"hit","time":1781915492348,"type":"fire"},{"coord":"M12","result":"miss","time":1781915522702,"type":"fire"},{"coord":"H3","result":"miss","time":1781918387477,"type":"fire"},{"coord":"A6","result":"miss","time":1781918413492,"type":"fire"},{"coord":"H9","result":"miss","time":1781924008682,"type":"fire"},{"coord":"B8","result":"miss","time":1781926868052,"type":"fire"},{"coord":"C9","result":"hit","time":1781926870366,"type":"fire"},{"coord":"C9","time":1781926878788,"type":"undo"},{"coord":"P5","result":"miss","time":1781929598207,"type":"fire"},{"coord":"E10","result":"miss","time":1781936017280,"type":"fire"},{"coord":"O3","result":"miss","time":1781943281367,"type":"fire"},{"coord":"C15","result":"miss","time":1781945074347,"type":"fire"},{"coord":"O1","result":"miss","time":1781945154894,"type":"fire"},{"coord":"E4","result":"hit","time":1781966565138,"type":"fire"},{"coord":"M4","result":"miss","time":1781968959152,"type":"fire"},{"coord":"O5","result":"hit","time":1781972120414,"type":"fire"},{"coord":"O5","time":1781972144777,"type":"undo"},{"coord":"O6","result":"hit","time":1781972148624,"type":"fire"},{"coord":"G11","result":"miss","time":1781972490134,"type":"fire"},{"coord":"I16","result":"miss","time":1781982481625,"type":"fire"},{"coord":"A11","result":"miss","time":1781982507491,"type":"fire"},{"coord":"L16","result":"miss","time":1781985485128,"type":"fire"},{"coord":"C3","result":"miss","time":1781985933210,"type":"fire"},{"coord":"E12","result":"miss","time":1781987738853,"type":"fire"},{"coord":"B7","result":"miss","time":1781987768516,"type":"fire"},{"coord":"E6","result":"hit","time":1781988845424,"type":"fire"},{"coord":"E9","result":"miss","time":1781992488665,"type":"fire"},{"coord":"M6","result":"miss","time":1781993774100,"type":"fire"},{"coord":"J10","result":"miss","time":1781995794473,"type":"fire"},{"coord":"N15","result":"miss","time":1781995806123,"type":"fire"},{"coord":"A9","result":"miss","time":1782002124787,"type":"fire"},{"coord":"I3","result":"miss","time":1782002973928,"type":"fire"},{"coord":"M7","result":"miss","time":1782003191853,"type":"fire"},{"coord":"L1","result":"miss","time":1782009816767,"type":"fire"},{"coord":"E13","result":"miss","time":1782009835415,"type":"fire"},{"coord":"D9","result":"hit","time":1782010130911,"type":"fire"},{"coord":"G14","result":"miss","time":1782010300523,"type":"fire"},{"coord":"I13","result":"hit","time":1782010642328,"type":"fire"},{"coord":"C6","result":"hit","time":1782014228604,"type":"fire"},{"coord":"L11","result":"miss","time":1782021091641,"type":"fire"},{"coord":"H6","result":"miss","time":1782025289838,"type":"fire"},{"coord":"J5","result":"hit","time":1782039603187,"type":"fire"},{"coord":"O14","result":"hit","time":1782046055878,"type":"fire"},{"coord":"E7","result":"miss","time":1782046068302,"type":"fire"},{"coord":"O12","result":"miss","time":1782046618077,"type":"fire"},{"coord":"F6","result":"miss","time":1782051377096,"type":"fire"},{"coord":"E14","result":"miss","time":1782051397762,"type":"fire"},{"coord":"C10","result":"miss","time":1782060398924,"type":"fire"},{"coord":"K13","result":"miss","time":1782063577271,"type":"fire"},{"coord":"I10","result":"miss","time":1782065470067,"type":"fire"},{"coord":"C12","result":"miss","time":1782065509674,"type":"fire"},{"coord":"E5","result":"hit","time":1782068398461,"type":"fire"},{"coord":"J4","result":"miss","time":1782071121975,"type":"fire"},{"coord":"B9","result":"hit","time":1782075301920,"type":"fire"},{"coord":"H13","result":"hit","time":1782087964811,"type":"fire"},{"coord":"C9","result":"hit","time":1782093657777,"type":"fire"},{"coord":"G13","result":"hit","time":1782101456072,"type":"fire"},{"coord":"P10","result":"miss","time":1782109315229,"type":"fire"},{"coord":"I8","result":"miss","time":1782123280057,"type":"fire"},{"coord":"J8","result":"miss","time":1782130559823,"type":"fire"},{"coord":"G7","result":"miss","time":1782138532692,"type":"fire"},{"coord":"F16","result":"hit","time":1782140143205,"type":"fire"},{"coord":"B16","result":"miss","time":1782140166755,"type":"fire"},{"coord":"G9","result":"miss","time":1782142955159,"type":"fire"},{"coord":"L14","result":"miss","time":1782142963935,"type":"fire"},{"coord":"L6","result":"hit","time":1782146596609,"type":"fire"},{"coord":"O8","result":"miss","time":1782146627923,"type":"fire"},{"coord":"J6","result":"miss","time":1782156463947,"type":"fire"},{"coord":"H5","result":"hit","time":1782156498564,"type":"fire"},{"coord":"E2","result":"miss","time":1782161937746,"type":"fire"},{"coord":"F10","result":"hit","time":1782176858866,"type":"fire"},{"coord":"A15","result":"hit","time":1782176897670,"type":"fire"},{"coord":"O13","result":"miss","time":1782176964119,"type":"fire"},{"coord":"G16","result":"miss","time":1782178288362,"type":"fire"},{"coord":"K11","result":"miss","time":1782192130410,"type":"fire"},{"coord":"B15","result":"hit","time":1782192137194,"type":"fire"},{"coord":"L15","result":"hit","time":1782207219106,"type":"fire"},{"coord":"E16","result":"miss","time":1782213276341,"type":"fire"},{"coord":"I5","result":"hit","time":1782215866303,"type":"fire"},{"coord":"M15","result":"hit","time":1782215978465,"type":"fire"},{"coord":"O4","result":"miss","time":1782223163307,"type":"fire"},{"coord":"J1","result":"hit","time":1782228167525,"type":"fire"},{"coord":"K5","result":"hit","time":1782231617520,"type":"fire"},{"coord":"F9","result":"hit","time":1782244305905,"type":"fire"},{"coord":"N16","result":"miss","time":1782244479283,"type":"fire"},{"coord":"N14","result":"miss","time":1782244515887,"type":"fire"},{"coord":"M2","result":"miss","time":1782253736934,"type":"fire"},{"coord":"M5","result":"miss","time":1782253742308,"type":"fire"},{"coord":"C16","result":"miss","time":1782253750193,"type":"fire"},{"coord":"I15","result":"hit","time":1782263418444,"type":"fire"},{"coord":"O2","result":"miss","time":1782263712582,"type":"fire"},{"coord":"F15","result":"hit","time":1782277286456,"type":"fire"},{"coord":"O11","result":"miss","time":1782295800700,"type":"fire"},{"coord":"D14","result":"miss","time":1782315494398,"type":"fire"},{"coord":"F14","result":"hit","time":1782316438443,"type":"fire"},{"coord":"G4","result":"miss","time":1782320324057,"type":"fire"},{"coord":"N13","result":"miss","time":1782326662728,"type":"fire"},{"coord":"K15","result":"hit","time":1782338460941,"type":"fire"},{"coord":"G2","result":"miss","time":1782338504093,"type":"fire"},{"coord":"G15","result":"miss","time":1782349916079,"type":"fire"},{"coord":"D11","result":"miss","time":1782404127786,"type":"fire"},{"coord":"O10","result":"miss","time":1782404224114,"type":"fire"},{"coord":"H1","result":"hit","time":1782424935965,"type":"fire"},{"coord":"J9","result":"miss","time":1782425026409,"type":"fire"},{"coord":"E8","result":"miss","time":1782426868211,"type":"fire"},{"coord":"J15","result":"hit","time":1782434611692,"type":"fire"},{"coord":"K2","result":"miss","time":1782443040442,"type":"fire"},{"coord":"O5","result":"hit","time":1782445913345,"type":"fire"},{"coord":"D1","result":"miss","time":1782472454323,"type":"fire"},{"coord":"A12","result":"miss","time":1782475589593,"type":"fire"},{"coord":"N9","result":"hit","time":1782483695858,"type":"fire"},{"coord":"M3","result":"hit","time":1782485142669,"type":"fire"},{"coord":"K12","result":"miss","time":1782485157305,"type":"fire"},{"coord":"F8","result":"hit","time":1782509590201,"type":"fire"},{"coord":"L7","result":"hit","time":1782509635650,"type":"fire"},{"coord":"D13","result":"miss","time":1782509682365,"type":"fire"},{"coord":"I11","result":"miss","time":1782509684597,"type":"fire"},{"coord":"O9","result":"miss","time":1782509706394,"type":"fire"},{"coord":"O7","result":"hit","time":1782509727174,"type":"fire"},{"coord":"L4","result":"miss","time":1782509860556,"type":"fire"},{"coord":"A3","result":"miss","time":1782509863174,"type":"fire"},{"coord":"O15","result":"hit","time":1782509943142,"type":"fire"},{"coord":"N10","result":"hit","time":1782515202784,"type":"fire"},{"coord":"K1","result":"hit","time":1782522567406,"type":"fire"},{"coord":"N8","result":"miss","time":1782534405455,"type":"fire"},{"coord":"N6","result":"hit","time":1782538824920,"type":"fire"},{"coord":"I1","result":"hit","time":1782545572231,"type":"fire"},{"coord":"D10","result":"miss","time":1782552439771,"type":"fire"},{"coord":"P16","result":"miss","time":1782552732234,"type":"fire"},{"coord":"B10","result":"miss","time":1782573241227,"type":"fire"},{"coord":"E15","result":"hit","time":1782588842903,"type":"fire"},{"coord":"L13","result":"miss","time":1782594619524,"type":"fire"},{"coord":"C8","result":"hit","time":1782599533322,"type":"fire"},{"coord":"N11","result":"hit","time":1782600059534,"type":"fire"},{"coord":"O16","result":"hit","time":1782609091612,"type":"fire"},{"coord":"D3","result":"miss","time":1782622496133,"type":"fire"},{"coord":"P3","result":"hit","time":1782622499707,"type":"fire"},{"coord":"M1","result":"miss","time":1782622601080,"type":"fire"},{"coord":"F2","result":"miss","time":1782625426282,"type":"fire"},{"coord":"L2","result":"miss","time":1782638243380,"type":"fire"}],"teamBLog":[{"coord":"D7","result":"miss","time":1781889269687,"type":"fire"},{"coord":"C10","result":"miss","time":1781890116938,"type":"fire"},{"coord":"P6","result":"hit","time":1781890308372,"type":"fire"},{"coord":"L13","result":"miss","time":1781890837124,"type":"fire"},{"coord":"H7","result":"miss","time":1781893199994,"type":"fire"},{"coord":"G9","result":"miss","time":1781893871524,"type":"fire"},{"coord":"E4","result":"hit","time":1781893936234,"type":"fire"},{"coord":"D4","result":"miss","time":1781894187115,"type":"fire"},{"coord":"K9","result":"miss","time":1781894792943,"type":"fire"},{"coord":"B7","result":"miss","time":1781896146375,"type":"fire"},{"coord":"P8","result":"miss","time":1781897370246,"type":"fire"},{"coord":"A16","result":"miss","time":1781903639680,"type":"fire"},{"coord":"G5","result":"miss","time":1781904944439,"type":"fire"},{"coord":"B14","result":"miss","time":1781906281657,"type":"fire"},{"coord":"F4","result":"miss","time":1781907143712,"type":"fire"},{"coord":"N2","result":"miss","time":1781910163470,"type":"fire"},{"coord":"M8","result":"hit","time":1781912663603,"type":"fire"},{"coord":"A6","result":"miss","time":1781917115993,"type":"fire"},{"coord":"L8","result":"hit","time":1781917631447,"type":"fire"},{"coord":"K14","result":"hit","time":1781920150914,"type":"fire"},{"coord":"J14","result":"miss","time":1781924066077,"type":"fire"},{"coord":"M14","result":"hit","time":1781924917433,"type":"fire"},{"coord":"O8","result":"miss","time":1781925857227,"type":"fire"},{"coord":"E11","result":"miss","time":1781926425835,"type":"fire"},{"coord":"N4","result":"miss","time":1781928022162,"type":"fire"},{"coord":"I6","result":"miss","time":1781928215269,"type":"fire"},{"coord":"L15","result":"miss","time":1781948469137,"type":"fire"},{"coord":"M6","result":"miss","time":1781959666637,"type":"fire"},{"coord":"N14","result":"miss","time":1781962863795,"type":"fire"},{"coord":"D15","result":"miss","time":1781963111757,"type":"fire"},{"coord":"F1","result":"miss","time":1781963485760,"type":"fire"},{"coord":"O13","result":"miss","time":1781963847846,"type":"fire"},{"coord":"E5","result":"miss","time":1781964003880,"type":"fire"},{"coord":"A11","result":"miss","time":1781964160824,"type":"fire"},{"coord":"K8","result":"hit","time":1781970556605,"type":"fire"},{"coord":"M3","result":"hit","time":1781972056873,"type":"fire"},{"coord":"E6","result":"hit","time":1781973541283,"type":"fire"},{"coord":"E7","result":"hit","time":1781974528183,"type":"fire"},{"coord":"E3","result":"hit","time":1781976251311,"type":"fire"},{"coord":"E2","result":"hit","time":1781976820830,"type":"fire"},{"coord":"J1","result":"hit","time":1781979242224,"type":"fire"},{"coord":"B12","result":"hit","time":1781979894195,"type":"fire"},{"coord":"F3","result":"miss","time":1781982510223,"type":"fire"},{"coord":"M5","result":"miss","time":1781982532996,"type":"fire"},{"coord":"M2","result":"miss","time":1781982576528,"type":"fire"},{"coord":"J11","result":"miss","time":1781983163807,"type":"fire"},{"coord":"J8","result":"hit","time":1781987773413,"type":"fire"},{"coord":"E1","result":"hit","time":1781991232092,"type":"fire"},{"coord":"N8","result":"hit","time":1782002806415,"type":"fire"},{"coord":"J2","result":"miss","time":1782014208312,"type":"fire"},{"coord":"C15","result":"miss","time":1782014217671,"type":"fire"},{"coord":"O1","result":"miss","time":1782014222148,"type":"fire"},{"coord":"O6","result":"miss","time":1782014295376,"type":"fire"},{"coord":"J13","result":"miss","time":1782016374949,"type":"fire"},{"coord":"C5","result":"hit","time":1782035808928,"type":"fire"},{"coord":"C16","result":"miss","time":1782035821454,"type":"fire"},{"coord":"C3","result":"hit","time":1782035896813,"type":"fire"},{"coord":"M12","result":"hit","time":1782035919677,"type":"fire"},{"coord":"A8","result":"miss","time":1782037381910,"type":"fire"},{"coord":"G11","result":"miss","time":1782039978736,"type":"fire"},{"coord":"L16","result":"miss","time":1782040203003,"type":"fire"},{"coord":"P14","result":"hit","time":1782041535394,"type":"fire"},{"coord":"E12","result":"miss","time":1782041591743,"type":"fire"},{"coord":"C4","result":"hit","time":1782044818175,"type":"fire"},{"coord":"L1","result":"miss","time":1782049679502,"type":"fire"},{"coord":"M13","result":"miss","time":1782049685184,"type":"fire"},{"coord":"P13","result":"hit","time":1782053508589,"type":"fire"},{"coord":"M11","result":"miss","time":1782059248286,"type":"fire"},{"coord":"B1","result":"miss","time":1782059258071,"type":"fire"},{"coord":"N16","result":"miss","time":1782059473497,"type":"fire"},{"coord":"D8","result":"miss","time":1782059698374,"type":"fire"},{"coord":"J5","result":"hit","time":1782061994861,"type":"fire"},{"coord":"L14","result":"hit","time":1782062051368,"type":"fire"},{"coord":"P16","result":"miss","time":1782062933490,"type":"fire"},{"coord":"P10","result":"miss","time":1782066124764,"type":"fire"},{"coord":"P12","result":"miss","time":1782070035286,"type":"fire"},{"coord":"H15","result":"hit","time":1782073925645,"type":"fire"},{"coord":"H14","result":"hit","time":1782079034692,"type":"fire"},{"coord":"E14","result":"miss","time":1782080092396,"type":"fire"},{"coord":"O14","result":"miss","time":1782093830634,"type":"fire"},{"coord":"I1","result":"hit","time":1782094179065,"type":"fire"},{"coord":"H1","result":"miss","time":1782096876625,"type":"fire"},{"coord":"P15","result":"hit","time":1782099260214,"type":"fire"},{"coord":"L4","result":"miss","time":1782135031549,"type":"fire"},{"coord":"N3","result":"hit","time":1782138563266,"type":"fire"},{"coord":"P5","result":"hit","time":1782140300483,"type":"fire"},{"coord":"L3","result":"hit","time":1782147336912,"type":"fire"},{"coord":"F12","result":"miss","time":1782149150785,"type":"fire"},{"coord":"H5","result":"miss","time":1782152748428,"type":"fire"},{"coord":"F7","result":"miss","time":1782152918737,"type":"fire"},{"coord":"L2","result":"miss","time":1782156879777,"type":"fire"},{"coord":"I3","result":"miss","time":1782159805411,"type":"fire"},{"coord":"O10","result":"miss","time":1782161721088,"type":"fire"},{"coord":"J6","result":"hit","time":1782161806668,"type":"fire"},{"coord":"I15","result":"hit","time":1782166317957,"type":"fire"},{"coord":"E8","result":"hit","time":1782208124342,"type":"fire"},{"coord":"A3","result":"miss","time":1782223960223,"type":"fire"},{"coord":"K3","result":"hit","time":1782224915205,"type":"fire"},{"coord":"G4","result":"miss","time":1782229605043,"type":"fire"},{"coord":"F11","result":"miss","time":1782230993132,"type":"fire"},{"coord":"F13","result":"miss","time":1782231345615,"type":"fire"},{"coord":"G2","result":"miss","time":1782235432228,"type":"fire"},{"coord":"H9","result":"miss","time":1782242317980,"type":"fire"},{"coord":"F10","result":"miss","time":1782242775367,"type":"fire"},{"coord":"I4","result":"miss","time":1782243870980,"type":"fire"},{"coord":"K5","result":"miss","time":1782246197257,"type":"fire"},{"coord":"E16","result":"miss","time":1782249749086,"type":"fire"},{"coord":"A14","result":"miss","time":1782253294345,"type":"fire"},{"coord":"B10","result":"hit","time":1782253537802,"type":"fire"},{"coord":"P7","result":"hit","time":1782263070724,"type":"fire"},{"coord":"B13","result":"miss","time":1782270003561,"type":"fire"},{"coord":"J4","result":"hit","time":1782272410204,"type":"fire"},{"coord":"B8","result":"hit","time":1782294282231,"type":"fire"},{"coord":"P11","result":"miss","time":1782294305697,"type":"fire"},{"coord":"A12","result":"miss","time":1782294355492,"type":"fire"},{"coord":"B16","result":"miss","time":1782294367468,"type":"fire"},{"coord":"D9","result":"miss","time":1782295771151,"type":"fire"},{"coord":"I2","result":"miss","time":1782296616140,"type":"fire"},{"coord":"P4","result":"hit","time":1782321475080,"type":"fire"},{"coord":"A15","result":"hit","time":1782323973216,"type":"fire"},{"coord":"O2","result":"hit","time":1782331152094,"type":"fire"},{"coord":"H4","result":"hit","time":1782337243051,"type":"fire"},{"coord":"B15","result":"hit","time":1782339025496,"type":"fire"},{"coord":"A10","result":"miss","time":1782342281841,"type":"fire"},{"coord":"H12","result":"miss","time":1782355757537,"type":"fire"},{"coord":"P2","result":"hit","time":1782357139438,"type":"fire"},{"coord":"H16","result":"hit","time":1782357230813,"type":"fire"},{"coord":"H6","result":"miss","time":1782403301681,"type":"fire"},{"coord":"N13","result":"miss","time":1782405988933,"type":"fire"},{"coord":"N5","result":"miss","time":1782418151431,"type":"fire"},{"coord":"H10","result":"hit","time":1782419317065,"type":"fire"},{"coord":"P9","result":"miss","time":1782422197463,"type":"fire"},{"coord":"G7","result":"miss","time":1782426452209,"type":"fire"},{"coord":"O7","result":"miss","time":1782427525503,"type":"fire"},{"coord":"K6","result":"miss","time":1782434382025,"type":"fire"},{"coord":"K1","result":"hit","time":1782434514103,"type":"fire"},{"coord":"A2","result":"miss","time":1782441808904,"type":"fire"},{"coord":"L5","result":"miss","time":1782444655812,"type":"fire"},{"coord":"J10","result":"miss","time":1782450363575,"type":"fire"},{"coord":"G3","result":"hit","time":1782473612088,"type":"fire"},{"coord":"I10","result":"hit","time":1782473638383,"type":"fire"},{"coord":"H3","result":"hit","time":1782473665182,"type":"fire"},{"coord":"K12","result":"hit","time":1782473695417,"type":"fire"},{"coord":"K15","result":"miss","time":1782498977921,"type":"fire"},{"coord":"C13","result":"miss","time":1782500827848,"type":"fire"},{"coord":"B11","result":"hit","time":1782501356122,"type":"fire"},{"coord":"K10","result":"miss","time":1782512748075,"type":"fire"},{"coord":"I14","result":"miss","time":1782512754733,"type":"fire"},{"coord":"C1","result":"miss","time":1782513255084,"type":"fire"},{"coord":"N11","result":"miss","time":1782515252284,"type":"fire"},{"coord":"O12","result":"miss","time":1782515561851,"type":"fire"},{"coord":"G15","result":"hit","time":1782549681220,"type":"fire"},{"coord":"L12","result":"hit","time":1782549704641,"type":"fire"},{"coord":"I12","result":"miss","time":1782557462773,"type":"fire"},{"coord":"H2","result":"hit","time":1782559329000,"type":"fire"},{"coord":"A7","result":"miss","time":1782564842779,"type":"fire"},{"coord":"K11","result":"miss","time":1782586341121,"type":"fire"},{"coord":"C6","result":"hit","time":1782586356061,"type":"fire"},{"coord":"C8","result":"hit","time":1782588663880,"type":"fire"},{"coord":"I9","result":"hit","time":1782593314226,"type":"fire"},{"coord":"I5","result":"hit","time":1782593324210,"type":"fire"},{"coord":"M15","result":"hit","time":1782606748988,"type":"fire"},{"coord":"G10","result":"hit","time":1782660275377,"type":"fire"}]};
+
+const COLS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'];
+const ROWS = 16;
+const BASE = 'https://oldschool.runescape.wiki/images/';
+
+const DEF={
+  tb:['Verzik_Vitur.png','ToB Purple'], ta:['Tumeken%27s_Warden.png','ToA Purple'], cx:['Great_Olm.png','CoX Purple'],
+  d2:['Virtus_robe_top.png','DT2 Unique'], mu:['Venator_shard.png','Venator Shard'], ze:['Zenyte_shard.png','Zenyte Shard'],
+  mo:['Blood_moon_helm.png','Moons of Peril'], zu:['Tanzanite_fang.png','Zulrah Unique'], ga:['Bandos_tassets.png','GWD Armour'],
+  ba:['Ahrim%27s_robetop.png','Barrows Unique'], nx:['Torva_full_helm.png','Nex Unique'], ya:['Oathplate_chest.png','Yama Unique'],
+  co:['Sunfire_fanatic_helm.png','Colosseum Unique'], cb:['Primordial_crystal.png','Cerberus Unique'], hy:['Hydra%27s_claw.png','Hydra Unique'],
+  ax:['Araxyte_fang.png','Araxxor Unique'], dm:['Doom_of_Mokhaiotl.png','Doom Unique'], sd:['Crystal_armour_seed.png','Crystal Seed'],
+  vd:['Voidwaker_gem.png','Voidwaker Piece'], gh:['Bandos_hilt.png','Godsword Hilt'], wt:['Tome_of_fire.png','Wintertodt Unique'],
+  tp:['Dragon_harpoon.png','Tempoross Unique'], gr:['Abyssal_needle.png','GotR Unique'], dk:['Seers_ring.png','DK Unique'],
+  ni:['Inquisitor%27s_great_helm.png','Nightmare Unique'], 'if':['Infernal_cape.png','Inferno Unique'], ab:['Abyssal_dagger.png','Abyssal Sire Unique'],
+  rv:['Zalcano_shard.png','Zalcano Unique'], cs:['Imp_champion_scroll_detail.png','Champion Scroll'], sk:null, hk:null,
+};
+const SK_BY_Q=[['Fishing_cape.png','Fishing'],['Slayer_cape.png','Slayer'],['Firemaking_cape.png','Firemaking'],['Runecraft_cape.png','Runecrafting']];
+const HK_BY_Q=[['Sanguine_ornament_kit.png','Sanguine Kit'],['Holy_ornament_kit.png','Holy Kit'],['Twisted_ancestral_colour_kit.png','Twisted Kit'],['Metamorphic_dust.png','Metamorphic Dust']];
+const LAYOUT=[
+  ['ta','mo','ga','ze','tb','ba','zu','d2','cx','d2','tb','mo','ze','ta','ba','zu'],
+  ['tp','vd','cx','gr','d2','ze','co','dm','ga','ba','ax','ga','wt','mo','dm','ya'],
+  ['cb','gh','dk','mu','nx','wt','hy','sd','dk','ta','gr','cx','hy','vd','tp','ze'],
+  ['zu','ga','cx','ba','ax','mo','ta','vd','zu','sd','gh','cb','mu','co','d2','nx'],
+  ['tb','sk','wt','gh','ya','sd','ze','ga','tb','ab','ta','gr','wt','mo','rv','ga'],
+  ['hy','rv','cx','hk','d2','ax','ta','cs','if','gh','ze','mu','zu','cx','vd','cs'],
+  ['tp','cb','zu','ba','ab','mu','mo','dk','ax','tb','tp','nx','dk','sd','sk','ni'],
+  ['co','dm','nx','gr','ni','tb','if','ya','cb','hk','dm','d2','hy','ya','ba','co'],
+  ['zu','cx','d2','ga','ze','ta','ba','mo','cx','d2','ba','ta','ga','ze','zu','mo'],
+  ['gr','dm','ba','tb','zu','ga','gh','hy','sd','ze','gr','mu','vd','tb','cb','wt'],
+  ['wt','nx','mo','ze','cb','tp','co','mu','d2','ba','dm','cx','mo','ga','zu','co'],
+  ['d2','ax','sd','cx','dk','vd','rv','ax','tp','ya','hy','gh','dk','tb','ax','if'],
+  ['tb','hk','tp','d2','mo','ta','dm','ya','ga','ba','sd','ta','mo','cs','zu','nx'],
+  ['zu','if','tb','mu','ab','sd','ga','hy','gr','cb','hy','ni','gh','wt','ab','rv'],
+  ['ni','gh','ba','cb','nx','sk','ya','cs','dm','cx','sk','hk','tb','ze','vd','tp'],
+  ['dk','co','wt','ze','gr','vd','ta','cx','ax','mu','d2','dk','ya','ta','nx','co'],
+];
+function quadrantOf(r,c){return(r<8?0:2)+(c<8?0:1);}
+const FLAT = LAYOUT.flat();
+const TILE_ITEMS = FLAT.map((key,i)=>{
+  const r=Math.floor(i/16),c=i%16,q=quadrantOf(r,c);
+  return key==='sk'?SK_BY_Q[q]:key==='hk'?HK_BY_Q[q]:DEF[key];
+});
+
+const SHIP_COLORS = {
+  'Battleship':'#e0395a','Cruiser':'#a855f7','Destroyer':'#3b6fd6','Patrol Boat':'#38bdf8',
+  'L-Shape':'#4ade80','T-Shape':'#facc15','Plus':'#fb923c'
+};
+const SHIP_TOTALS = {'Battleship':2,'Cruiser':4,'Destroyer':4,'Patrol Boat':3,'L-Shape':2,'T-Shape':2,'Plus':1};
+const SHIP_ORDER = ['Battleship','Cruiser','Destroyer','Patrol Boat','L-Shape','T-Shape','Plus'];
+
+function renderFleetStatus(prefix, shipInstances){
+  const el=document.getElementById(prefix+'-fleet-status');
+  if(!el) return;
+  const sunkCounts = {};
+  Object.values(shipInstances || {}).forEach(inst=>{
+    if(inst.sunk){ sunkCounts[inst.name] = (sunkCounts[inst.name]||0) + 1; }
+  });
+  el.innerHTML='';
+  SHIP_ORDER.forEach(name=>{
+    const sunk = sunkCounts[name] || 0;
+    const total = SHIP_TOTALS[name];
+    const chip=document.createElement('div');
+    chip.className='fleet-status-chip'+(sunk===total ? ' all-sunk' : '');
+    chip.innerHTML=`<div class="fleet-status-swatch" style="background:${SHIP_COLORS[name]}"></div>${name} ${sunk}/${total}${sunk===total?' ☠':''}`;
+    el.appendChild(chip);
+  });
+}
+const FLEET=[
+  {name:'Battleship',count:2,tiles:5,grid:[[1,1,1,1,1]],note:'5 tiles'},
+  {name:'Cruiser',count:4,tiles:4,grid:[[1,1,1,1]],note:'4 tiles'},
+  {name:'Destroyer',count:4,tiles:3,grid:[[1,1,1]],note:'3 tiles'},
+  {name:'Patrol Boat',count:3,tiles:2,grid:[[1,1]],note:'2 tiles'},
+  {name:'L-Shape',count:2,tiles:4,grid:[[1,1],[1,0],[1,0]],note:'4 tiles · rotatable'},
+  {name:'T-Shape',count:2,tiles:4,grid:[[1,1,1],[0,1,0]],note:'4 tiles · rotatable'},
+  {name:'Plus',count:1,tiles:5,grid:[[0,1,0],[1,1,1],[0,1,0]],note:'5 tiles · rotatable'},
+];
+
+function buildFleetInfographic(){
+  const container=document.getElementById('fleet-list');
+  container.innerHTML='';
+  FLEET.forEach(ship=>{
+    const color=SHIP_COLORS[ship.name];
+    const entry=document.createElement('div');entry.className='ship-entry';
+    const nm=document.createElement('div');nm.className='sname';nm.textContent=ship.name;
+    const ct=document.createElement('div');ct.className='scount';ct.textContent=`×${ship.count}`;
+    const rows=ship.grid.length,cols=Math.max(...ship.grid.map(r=>r.length));
+    const tg=document.createElement('div');tg.className='tetris-grid';
+    tg.style.gridTemplateColumns=`repeat(${cols},12px)`;tg.style.gridTemplateRows=`repeat(${rows},12px)`;
+    ship.grid.forEach(row=>row.forEach(cell=>{
+      const c=document.createElement('div');
+      c.className='tc'+(cell?'':' off');
+      if(cell){c.style.background=color+'cc';c.style.border='1px solid '+color;}
+      tg.appendChild(c);
+    }));
+    const note=document.createElement('div');note.className='ship-note';note.textContent=ship.note;
+    entry.appendChild(nm);entry.appendChild(ct);entry.appendChild(tg);entry.appendChild(note);
+    container.appendChild(entry);
+  });
+  const totalTiles=FLEET.reduce((s,f)=>s+f.tiles*f.count,0);
+  const totalShips=FLEET.reduce((s,f)=>s+f.count,0);
+  document.getElementById('fleet-total').textContent=`${totalShips} ships · ${totalTiles} tiles`;
+}
+
+// NOTE: This page intentionally never fetches ship position data (battleship/teams/*/ships).
+// Only hit/miss outcomes (shotsReceived) and team names are loaded, which never reveal where
+// any ship is. Full fleet data and admin controls live on a separate, password-gated page.
+let TEAM_A_SHOTS={}, TEAM_B_SHOTS={};
+let bountyRevealCount = 0;
+
+function buildBountyRow(){
+  const row=document.getElementById('bounty-row');
+  row.innerHTML='';
+  for(let i=0;i<12;i++){
+    const revealed = i < bountyRevealCount;
+    const tile=document.createElement('div');
+    tile.className='bounty-tile'+(revealed?' revealed':'');
+    tile.textContent=revealed?'★':'?';
+    row.appendChild(tile);
+  }
+}
+
+function buildTeamGrid(prefix, shots){
+  const colH=document.getElementById(prefix+'-col-headers'), grid=document.getElementById(prefix+'-grid');
+  colH.innerHTML='<div></div>';COLS.forEach(c=>colH.innerHTML+=`<div class="col-header">${c}</div>`);
+  grid.innerHTML='';
+  let hits=0, misses=0;
+  for(let r=0;r<ROWS;r++){
+    const rh=document.createElement('div');rh.className='row-header';rh.textContent=r+1;grid.appendChild(rh);
+    for(let c=0;c<16;c++){
+      const idx=r*16+c;
+      const cell=document.createElement('div');
+      cell.className='cell';
+      cell.dataset.coord=`${COLS[c]}${r+1}`;
+      const img=document.createElement('img');img.src=BASE+TILE_ITEMS[idx][0];img.onerror=function(){this.style.display='none';};cell.appendChild(img);
+      if(shots[idx]){cell.dataset.shot=shots[idx]; shots[idx]==='hit'?hits++:misses++;}
+      const ov=document.createElement('div');ov.className='overlay';cell.appendChild(ov);
+      cell.addEventListener('mouseenter',e=>showTip(e,`${cell.dataset.coord} · ${TILE_ITEMS[idx][1]}`));
+      cell.addEventListener('mouseleave',hideTip);
+      grid.appendChild(cell);
+    }
+  }
+  document.getElementById(prefix+'-hits').textContent=hits;
+  document.getElementById(prefix+'-misses').textContent=misses;
+}
+
+const tooltip=document.getElementById('tooltip');
+function showTip(e,text){tooltip.textContent=text;tooltip.style.opacity='1';moveTip(e);}
+function hideTip(){tooltip.style.opacity='0';}
+document.addEventListener('mousemove',moveTip);
+function moveTip(e){tooltip.style.left=(e.clientX+14)+'px';tooltip.style.top=(e.clientY+14)+'px';}
+
+function renderAll(){
+  buildBountyRow();
+  buildTeamGrid('a', TEAM_A_SHOTS);
+  buildTeamGrid('b', TEAM_B_SHOTS);
+}
+
+function loadTeamStatic(prefix, teamData){
+  const name = teamData.name || (prefix==='a'?'Team A':'Team B');
+  document.getElementById('team-'+prefix+'-header').textContent = '⚓ ' + name;
+  if(prefix==='a') TEAM_A_SHOTS = teamData.shotsReceived || {};
+  else TEAM_B_SHOTS = teamData.shotsReceived || {};
+  renderFleetStatus(prefix, teamData.shipInstances || {});
+}
+
+function renderAdminLog(prefix, entries){
+  const list=document.getElementById('admin-log-'+prefix);
+  if(!list) return;
+  if(entries.length===0){ list.innerHTML='<div class="admin-log-empty">No shots fired yet.</div>'; return; }
+  list.innerHTML='';
+  entries.slice().reverse().forEach(e=>{
+    const div=document.createElement('div');
+    const timeStr=new Date(e.time).toLocaleTimeString([], {hour:'numeric',minute:'2-digit',second:'2-digit'});
+    if(e.type==='undo'){
+      div.className='admin-log-entry undo';
+      div.innerHTML=`<span>↩ Undid shot at ${e.coord}</span><span class="admin-log-time">${timeStr}</span>`;
+    } else {
+      div.className='admin-log-entry '+e.result;
+      const icon=e.result==='hit'?'💥':'💨';
+      div.innerHTML=`<span>${icon} ${e.coord} — ${e.result.toUpperCase()}</span><span class="admin-log-time">${timeStr}</span>`;
+    }
+    list.appendChild(div);
+  });
+}
+
+function init(){
+  buildFleetInfographic();
+  bountyRevealCount = 12; // event complete — all bounty tiles revealed
+  buildBountyRow();
+  loadTeamStatic('a', {name: FINAL_DATA.teamAName, shotsReceived: FINAL_DATA.teamAShots, shipInstances: FINAL_DATA.teamAShipInstances});
+  loadTeamStatic('b', {name: FINAL_DATA.teamBName, shotsReceived: FINAL_DATA.teamBShots, shipInstances: FINAL_DATA.teamBShipInstances});
+  renderAdminLog('a', FINAL_DATA.teamALog);
+  renderAdminLog('b', FINAL_DATA.teamBLog);
+  renderAll();
+}
+init();
+</script>
+</body>
+</html>
