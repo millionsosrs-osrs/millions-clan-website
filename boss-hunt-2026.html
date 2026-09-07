@@ -64,14 +64,22 @@ h2.sec{font-family:'Cinzel',serif;font-weight:900;font-size:22px;text-transform:
 .badge-hidden{display:inline-block;font-family:'Cinzel',serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#514c40;border:1px solid var(--line);padding:2px 8px;margin-top:8px}
 
 .boss-card{background:linear-gradient(#11141a,#0a0c10);border:1px solid #1f1b13;border-top:1px solid #302719;margin-bottom:10px}
-.boss-head{display:flex;justify-content:space-between;align-items:center;padding:13px 18px;cursor:pointer;user-select:none}
+.boss-head{display:flex;justify-content:space-between;align-items:center;padding:13px 18px}
 .boss-head .bname{font-family:'Cinzel',serif;font-weight:600;font-size:15px;letter-spacing:.05em;color:#ddd1b1}
 .boss-head .bmeta{font-size:12px;color:var(--dim);letter-spacing:.06em;margin-left:10px}
-.boss-head .kph-input{width:70px;background:#0a0c10;border:1px solid #2a2418;color:var(--gold-hi);padding:4px 7px;font-size:13px;text-align:center}
-.boss-body{display:none;padding:0 18px 16px}
-.boss-card.open .boss-body{display:block}
-.boss-card.open .chev{transform:rotate(90deg)}
-.chev{transition:transform .15s;color:var(--dim)}
+.boss-body{padding:0 18px 16px}
+
+.type-section{margin-bottom:34px}
+.type-title{font-family:'Cinzel',serif;font-weight:900;font-size:17px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--gold-lo)}
+
+.bounty-combo{background:linear-gradient(#12151b,#0a0c10);border:1px solid var(--line);border-top:2px solid var(--gold-lo);padding:14px 16px}
+.bounty-combo .bnum{font-family:'Cinzel',serif;font-weight:900;font-size:13px;letter-spacing:.1em;color:var(--gold-hi);text-transform:uppercase;margin-bottom:8px}
+.bounty-combo .btype-row{margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.bounty-combo .btype-row:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.bounty-combo .btype-label{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.bounty-combo .bdesc{font-size:14px;color:var(--parch);margin-top:3px;line-height:1.4}
+.bounty-combo .bstatus{margin-top:6px;font-size:13px;color:var(--dim)}
+.bounty-combo .bstatus .claimed{color:var(--gold-hi);display:block}
 
 table.items{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
 table.items th{font-family:'Cinzel',serif;font-weight:600;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#514c40;text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
@@ -138,10 +146,6 @@ footer .note{margin-top:9px;font-size:12px;letter-spacing:.14em;color:#4f4a3d;te
   <h2 class="sec">Bounties</h2>
   <div class="sec-rule"></div>
   <div class="bounty-grid" id="bounties"></div>
-
-  <h2 class="sec">Cross-Boss Bonuses</h2>
-  <div class="sec-rule"></div>
-  <div class="meta-bonus-section" id="metaBonuses"></div>
 
   <h2 class="sec">Boss Breakdown</h2>
   <div class="sec-rule"></div>
@@ -317,54 +321,44 @@ function render() {
     </div>
   `).join('');
 
-  // ---- Bounties ----
-  $('bounties').innerHTML = BOUNTIES.map(b => {
-    const reveal = STATE.bountyReveals.find(r => r.bountyNumber === b.number && r.bountyType === b.type);
-    const revealed = reveal && reveal.revealed;
-    if (!revealed) {
-      return `<div class="bounty-card hidden-b">
-        <div class="btitle">${b.type} Bounty #${b.number}</div>
-        <div class="badge-hidden">Not yet revealed</div>
+  // ---- Bounties (major + minor combined per number) ----
+  const table = CONFIG.assumptions.bountyPoints;
+  const numbers = [...new Set(BOUNTIES.map(b => b.number))].sort((a,b) => a-b);
+  $('bounties').innerHTML = numbers.map(num => {
+    const pair = BOUNTIES.filter(b => b.number === num);
+    const rows = pair.map(b => {
+      const reveal = STATE.bountyReveals.find(r => r.bountyNumber === b.number && r.bountyType === b.type);
+      const revealed = reveal && reveal.revealed;
+      if (!revealed) {
+        return `<div class="btype-row">
+          <div class="btype-label">${b.type}</div>
+          <div class="badge-hidden">Not yet revealed</div>
+        </div>`;
+      }
+      const completions = STATE.bountyCompletions.filter(c => c.bountyNumber === b.number && c.bountyType === b.type);
+      const statusLines = completions.length
+        ? completions.map(c => `<span class="claimed">${c.team} — ${c.placement} (+${table[b.type][c.placement] ?? 0})</span>`).join('')
+        : '<span>Unclaimed</span>';
+      return `<div class="btype-row">
+        <div class="btype-label">${b.type}</div>
+        <div class="bdesc">${b.description}</div>
+        <div class="bstatus">${statusLines}</div>
       </div>`;
-    }
-    const completions = STATE.bountyCompletions.filter(c => c.bountyNumber === b.number && c.bountyType === b.type);
-    const table = CONFIG.assumptions.bountyPoints[b.type];
-    const statusLines = completions.length
-      ? completions.map(c => `<span class="claimed">${c.team} — ${c.placement} (+${table[c.placement] ?? 0})</span>`).join('')
-      : '<span>Unclaimed</span>';
-    return `<div class="bounty-card">
-      <div class="btitle">${b.type} Bounty #${b.number}</div>
-      <div class="bdesc">${b.description}</div>
-      <div class="bstatus">${statusLines}</div>
-    </div>`;
-  }).join('');
-
-  // ---- Cross-boss meta bonuses ----
-  $('metaBonuses').innerHTML = CONFIG.metaBonuses.map(mb => {
-    const lines = results.map(r => {
-      const ms = r.metaStatus.find(m => m.id === mb.id);
-      const cls = ms.achieved ? 'achieved' : 'pending';
-      const valTxt = ms.achieved
-        ? (ms.hasValue ? (ms.value != null ? `+${fmtNum(ms.value)} pts` : 'pending KPH') : '<span class="novalue">value TBD</span>')
-        : '';
-      return `<div class="${cls}">${r.team}: ${ms.achieved ? '✓ Complete' : 'In progress'} ${valTxt}</div>`;
     }).join('');
-    return `<div class="meta-card">
-      <div class="mtitle">${mb.name}</div>
-      <div class="mstatus">${lines}</div>
-    </div>`;
+    return `<div class="bounty-combo"><div class="bnum">Bounty #${num}</div>${rows}</div>`;
   }).join('');
 
-  // ---- Boss breakdown ----
-  const filterVal = ($('bossFilter').value || '').toLowerCase();
-  const bossesToShow = CONFIG.bosses.filter(b => {
-    if (!filterVal) return true;
-    if (b.boss.toLowerCase().includes(filterVal)) return true;
-    return b.items.some(it => it.name.toLowerCase().includes(filterVal));
-  });
+  // ---- Boss breakdown, grouped by boss type, with cross-boss bonuses appended ----
+  const TYPE_ORDER = ['Slayer','God Wars','Desert Treasure','Raid','Dagannoth','General','Skilling','Other'];
+  const META_BONUS_SECTION = {
+    slayer_all_uniques: 'Slayer', gwd_all_uniques: 'God Wars',
+    dt2_full_sra: 'Desert Treasure', dt2_full_virtus: 'Desert Treasure',
+  };
 
-  $('bossList').innerHTML = bossesToShow.map(b => {
-    const kph = effectiveKPH(b.boss);
+  const filterVal = ($('bossFilter').value || '').toLowerCase();
+  const matches = b => !filterVal || b.boss.toLowerCase().includes(filterVal) || b.items.some(it => it.name.toLowerCase().includes(filterVal));
+
+  function renderBossCard(b) {
     const itemRows = b.items.map(it => {
       const pv = itemPointValue(b.boss, it);
       const cells = TEAMS.map(team => {
@@ -387,19 +381,38 @@ function render() {
     }).join('');
 
     return `<div class="boss-card" data-boss="${b.boss}">
-      <div class="boss-head" onclick="toggleBoss('${b.boss.replace(/'/g,"\\'")}')">
-        <div><span class="bname">${b.boss}</span><span class="bmeta">${b.bossType || ''}</span></div>
-        <div style="display:flex;align-items:center;gap:10px">
-          <span class="bmeta">KPH:</span>
-          <input class="kph-input" type="number" step="0.1" value="${kph ?? ''}" placeholder="—" onclick="event.stopPropagation()" disabled title="Set from the admin page">
-          <span class="chev">▶</span>
-        </div>
-      </div>
+      <div class="boss-head"><span class="bname">${b.boss}</span></div>
       <div class="boss-body">
         <table class="items"><thead><tr><th>Item</th><th>Pts</th>${TEAMS.map(t=>`<th>${t}</th>`).join('')}</tr></thead>
         <tbody>${itemRows}</tbody></table>
         ${bonusRows}
       </div>
+    </div>`;
+  }
+
+  function renderMetaCard(mb) {
+    const lines = results.map(r => {
+      const ms = r.metaStatus.find(m => m.id === mb.id);
+      const cls = ms.achieved ? 'achieved' : 'pending';
+      const valTxt = ms.achieved
+        ? (ms.hasValue ? (ms.value != null ? `+${fmtNum(ms.value)} pts` : 'pending KPH') : '<span class="novalue">value TBD</span>')
+        : '';
+      return `<div class="${cls}">${r.team}: ${ms.achieved ? '✓ Complete' : 'In progress'} ${valTxt}</div>`;
+    }).join('');
+    return `<div class="meta-card"><div class="mtitle">${mb.name}</div><div class="mstatus">${lines}</div></div>`;
+  }
+
+  const bossesByType = {};
+  CONFIG.bosses.forEach(b => { (bossesByType[b.bossType || 'Other'] = bossesByType[b.bossType || 'Other'] || []).push(b); });
+
+  $('bossList').innerHTML = TYPE_ORDER.filter(t => bossesByType[t]).map(type => {
+    const bosses = bossesByType[type].filter(matches);
+    const metaCards = CONFIG.metaBonuses.filter(mb => META_BONUS_SECTION[mb.id] === type).map(renderMetaCard).join('');
+    if (!bosses.length && !metaCards) return '';
+    return `<div class="type-section">
+      <div class="type-title">${type}</div>
+      ${bosses.map(renderBossCard).join('')}
+      ${metaCards}
     </div>`;
   }).join('');
 
@@ -421,11 +434,6 @@ function render() {
       </tr>`;
     }).join('') + '</tbody></table>';
   }
-}
-
-function toggleBoss(bossName) {
-  const card = document.querySelector(`.boss-card[data-boss="${CSS.escape(bossName)}"]`);
-  if (card) card.classList.toggle('open');
 }
 
 function ago(ts) {
