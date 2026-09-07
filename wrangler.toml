@@ -1,6 +1,13 @@
 name = "millions-clan-website"
 compatibility_date = "2026-09-05"
+main = "worker.js"
 
 [assets]
 directory = "./"
 html_handling = "auto-trailing-slash"
+binding = "ASSETS"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "millions-boss-hunt"
+database_id = "31e21528-4517-4bee-b164-dc6a34bc3f90"
