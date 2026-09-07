@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Millions — Boss Hunt · Live Scoreboard</title>
+<meta name="description" content="Live scoreboard for the Millions clan Boss Hunt event.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&family=Barlow+Condensed:wght@400;600&family=IM+Fell+English:ital@1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#06070a; --ink:#0b0d12; --panel:#11141a;
+  --gold:#c9a227; --gold-hi:#eed595; --gold-lo:#5c4810;
+  --parch:#c4bca8; --dim:#7a7365; --line:#201c14;
+  --team-1:#c9a227; --team-2:#7190b6; --team-3:#a63f2c;
+  --good:#4caf50; --bad:#a63f2c;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:radial-gradient(100% 30% at 50% 0%, rgba(201,162,39,.08), rgba(201,162,39,0) 60%),
+    linear-gradient(#080a0e, var(--void) 45%, #040507 100%);
+  background-repeat:no-repeat;
+  color:var(--parch); font-family:'Barlow Condensed',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased; min-height:100vh;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px 64px}
+.mast{padding:38px 0 0;text-align:center}
+.mast .clan{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-spacing:.4em;text-indent:.4em;color:var(--gold)}
+.mast .ev{font-family:'Cinzel',serif;font-weight:900;font-size:30px;line-height:1;margin-top:8px;text-transform:uppercase;letter-spacing:.05em;
+  background:linear-gradient(178deg,#fdf2d6 6%,var(--gold-hi) 40%,var(--gold) 64%,#7d6214 98%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mast .sub{margin-top:6px;font-size:14px;color:var(--dim);letter-spacing:.1em}
+.mastrule{margin-top:16px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-lo) 12%,var(--gold) 50%,var(--gold-lo) 88%,transparent)}
+.live{display:flex;justify-content:center;align-items:center;gap:8px;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-top:14px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--good);animation:pulse 2.4s ease-in-out infinite}
+.dot.stale{background:var(--bad);animation:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+
+h2.sec{font-family:'Cinzel',serif;font-weight:900;font-size:22px;text-transform:uppercase;letter-spacing:.13em;color:#ddd1b1;margin:40px 0 4px}
+.sec-rule{height:1px;background:linear-gradient(90deg,var(--gold),rgba(0,0,0,0) 55%);margin-bottom:22px}
+
+.prizepool{text-align:center;margin-top:20px;font-family:'Cinzel',serif}
+.prizepool .amt{font-size:26px;font-weight:900;color:var(--gold-hi)}
+.prizepool .lbl{font-size:12px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;margin-top:2px}
+
+.team{margin-bottom:22px}
+.team .top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:7px}
+.team .nm{font-family:'Cinzel',serif;font-weight:900;font-size:21px;letter-spacing:.06em;color:var(--tc)}
+.team .rank{font-size:13px;letter-spacing:.2em;color:#514c40;text-transform:uppercase;margin-left:10px}
+.team .val{font-family:'Cinzel',serif;font-weight:900;font-size:24px;color:#e2d8bd}
+.team .val span{font-size:14px;color:var(--dim);letter-spacing:.14em;margin-left:8px}
+.team .sub-stats{font-size:13px;color:var(--dim);margin-top:4px;letter-spacing:.04em}
+.track{position:relative;height:26px;background:#0d1015;border:1px solid var(--line);overflow:hidden;margin-top:6px}
+.fill{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,var(--tc),color-mix(in srgb,var(--tc) 55%, #000));transition:width 900ms cubic-bezier(.22,.8,.3,1)}
+.fill::after{content:'';position:absolute;top:0;right:0;bottom:0;width:2px;background:#fff;opacity:.5}
+
+.bounty-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.bounty-card{background:linear-gradient(#12151b,#0a0c10);border:1px solid var(--line);border-top:2px solid var(--gold-lo);padding:14px 16px}
+.bounty-card.hidden-b{opacity:.5}
+.bounty-card .btitle{font-family:'Cinzel',serif;font-weight:600;font-size:13px;letter-spacing:.06em;color:var(--gold-hi);text-transform:uppercase}
+.bounty-card .bdesc{font-size:14px;color:var(--parch);margin-top:5px;line-height:1.4}
+.bounty-card .bstatus{margin-top:9px;font-size:13px;color:var(--dim);display:flex;flex-direction:column;gap:2px}
+.bounty-card .bstatus .claimed{color:var(--gold-hi)}
+.badge-hidden{display:inline-block;font-family:'Cinzel',serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#514c40;border:1px solid var(--line);padding:2px 8px;margin-top:8px}
+
+.boss-card{background:linear-gradient(#11141a,#0a0c10);border:1px solid #1f1b13;border-top:1px solid #302719;margin-bottom:10px}
+.boss-head{display:flex;justify-content:space-between;align-items:center;padding:13px 18px;cursor:pointer;user-select:none}
+.boss-head .bname{font-family:'Cinzel',serif;font-weight:600;font-size:15px;letter-spacing:.05em;color:#ddd1b1}
+.boss-head .bmeta{font-size:12px;color:var(--dim);letter-spacing:.06em;margin-left:10px}
+.boss-head .kph-input{width:70px;background:#0a0c10;border:1px solid #2a2418;color:var(--gold-hi);padding:4px 7px;font-size:13px;text-align:center}
+.boss-body{display:none;padding:0 18px 16px}
+.boss-card.open .boss-body{display:block}
+.boss-card.open .chev{transform:rotate(90deg)}
+.chev{transition:transform .15s;color:var(--dim)}
+
+table.items{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+table.items th{font-family:'Cinzel',serif;font-weight:600;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#514c40;text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+table.items td{padding:6px 8px;border-bottom:1px solid #14110c;color:#cbc1a8}
+table.items td.num{text-align:center;font-family:'Cinzel',serif}
+.tag{font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:1px 6px;border-radius:2px;margin-left:6px}
+.tag.jar{background:#1a1408;border:1px solid #5c4810;color:#c9a227}
+.tag.pet{background:#0a1a10;border:1px solid #1a5c28;color:#50b060}
+
+.bonus-row{margin-top:10px;padding:8px 10px;background:rgba(201,162,39,.05);border-left:2px solid var(--gold-lo);font-size:13px}
+.bonus-row .achieved{color:var(--good)}
+.bonus-row .pending{color:var(--dim)}
+
+.meta-bonus-section{margin-top:20px}
+.meta-card{background:linear-gradient(#12151b,#0a0c10);border:1px solid var(--line);border-top:2px solid #5a1a7a;padding:14px 16px;margin-bottom:10px}
+.meta-card .mtitle{font-family:'Cinzel',serif;font-weight:600;font-size:14px;color:#b060e0}
+.meta-card .mstatus{margin-top:6px;font-size:13px;color:var(--dim)}
+.meta-card .mstatus .achieved{color:var(--good)}
+.novalue{font-size:11px;color:#7a7365;font-style:italic}
+
+.filter-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.filter-row input{flex:1;min-width:180px;background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:8px 12px;color:var(--parch);font-family:'Barlow Condensed';font-size:15px;outline:none}
+.filter-row input:focus{border-color:var(--gold-lo)}
+
+table.log{width:100%;border-collapse:collapse;font-size:16px}
+table.log th{font-family:'Cinzel',serif;font-weight:600;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#514c40;text-align:left;padding:0 10px 10px;border-bottom:1px solid var(--line)}
+table.log td{padding:9px 10px;border-bottom:1px solid #14110c;color:#cbc1a8;vertical-align:middle}
+table.log tr:last-child td{border-bottom:none}
+.pill{display:inline-block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border:1px solid var(--tc);color:var(--tc);white-space:nowrap}
+td.pts{font-family:'Cinzel',serif;font-weight:900;color:var(--gold-hi);text-align:right;white-space:nowrap}
+td.when{color:#6b6558;font-size:14px;white-space:nowrap}
+.empty{padding:40px 0;text-align:center;color:#5c5648;font-family:'IM Fell English',serif;font-style:italic;font-size:17px}
+
+footer{margin-top:50px;text-align:center}
+footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:16px;letter-spacing:.42em;text-indent:.42em;color:var(--gold)}
+footer .note{margin-top:9px;font-size:12px;letter-spacing:.14em;color:#4f4a3d;text-transform:uppercase}
+
+@media (max-width:640px){
+  .team .val{font-size:20px}
+  table.log .hide-sm{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="clan">MILLIONS</div>
+    <div class="ev">Boss Hunt</div>
+    <div class="sub">Live Scoreboard</div>
+  </header>
+  <div class="mastrule"></div>
+  <div class="live"><span class="dot" id="dot"></span><span id="liveTxt">Live</span></div>
+
+  <div class="prizepool">
+    <div class="amt" id="prizePoolAmt">—</div>
+    <div class="lbl">Current Prize Pool</div>
+  </div>
+
+  <h2 class="sec">Standings</h2>
+  <div class="sec-rule"></div>
+  <div id="standings"></div>
+
+  <h2 class="sec">Bounties</h2>
+  <div class="sec-rule"></div>
+  <div class="bounty-grid" id="bounties"></div>
+
+  <h2 class="sec">Cross-Boss Bonuses</h2>
+  <div class="sec-rule"></div>
+  <div class="meta-bonus-section" id="metaBonuses"></div>
+
+  <h2 class="sec">Boss Breakdown</h2>
+  <div class="sec-rule"></div>
+  <div class="filter-row">
+    <input type="text" id="bossFilter" placeholder="Search bosses or items…">
+  </div>
+  <div id="bossList"></div>
+
+  <h2 class="sec">Recent Drops</h2>
+  <div class="sec-rule"></div>
+  <div id="logWrap"></div>
+
+  <footer>
+    <div class="mark">MILLIONS</div>
+    <div class="note">Updates automatically</div>
+  </footer>
+</div>
+
+<script>
+const TEAMS = ["Team A", "Team B", "Team C"];
+const TEAM_COLORS = { "Team A": "var(--team-1)", "Team B": "var(--team-2)", "Team C": "var(--team-3)" };
+const PRIZE_POOL = 650603000; // TODO: update for the new event
+
+const CONFIG = {"bosses":[{"boss":"Shellbane Gryphon","actualKPH":65.0,"bossType":"Slayer","items":[{"name":"Belle's folly (tarnished)","type":"normal","dropRate":0.003636363636,"manualAdjustment":1.0,"geValue":876566.5},{"name":"Jar of feathers","type":"jar","dropRate":0.0005,"manualAdjustment":0.75,"geValue":0},{"name":"Gull","type":"pet","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":0}],"bonuses":[]},{"boss":"Grotesque Guardians","actualKPH":24.0,"bossType":"Slayer","items":[{"name":"Granite maul","type":"normal","dropRate":0.008,"manualAdjustment":1.0,"geValue":188263},{"name":"Granite gloves","type":"normal","dropRate":0.004,"manualAdjustment":1.0,"geValue":93183.5},{"name":"Granite ring","type":"normal","dropRate":0.004,"manualAdjustment":1.0,"geValue":31149.5},{"name":"Granite hammer","type":"normal","dropRate":0.002666666667,"manualAdjustment":1.0,"geValue":4445108},{"name":"Black tourmaline core","type":"normal","dropRate":0.002,"manualAdjustment":1.0,"geValue":2185651},{"name":"Jar of stone","type":"jar","dropRate":0.0002,"manualAdjustment":0.4,"geValue":1223549.5},{"name":"Noon","type":"pet","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":5,"memberItems":["Granite maul","Granite gloves","Granite ring","Granite hammer","Black tourmaline core"]}]},{"boss":"Abyssal Sire","actualKPH":32.0,"bossType":"Slayer","items":[{"name":"Bludgeon claw","type":"normal","dropRate":0.004854368932,"manualAdjustment":1.0,"geValue":6760930.333},{"name":"Bludgeon spine","type":"normal","dropRate":0.004854368932,"manualAdjustment":1.0,"geValue":6760930.333},{"name":"Bludgeon axon","type":"normal","dropRate":0.004854368932,"manualAdjustment":1.0,"geValue":6760930.333},{"name":"Abyssal dagger","type":"normal","dropRate":0.002032520325,"manualAdjustment":1.0,"geValue":2213779.5},{"name":"Abyssal whip","type":"normal","dropRate":0.0009380863039,"manualAdjustment":1.0,"geValue":1342094.5},{"name":"Jar of miasma","type":"jar","dropRate":0.001016260163,"manualAdjustment":0.75,"geValue":28412.5},{"name":"Abyssal orphan","type":"pet","dropRate":0.000390625,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":5,"memberItems":["Bludgeon claw","Bludgeon spine","Bludgeon axon","Abyssal dagger","Abyssal whip"]}]},{"boss":"Kraken","actualKPH":60.0,"bossType":"Slayer","items":[{"name":"Trident of the seas (full)","type":"normal","dropRate":0.001953125,"manualAdjustment":1.0,"geValue":661259},{"name":"Kraken tentacle","type":"normal","dropRate":0.0025,"manualAdjustment":1.0,"geValue":357892},{"name":"Jar of dirt","type":"jar","dropRate":0.001,"manualAdjustment":0.75,"geValue":31153},{"name":"Pet kraken","type":"pet","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":2,"memberItems":["Trident of the seas (full)","Kraken tentacle"]}]},{"boss":"Cerberus","actualKPH":35.0,"bossType":"Slayer","items":[{"name":"Primordial crystal","type":"normal","dropRate":0.001923076923,"manualAdjustment":1.0,"geValue":22616604},{"name":"Pegasian crystal","type":"normal","dropRate":0.001923076923,"manualAdjustment":1.0,"geValue":160544.5},{"name":"Eternal crystal","type":"normal","dropRate":0.001923076923,"manualAdjustment":1.0,"geValue":4553973},{"name":"Smouldering stone","type":"normal","dropRate":0.001923076923,"manualAdjustment":1.0,"geValue":2150589.5},{"name":"Jar of souls","type":"jar","dropRate":0.0005,"manualAdjustment":0.75,"geValue":36499.5},{"name":"Hell puppy","type":"pet","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":4,"memberItems":["Primordial crystal","Pegasian crystal","Eternal crystal","Smouldering stone"]}]},{"boss":"Araxxor","actualKPH":25.0,"bossType":"Slayer","items":[{"name":"Noxious pommel","type":"normal","dropRate":0.005,"manualAdjustment":1.0,"geValue":16875280.5},{"name":"Noxious point","type":"normal","dropRate":0.005,"manualAdjustment":1.0,"geValue":16875280.5},{"name":"Noxious blade","type":"normal","dropRate":0.005,"manualAdjustment":1.0,"geValue":16875280.5},{"name":"Araxyte fang","type":"normal","dropRate":0.001666666667,"manualAdjustment":1.0,"geValue":38713602.5},{"name":"Jar of venom","type":"jar","dropRate":0.0006666666667,"manualAdjustment":0.75,"geValue":0},{"name":"Nid","type":"pet","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":4,"memberItems":["Noxious pommel","Noxious point","Noxious blade","Araxyte fang"]}]},{"boss":"Thermy","actualKPH":70.0,"bossType":"Slayer","items":[{"name":"Occult necklace","type":"normal","dropRate":0.002857142857142857,"manualAdjustment":1.0,"geValue":745974},{"name":"Smoke battlestaff","type":"normal","dropRate":0.0019531249998092654,"manualAdjustment":1.0,"geValue":2880667},{"name":"Dragon Chainbody","type":"normal","dropRate":0.0005000000000833333,"manualAdjustment":1.0,"geValue":365530},{"name":"Jar of smoke","type":"jar","dropRate":0.0003750000000625,"manualAdjustment":0.75,"geValue":75663},{"name":"Pet smoke devil","type":"pet","dropRate":0.0002941176470203768,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":3,"memberItems":["Occult necklace","Smoke battlestaff","Dragon Chainbody"]}]},{"boss":"Alchemical Hydra","actualKPH":20.0,"bossType":"Slayer","items":[{"name":"Hydra's eye","type":"normal","dropRate":0.005524861878,"manualAdjustment":1.0,"geValue":1369544.5},{"name":"Hydra's fang","type":"normal","dropRate":0.005524861878,"manualAdjustment":1.0,"geValue":1369544.5},{"name":"Hydra's heart","type":"normal","dropRate":0.005524861878,"manualAdjustment":1.0,"geValue":1369544.5},{"name":"Hydra tail","type":"normal","dropRate":0.001949317739,"manualAdjustment":1.0,"geValue":111879},{"name":"Hydra leather","type":"normal","dropRate":0.001945525292,"manualAdjustment":1.0,"geValue":13687869},{"name":"Hydra's claw","type":"normal","dropRate":0.000999000999,"manualAdjustment":1.0,"geValue":65358333},{"name":"Jar of chemicals","type":"jar","dropRate":0.0005,"manualAdjustment":0.75,"geValue":57575},{"name":"Ikkle Hydra","type":"pet","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":6,"memberItems":["Hydra's eye","Hydra's fang","Hydra's heart","Hydra tail","Hydra leather","Hydra's claw"]}]},{"boss":"Commander Zilyana","actualKPH":25.0,"bossType":"God Wars","items":[{"name":"Saradomin sword","type":"normal","dropRate":0.007874015748,"manualAdjustment":1.0,"geValue":267845.5},{"name":"Saradomin's light","type":"normal","dropRate":0.003937007874,"manualAdjustment":1.0,"geValue":89500.5},{"name":"Armadyl crossbow","type":"normal","dropRate":0.001968503937,"manualAdjustment":1.0,"geValue":30757206.5},{"name":"Saradomin hilt","type":"normal","dropRate":0.001968503937,"manualAdjustment":1.0,"geValue":27206226.5},{"name":"Pet zilyana","type":"pet","dropRate":0.0002,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":4,"memberItems":["Saradomin sword","Saradomin's light","Armadyl crossbow","Saradomin hilt"]}]},{"boss":"General Graardor","actualKPH":25.0,"bossType":"God Wars","items":[{"name":"Bandos chestplate","type":"normal","dropRate":0.002624671916,"manualAdjustment":1.0,"geValue":25217900},{"name":"Bandos tassets","type":"normal","dropRate":0.002624671916,"manualAdjustment":1.0,"geValue":16964205},{"name":"Bandos boots","type":"normal","dropRate":0.002624671916,"manualAdjustment":1.0,"geValue":523846.5},{"name":"Bandos hilt","type":"normal","dropRate":0.001968503937,"manualAdjustment":1.0,"geValue":17937434.5},{"name":"Pet general graardor","type":"pet","dropRate":0.0002,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":4,"memberItems":["Bandos chestplate","Bandos tassets","Bandos boots","Bandos hilt"]}]},{"boss":"Kree'Arra","actualKPH":25.0,"bossType":"God Wars","items":[{"name":"Armadyl helmet","type":"normal","dropRate":0.002624671916,"manualAdjustment":1.0,"geValue":8100219.5},{"name":"Armadyl chestplate","type":"normal","dropRate":0.002624671916,"manualAdjustment":1.0,"geValue":32601021.5},{"name":"Armadyl chainskirt","type":"normal","dropRate":0.002624671916,"manualAdjustment":1.0,"geValue":24307768.5},{"name":"Armadyl hilt","type":"normal","dropRate":0.001968503937,"manualAdjustment":1.0,"geValue":8138834.5},{"name":"Pet kree'arra","type":"pet","dropRate":0.0002,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":4,"memberItems":["Armadyl helmet","Armadyl chestplate","Armadyl chainskirt","Armadyl hilt"]}]},{"boss":"K'ril Tsutsaroth","actualKPH":25.0,"bossType":"God Wars","items":[{"name":"Steam battlestaff","type":"normal","dropRate":0.007874015748,"manualAdjustment":1.0,"geValue":68993},{"name":"Zamorakian spear","type":"normal","dropRate":0.007874015748,"manualAdjustment":1.0,"geValue":1574500},{"name":"Staff of the dead","type":"normal","dropRate":0.001968503937,"manualAdjustment":1.0,"geValue":8304724},{"name":"Zamorak hilt","type":"normal","dropRate":0.001968503937,"manualAdjustment":1.0,"geValue":17775000},{"name":"Pet K'ril","type":"pet","dropRate":0.0002,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":4,"memberItems":["Steam battlestaff","Zamorakian spear","Staff of the dead","Zamorak hilt"]}]},{"boss":"Duke Sucellus","actualKPH":25.0,"bossType":"Desert Treasure","items":[{"name":"Chromium ingot (DS)","type":"normal","dropRate":0.004166666667,"manualAdjustment":1.0,"geValue":58459.5,"contributesTo":"dt2_full_sra"},{"name":"Magus vestige roll","type":"normal","dropRate":0.004166666667,"manualAdjustment":1.0,"geValue":11371379.17},{"name":"Eye of the duke","type":"normal","dropRate":0.001388888889,"manualAdjustment":1.0,"geValue":71125000},{"name":"Virtus mask (DS)","type":"normal","dropRate":0.000462962963,"manualAdjustment":1.0,"geValue":8756367.5,"contributesTo":"dt2_full_virtus"},{"name":"Virtus robe top (DS)","type":"normal","dropRate":0.000462962963,"manualAdjustment":1.0,"geValue":51555318,"contributesTo":"dt2_full_virtus"},{"name":"Virtus robe bottom (DS)","type":"normal","dropRate":0.000462962963,"manualAdjustment":1.0,"geValue":38537557,"contributesTo":"dt2_full_virtus"},{"name":"Baron","type":"pet","dropRate":0.0004,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":3,"memberItems":["Chromium ingot (DS)","Magus vestige roll","Eye of the duke"]}]},{"boss":"The Leviathan","actualKPH":24.0,"bossType":"Desert Treasure","items":[{"name":"Chromium ingot (L)","type":"normal","dropRate":0.00390625,"manualAdjustment":1.0,"geValue":58459.5,"contributesTo":"dt2_full_sra"},{"name":"Venator vestige roll","type":"normal","dropRate":0.00390625,"manualAdjustment":1.0,"geValue":16075819.67},{"name":"Leviathan's lure","type":"normal","dropRate":0.001302083333,"manualAdjustment":1.0,"geValue":71125000},{"name":"Virtus mask (L)","type":"normal","dropRate":0.0004340277778,"manualAdjustment":1.0,"geValue":8756367.5,"contributesTo":"dt2_full_virtus"},{"name":"Virtus robe top (L)","type":"normal","dropRate":0.0004340277778,"manualAdjustment":1.0,"geValue":51555318,"contributesTo":"dt2_full_virtus"},{"name":"Virtus robe bottom (L)","type":"normal","dropRate":0.0004340277778,"manualAdjustment":1.0,"geValue":38537557,"contributesTo":"dt2_full_virtus"},{"name":"Lil'viathan","type":"pet","dropRate":0.0004,"manualAdjustment":0.85,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":3,"memberItems":["Chromium ingot (L)","Venator vestige roll","Leviathan's lure"]}]},{"boss":"Vardorvis","actualKPH":30.0,"bossType":"Desert Treasure","items":[{"name":"Chromium ingot (V)","type":"normal","dropRate":0.002757099531,"manualAdjustment":1.0,"geValue":58459.5,"contributesTo":"dt2_full_sra"},{"name":"Ultor vestige roll","type":"normal","dropRate":0.002757352941,"manualAdjustment":1.0,"geValue":43089841.83},{"name":"Executioner's axe head","type":"normal","dropRate":0.0009191176471,"manualAdjustment":1.0,"geValue":71125000},{"name":"Virtus mask (V)","type":"normal","dropRate":0.000306372549,"manualAdjustment":1.0,"geValue":8756367.5,"contributesTo":"dt2_full_virtus"},{"name":"Virtus robe top (V)","type":"normal","dropRate":0.000306372549,"manualAdjustment":1.0,"geValue":51555318,"contributesTo":"dt2_full_virtus"},{"name":"Virtus robe bottom (V)","type":"normal","dropRate":0.000306372549,"manualAdjustment":1.0,"geValue":38537557,"contributesTo":"dt2_full_virtus"},{"name":"Butch","type":"pet","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":3,"memberItems":["Chromium ingot (V)","Ultor vestige roll","Executioner's axe head"]}]},{"boss":"The Whisperer","actualKPH":18.0,"bossType":"Desert Treasure","items":[{"name":"Chromium ingot (W)","type":"normal","dropRate":0.005858230814,"manualAdjustment":1.0,"geValue":58459.5,"contributesTo":"dt2_full_sra"},{"name":"Bellator vestige roll","type":"normal","dropRate":0.005859375,"manualAdjustment":1.0,"geValue":10411056.33},{"name":"Siren's staff","type":"normal","dropRate":0.001953125,"manualAdjustment":1.0,"geValue":71125000},{"name":"Virtus mask (W)","type":"normal","dropRate":0.0006510416667,"manualAdjustment":1.0,"geValue":8756367.5,"contributesTo":"dt2_full_virtus"},{"name":"Virtus robe top (W)","type":"normal","dropRate":0.0006510416667,"manualAdjustment":1.0,"geValue":51555318,"contributesTo":"dt2_full_virtus"},{"name":"Virtus robe bottom (W)","type":"normal","dropRate":0.0006510416667,"manualAdjustment":1.0,"geValue":38537557,"contributesTo":"dt2_full_virtus"},{"name":"Wisp","type":"pet","dropRate":0.0005,"manualAdjustment":0.85,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":3,"memberItems":["Chromium ingot (W)","Bellator vestige roll","Siren's staff"]}]},{"boss":"Barrows","actualKPH":10.0,"bossType":"General","items":[{"name":"Ahrim's hood","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":391763},{"name":"Ahrim's robetop","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":2232111},{"name":"Ahrim's robeskirt","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":1708886},{"name":"Ahrim's staff","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":243341.5},{"name":"Dharok's helm","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":328004},{"name":"Dharok's platebody","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":927504.5},{"name":"Dharok's platelegs","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":849561.5},{"name":"Dharok's greataxe","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":1806208},{"name":"Guthan's helm","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":130882},{"name":"Guthan's platebody","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":206484},{"name":"Guthan's chainskirt","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":227500.5},{"name":"Guthan's warspear","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":95501},{"name":"Karil's coif","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":66865},{"name":"Karil's leathertop","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":1280000},{"name":"Karil's leatherskirt","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":617022.5},{"name":"Karil's crossbow","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":105301},{"name":"Torag's helm","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":143757},{"name":"Torag's platebody","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":288715.5},{"name":"Torag's platelegs","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":289068},{"name":"Torag's hammers","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":98561.5},{"name":"Verac's helm","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":113500},{"name":"Verac's brassard","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":173919},{"name":"Verac's plateskirt","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":298512},{"name":"Verac's flail","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":96525.5}],"bonuses":[{"name":"All Ahrim uniques (4)","type":"sub_group_bonus","groupLabel":"Ahrim uniques","requiredCount":4,"memberItems":["Ahrim's hood","Ahrim's robetop","Ahrim's robeskirt","Ahrim's staff"]},{"name":"All Dharok uniques (4)","type":"sub_group_bonus","groupLabel":"Dharok uniques","requiredCount":4,"memberItems":["Dharok's helm","Dharok's platebody","Dharok's platelegs","Dharok's greataxe"]},{"name":"All Guthan uniques (4)","type":"sub_group_bonus","groupLabel":"Guthan uniques","requiredCount":4,"memberItems":["Guthan's helm","Guthan's platebody","Guthan's chainskirt","Guthan's warspear"]},{"name":"All Karil uniques (4)","type":"sub_group_bonus","groupLabel":"Karil uniques","requiredCount":4,"memberItems":["Karil's coif","Karil's leathertop","Karil's leatherskirt","Karil's crossbow"]},{"name":"All Torag uniques (4)","type":"sub_group_bonus","groupLabel":"Torag uniques","requiredCount":4,"memberItems":["Torag's helm","Torag's platebody","Torag's platelegs","Torag's hammers"]},{"name":"All Verac uniques (4)","type":"sub_group_bonus","groupLabel":"Verac uniques","requiredCount":4,"memberItems":["Verac's helm","Verac's brassard","Verac's plateskirt","Verac's flail"]}]},{"boss":"Corporeal Beast","actualKPH":40.0,"bossType":"General","items":[{"name":"Spectral sigil","type":"normal","dropRate":0.0001831501832,"manualAdjustment":1.0,"geValue":27544443.5},{"name":"Arcane sigil","type":"normal","dropRate":0.0001831501832,"manualAdjustment":1.0,"geValue":97077999.5},{"name":"Elysian sigil","type":"normal","dropRate":6.105006105e-05,"manualAdjustment":1.0,"geValue":542393994.5},{"name":"Jar of spirits","type":"jar","dropRate":0.00025,"manualAdjustment":0.75,"geValue":54961},{"name":"Pet dark core","type":"pet","dropRate":5e-05,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":3,"memberItems":["Spectral sigil","Arcane sigil","Elysian sigil"]}]},{"boss":"Dagannoth Kings","actualKPH":20.0,"bossType":"Dagannoth","items":[{"name":"Berserker ring","type":"normal","dropRate":0.0078125,"manualAdjustment":1.0,"geValue":3033988},{"name":"Warrior ring","type":"normal","dropRate":0.0078125,"manualAdjustment":1.0,"geValue":54612},{"name":"Seers ring","type":"normal","dropRate":0.0078125,"manualAdjustment":1.0,"geValue":1018387.5},{"name":"Archers ring","type":"normal","dropRate":0.0078125,"manualAdjustment":1.0,"geValue":2978191.5},{"name":"Pet dagannoth prime","type":"normal","dropRate":0.0002666666666666667,"manualAdjustment":1.0,"geValue":0},{"name":"Pet dagannoth rex","type":"normal","dropRate":0.0002666666666666667,"manualAdjustment":1.0,"geValue":0},{"name":"Pet dagannoth supreme","type":"normal","dropRate":0.0002666666666666667,"manualAdjustment":1.0,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":7,"memberItems":["Berserker ring","Warrior ring","Seers ring","Archers ring","Pet dagannoth prime","Pet dagannoth rex","Pet dagannoth supreme"]}]},{"boss":"Doom of Mokhaiotl","actualKPH":5.0,"bossType":"General","items":[{"name":"Avernic treads","type":"normal","dropRate":0.00625,"manualAdjustment":1.0,"geValue":232630130},{"name":"Eye of ayak (uncharged)","type":"normal","dropRate":0.006756756757,"manualAdjustment":1.0,"geValue":65181176},{"name":"Mokhaiotl cloth","type":"normal","dropRate":0.007142857143,"manualAdjustment":1.0,"geValue":79050998},{"name":"Dom","type":"pet","dropRate":0.004329004329,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":3,"memberItems":["Avernic treads","Eye of ayak (uncharged)","Mokhaiotl cloth"]}]},{"boss":"Moons of Peril","actualKPH":null,"bossType":null,"items":[{"name":"Eclipse atlatl","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":2203925.5},{"name":"Eclipse moon helm","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":843538.5},{"name":"Eclipse moon chestplate","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":1994228.5},{"name":"Eclipse moon tassets","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":1986554.5},{"name":"Dual macuahuitl","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":6807139.5},{"name":"Blood moon helm","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":934295},{"name":"Blood moon chestplate","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":4870854.5},{"name":"Blood moon tassets","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":11373015.5},{"name":"Blue moon spear","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":345954.5},{"name":"Blue moon helm","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":832668},{"name":"Blue moon chestplate","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":1684948.5},{"name":"Blue moon tassets","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":5800037.5}],"bonuses":[{"name":"All Eclipse moon uniques (4)","type":"sub_group_bonus","groupLabel":"Eclipse moon uniques","requiredCount":4,"memberItems":["Eclipse atlatl","Eclipse moon helm","Eclipse moon chestplate","Eclipse moon tassets","Blood moon helm","Blood moon chestplate","Blood moon tassets","Blue moon spear","Blue moon helm","Blue moon chestplate","Blue moon tassets"]},{"name":"All Blood moon uniques (4)","type":"sub_group_bonus","groupLabel":"Blood moon uniques","requiredCount":4,"memberItems":["Eclipse moon helm","Eclipse moon chestplate","Eclipse moon tassets","Blood moon helm","Blood moon chestplate","Blood moon tassets","Blue moon spear","Blue moon helm","Blue moon chestplate","Blue moon tassets"]},{"name":"All Blue moon uniques (4)","type":"sub_group_bonus","groupLabel":"Blue moon uniques","requiredCount":4,"memberItems":["Eclipse moon helm","Eclipse moon chestplate","Eclipse moon tassets","Blood moon helm","Blood moon chestplate","Blood moon tassets","Blue moon spear","Blue moon helm","Blue moon chestplate","Blue moon tassets"]}]},{"boss":"Nex","actualKPH":10.0,"bossType":"General","items":[{"name":"Zaryte vambraces","type":"normal","dropRate":0.001162790698,"manualAdjustment":1.0,"geValue":89906747.5},{"name":"Nihil horn","type":"normal","dropRate":0.0007751937984,"manualAdjustment":1.0,"geValue":330375500},{"name":"Torva full helm (damaged)","type":"normal","dropRate":0.0007751937984,"manualAdjustment":1.0,"geValue":225074061},{"name":"Torva platebody (damaged)","type":"normal","dropRate":0.0007751937984,"manualAdjustment":1.0,"geValue":196585984.5},{"name":"Torva platelegs (damaged)","type":"normal","dropRate":0.0007751937984,"manualAdjustment":1.0,"geValue":142105612.5},{"name":"Ancient hilt","type":"normal","dropRate":0.0003875968992,"manualAdjustment":1.0,"geValue":37325216},{"name":"Nexling","type":"pet","dropRate":0.0004,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":6,"memberItems":["Zaryte vambraces","Nihil horn","Torva full helm (damaged)","Torva platebody (damaged)","Torva platelegs (damaged)","Ancient hilt"]}]},{"boss":"Nightmare","actualKPH":10.0,"bossType":"General","items":[{"name":"Nightmare staff","type":"normal","dropRate":0.001918604651,"manualAdjustment":1.0,"geValue":46599045.5},{"name":"Inquisitor's great helm","type":"normal","dropRate":0.001375,"manualAdjustment":1.0,"geValue":31164811},{"name":"Inquisitor's hauberk","type":"normal","dropRate":0.001375,"manualAdjustment":1.0,"geValue":82383940.5},{"name":"Inquisitor's plateskirt","type":"normal","dropRate":0.001375,"manualAdjustment":1.0,"geValue":81762500},{"name":"Inquisitor's mace","type":"normal","dropRate":0.0007692307692,"manualAdjustment":1.0,"geValue":237700000},{"name":"Eldritch orb","type":"normal","dropRate":0.0006010928962,"manualAdjustment":1.0,"geValue":192553065.5},{"name":"Harmonised orb","type":"normal","dropRate":0.0006010928962,"manualAdjustment":1.0,"geValue":184500000},{"name":"Volatile orb","type":"normal","dropRate":0.0006010928962,"manualAdjustment":1.0,"geValue":41246516.5},{"name":"Parasitic egg","type":"normal","dropRate":0.005,"manualAdjustment":1.0,"geValue":0},{"name":"Jar of dreams","type":"jar","dropRate":0.0005263157895,"manualAdjustment":0.75,"geValue":4000500},{"name":"Little nightmare","type":"pet","dropRate":0.0004166666667,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":9,"memberItems":["Nightmare staff","Inquisitor's great helm","Inquisitor's hauberk","Inquisitor's plateskirt","Inquisitor's mace","Eldritch orb","Harmonised orb","Volatile orb","Parasitic egg"]}]},{"boss":"Phantom Muspah","actualKPH":20.0,"bossType":"General","items":[{"name":"Venator shard","type":"normal","dropRate":0.01,"manualAdjustment":1.5,"geValue":14663444},{"name":"Ancient icon","type":"normal","dropRate":0.02,"manualAdjustment":1.5,"geValue":0},{"name":"Muphin","type":"pet","dropRate":0.0004,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":2,"memberItems":["Venator shard","Ancient icon"]}]},{"boss":"Sarachnis","actualKPH":60.0,"bossType":"General","items":[{"name":"Sarachnis cudgel","type":"normal","dropRate":0.002604166667,"manualAdjustment":1.0,"geValue":516000},{"name":"Jar of eyes","type":"jar","dropRate":0.0005,"manualAdjustment":0.75,"geValue":118500},{"name":"Sraracha","type":"pet","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":0}],"bonuses":[]},{"boss":"The Fortis Colloseum","actualKPH":1.35,"bossType":"General","items":[{"name":"Echo crystal","type":"normal","dropRate":0.057418465781891276,"manualAdjustment":1.0,"geValue":2838565},{"name":"Sunfire fanatic helm","type":"normal","dropRate":0.03348737525952715,"manualAdjustment":1.0,"geValue":1400759},{"name":"Sunfire fanatic cuirass","type":"normal","dropRate":0.03348737525952715,"manualAdjustment":1.0,"geValue":3204230},{"name":"Sunfire fanatic chausses","type":"normal","dropRate":0.03348737525952715,"manualAdjustment":1.0,"geValue":3764713.5},{"name":"Tonalztics of ralos (uncharged)","type":"normal","dropRate":0.008543065593657627,"manualAdjustment":1.0,"geValue":47148752},{"name":"Smol heredit","type":"normal","dropRate":0.006666666666333332,"manualAdjustment":1.0,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":6,"memberItems":["Echo crystal","Sunfire fanatic helm","Sunfire fanatic cuirass","Sunfire fanatic chausses","Tonalztics of ralos (uncharged)","Smol heredit"]}]},{"boss":"The Corrupted Gauntlet","actualKPH":7.0,"bossType":"General","items":[{"name":"Crystal weapon seed","type":"normal","dropRate":0.02,"manualAdjustment":1.0,"geValue":387545},{"name":"Crystal armour seed","type":"normal","dropRate":0.02,"manualAdjustment":1.0,"geValue":7592519.5},{"name":"Enhanced crystal weapon seed","type":"normal","dropRate":0.0025,"manualAdjustment":1.0,"geValue":159135900.5},{"name":"Youngllef","type":"pet","dropRate":0.00125,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":3,"memberItems":["Crystal weapon seed","Crystal armour seed","Enhanced crystal weapon seed"]}]},{"boss":"The Hueycoatl","actualKPH":15.0,"bossType":"General","items":[{"name":"Hueycoatl hide","type":"normal","dropRate":0.01163873371,"manualAdjustment":1.0,"geValue":531250},{"name":"Tome of earth (empty)","type":"normal","dropRate":0.003703703704,"manualAdjustment":1.0,"geValue":579893.5},{"name":"Dragon hunter wand","type":"normal","dropRate":0.003174603175,"manualAdjustment":1.0,"geValue":17736348.5},{"name":"Huberte","type":"pet","dropRate":0.0008333333333,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":3,"memberItems":["Hueycoatl hide","Tome of earth (empty)","Dragon hunter wand"]}]},{"boss":"The Royal Titans","actualKPH":40.0,"bossType":"General","items":[{"name":"Fire element staff crown","type":"normal","dropRate":0.006666666667,"manualAdjustment":1.0,"geValue":2292328},{"name":"Ice element staff crown","type":"normal","dropRate":0.006666666667,"manualAdjustment":1.0,"geValue":3767881},{"name":"Bran","type":"pet","dropRate":0.0001666666667,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":2,"memberItems":["Fire element staff crown","Ice element staff crown"]}]},{"boss":"Vorkath","actualKPH":30.0,"bossType":"General","items":[{"name":"Dragonbone necklace","type":"normal","dropRate":0.001,"manualAdjustment":0.8,"geValue":97841.5},{"name":"Draconic visage","type":"normal","dropRate":0.0002,"manualAdjustment":0.8,"geValue":3778319},{"name":"Skeletal visage","type":"normal","dropRate":0.0002,"manualAdjustment":0.8,"geValue":15753661.5},{"name":"Jar of decay","type":"jar","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":48948},{"name":"Vorki","type":"pet","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":3,"memberItems":["Dragonbone necklace","Draconic visage","Skeletal visage"]}]},{"boss":"Yama","actualKPH":18.0,"bossType":"General","items":[{"name":"Soulflame horn","type":"normal","dropRate":0.001666666667,"manualAdjustment":1.0,"geValue":4586486},{"name":"Oathplate helm","type":"normal","dropRate":0.0008333333333,"manualAdjustment":1.0,"geValue":96400001.5},{"name":"Oathplate chest","type":"normal","dropRate":0.0008333333333,"manualAdjustment":1.0,"geValue":101414640},{"name":"Oathplate legs","type":"normal","dropRate":0.0008333333333,"manualAdjustment":1.0,"geValue":100068406},{"name":"Yami","type":"pet","dropRate":0.0002,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":4,"memberItems":["Soulflame horn","Oathplate helm","Oathplate chest","Oathplate legs"]}]},{"boss":"Zulrah","actualKPH":40.0,"bossType":"General","items":[{"name":"Tanzanite fang","type":"normal","dropRate":0.001953125,"manualAdjustment":1.0,"geValue":9925000},{"name":"Magic fang","type":"normal","dropRate":0.001953125,"manualAdjustment":1.0,"geValue":3631140},{"name":"Serpentine visage","type":"normal","dropRate":0.001953125,"manualAdjustment":1.0,"geValue":3649795},{"name":"Uncut onyx","type":"normal","dropRate":0.001953125,"manualAdjustment":1.0,"geValue":2160056.5},{"name":"Tanzanite mutagen","type":"normal","dropRate":0.000152590219,"manualAdjustment":0.75,"geValue":0},{"name":"Magma mutagen","type":"normal","dropRate":0.000152590219,"manualAdjustment":0.75,"geValue":0},{"name":"Jar of swamp","type":"jar","dropRate":0.0003333333333,"manualAdjustment":0.5,"geValue":61373.5},{"name":"Pet snakeling","type":"normal","dropRate":0.00025,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":7,"memberItems":["Tanzanite fang","Magic fang","Serpentine visage","Uncut onyx","Tanzanite mutagen","Magma mutagen","Pet snakeling"]}]},{"boss":"Chambers of Xeric","actualKPH":3.5,"bossType":"Raid","items":[{"name":"Arcane prayer scroll","type":"normal","dropRate":0.01336541032,"manualAdjustment":1.2,"geValue":5467956},{"name":"Dexterous prayer scroll","type":"normal","dropRate":0.01336541032,"manualAdjustment":1.2,"geValue":23833333},{"name":"Dragon hunter crossbow","type":"normal","dropRate":0.002673010612,"manualAdjustment":1.0,"geValue":46969220},{"name":"Twisted buckler","type":"normal","dropRate":0.002673010612,"manualAdjustment":1.0,"geValue":16780775.5},{"name":"Dinh's bulwark","type":"normal","dropRate":0.002004771356,"manualAdjustment":1.0,"geValue":15392088.5},{"name":"Ancestral hat","type":"normal","dropRate":0.002004771356,"manualAdjustment":1.0,"geValue":61402500},{"name":"Ancestral robe bottom","type":"normal","dropRate":0.002004771356,"manualAdjustment":1.0,"geValue":105156425.5},{"name":"Ancestral robe top","type":"normal","dropRate":0.002004771356,"manualAdjustment":1.0,"geValue":149216829},{"name":"Dragon claws","type":"normal","dropRate":0.002004771356,"manualAdjustment":1.0,"geValue":48068807.5},{"name":"Elder maul","type":"normal","dropRate":0.001336505306,"manualAdjustment":1.0,"geValue":98999052},{"name":"Kodai insignia","type":"normal","dropRate":0.001336505306,"manualAdjustment":1.0,"geValue":83450000},{"name":"Twisted bow","type":"normal","dropRate":0.001336505306,"manualAdjustment":1.0,"geValue":1583650000},{"name":"Olmlet","type":"pet","dropRate":0.002127885945,"manualAdjustment":1.2,"geValue":0},{"name":"Twisted ancestral kit","type":"normal","dropRate":0.005079365079365079,"manualAdjustment":1.0,"geValue":0},{"name":"Metamorphic dust","type":"normal","dropRate":0.0017857142857142857,"manualAdjustment":1.0,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":14,"memberItems":["Arcane prayer scroll","Dexterous prayer scroll","Dragon hunter crossbow","Twisted buckler","Dinh's bulwark","Ancestral hat","Ancestral robe bottom","Ancestral robe top","Dragon claws","Elder maul","Kodai insignia","Twisted bow","Twisted ancestral kit","Metamorphic dust"]}]},{"boss":"Theatre of Blood","actualKPH":3.1,"bossType":"Raid","items":[{"name":"Avernic defender hilt","type":"normal","dropRate":0.01156737999,"manualAdjustment":1.0,"geValue":40715423.5},{"name":"Ghrazi rapier","type":"normal","dropRate":0.002891844997,"manualAdjustment":1.0,"geValue":33949280},{"name":"Sanguinesti staff (uncharged)","type":"normal","dropRate":0.002891844997,"manualAdjustment":1.0,"geValue":19884998.5},{"name":"Justiciar faceguard","type":"normal","dropRate":0.002891844997,"manualAdjustment":1.0,"geValue":14467250},{"name":"Justiciar chestguard","type":"normal","dropRate":0.002891844997,"manualAdjustment":1.0,"geValue":14484253},{"name":"Justiciar legguards","type":"normal","dropRate":0.002891844997,"manualAdjustment":1.0,"geValue":12956492},{"name":"Scythe of vitur (uncharged)","type":"normal","dropRate":0.001445922499,"manualAdjustment":1.0,"geValue":1518250500},{"name":"Lil' Zik","type":"pet","dropRate":0.001538461538,"manualAdjustment":0.8,"geValue":0},{"name":"Holy ornament kit","type":"normal","dropRate":0.006929510156001003,"manualAdjustment":1.0,"geValue":0},{"name":"Sanguine ornament kit","type":"normal","dropRate":0.00395972008914343,"manualAdjustment":1.0,"geValue":0},{"name":"Sanguine dust","type":"normal","dropRate":0.002519821874581398,"manualAdjustment":1.0,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":10,"memberItems":["Avernic defender hilt","Ghrazi rapier","Sanguinesti staff (uncharged)","Justiciar faceguard","Justiciar chestguard","Justiciar legguards","Scythe of vitur (uncharged)","Holy ornament kit","Sanguine ornament kit","Sanguine dust"]}]},{"boss":"Tombs of Amascut","actualKPH":2.5,"bossType":"Raid","items":[{"name":"Osmumten's fang","type":"normal","dropRate":0.008915039999773023,"manualAdjustment":1.0,"geValue":23041260.5},{"name":"Lightbearer","type":"normal","dropRate":0.011143440000088366,"manualAdjustment":1.0,"geValue":5700441},{"name":"Elidinis' ward","type":"normal","dropRate":0.006685920000918512,"manualAdjustment":1.0,"geValue":3828584},{"name":"Masori mask","type":"normal","dropRate":0.004457519999886511,"manualAdjustment":1.0,"geValue":17894180},{"name":"Masori body","type":"normal","dropRate":0.004457519999886511,"manualAdjustment":1.0,"geValue":56426975.5},{"name":"Masori chaps","type":"normal","dropRate":0.004457519999886511,"manualAdjustment":1.0,"geValue":38066664.5},{"name":"Tumeken's shadow (uncharged)","type":"normal","dropRate":0.0022283999990328745,"manualAdjustment":1.0,"geValue":912705001.5},{"name":"Tumeken's guardian","type":"normal","dropRate":0.0027979199999715733,"manualAdjustment":1.0,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":8,"memberItems":["Osmumten's fang","Lightbearer","Elidinis' ward","Masori mask","Masori body","Masori chaps","Tumeken's shadow (uncharged)","Tumeken's guardian"]}]},{"boss":"Callisto/Artio","actualKPH":null,"bossType":null,"items":[{"name":"Claws of callisto","type":"normal","dropRate":0.001155802126675913,"manualAdjustment":1.0,"geValue":47755},{"name":"Voidwaker hilt","type":"normal","dropRate":0.0007832080200501254,"manualAdjustment":1.0,"geValue":9990851.5},{"name":"Tyrannical ring","type":"normal","dropRate":0.0009976057462090981,"manualAdjustment":1.0,"geValue":313220},{"name":"Dragon 2h sword","type":"normal","dropRate":0.0019952114924181963,"manualAdjustment":1.0,"geValue":134199},{"name":"Dragon pickaxe","type":"normal","dropRate":0.0019952114924181963,"manualAdjustment":1.0,"geValue":448000},{"name":"Callisto cub","type":"normal","dropRate":0.0003401360544217687,"manualAdjustment":1.0,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":6,"memberItems":["Claws of callisto","Voidwaker hilt","Tyrannical ring","Dragon 2h sword","Dragon pickaxe","Callisto cub"]}]},{"boss":"Vet'ion/Calvar'ion","actualKPH":null,"bossType":null,"items":[{"name":"Skull of vet'ion","type":"normal","dropRate":0.0012020342117040487,"manualAdjustment":1.0,"geValue":50022.5},{"name":"Voidwaker blade","type":"normal","dropRate":0.0008145363410902987,"manualAdjustment":1.0,"geValue":2160000},{"name":"Ring of the gods","type":"normal","dropRate":0.0010375099759995007,"manualAdjustment":1.0,"geValue":741670.5},{"name":"Dragon 2h sword","type":"normal","dropRate":0.0019952114924181963,"manualAdjustment":1.0,"geValue":134199},{"name":"Dragon pickaxe","type":"normal","dropRate":0.0019952114924181963,"manualAdjustment":1.0,"geValue":448000},{"name":"Vet'ion jr.","type":"normal","dropRate":0.0003537414966098693,"manualAdjustment":1.0,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":6,"memberItems":["Skull of vet'ion","Voidwaker blade","Ring of the gods","Dragon 2h sword","Dragon pickaxe","Vet'ion jr."]}]},{"boss":"Venenatis/Spindel","actualKPH":null,"bossType":null,"items":[{"name":"Fangs of venenatis","type":"normal","dropRate":0.0018950437318106545,"manualAdjustment":1.0,"geValue":53503},{"name":"Voidwaker gem","type":"normal","dropRate":0.001031746031707819,"manualAdjustment":1.0,"geValue":26554000},{"name":"Treasonous ring","type":"normal","dropRate":0.0007254464282880511,"manualAdjustment":1.0,"geValue":115000},{"name":"Dragon 2h sword","type":"normal","dropRate":0.0019952114924181963,"manualAdjustment":1.0,"geValue":134199},{"name":"Dragon pickaxe","type":"normal","dropRate":0.0019952114924181963,"manualAdjustment":1.0,"geValue":448000},{"name":"Venenatis spiderling","type":"normal","dropRate":0.0003301587301782951,"manualAdjustment":1.0,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":6,"memberItems":["Fangs of venenatis","Voidwaker gem","Treasonous ring","Dragon 2h sword","Dragon pickaxe","Venenatis spiderling"]}]},{"boss":"Odium/Malediction","actualKPH":null,"bossType":null,"items":[{"name":"Odium shard 1","type":"normal","dropRate":0.0033482142857142855,"manualAdjustment":1.0,"geValue":2227125},{"name":"Odium shard 2","type":"normal","dropRate":0.001506696428542001,"manualAdjustment":1.0,"geValue":829100},{"name":"Odium shard 3","type":"normal","dropRate":0.004017857143484933,"manualAdjustment":1.0,"geValue":426975},{"name":"Malediction shard 1","type":"normal","dropRate":0.0033482142857142855,"manualAdjustment":1.0,"geValue":730000},{"name":"Malediction shard 2","type":"normal","dropRate":0.001506696428542001,"manualAdjustment":1.0,"geValue":365500},{"name":"Malediction shard 3","type":"normal","dropRate":0.004017857143484933,"manualAdjustment":1.0,"geValue":439039},{"name":"Scorpia's offspring","type":"normal","dropRate":0.0006802721088435374,"manualAdjustment":1.0,"geValue":0},{"name":"Fedora","type":"normal","dropRate":0.0030133928576136994,"manualAdjustment":1.0,"geValue":4825.5},{"name":"Pet chaos elemental","type":"normal","dropRate":0.0008571428571428571,"manualAdjustment":1.0,"geValue":0}],"bonuses":[{"name":"All odium shards (3)","type":"sub_group_bonus","groupLabel":"odium shards","requiredCount":3,"memberItems":["Odium shard 1","Odium shard 2","Odium shard 3"]},{"name":"All malediction shards (3)","type":"sub_group_bonus","groupLabel":"malediction shards","requiredCount":3,"memberItems":["Malediction shard 1","Malediction shard 2","Malediction shard 3"]}]},{"boss":"Guardians of the Rift","actualKPH":20.0,"bossType":"Skilling","items":[{"name":"Catalytic talisman","type":"normal","dropRate":0.005,"manualAdjustment":1.0,"geValue":3702.5},{"name":"Abyssal needle","type":"normal","dropRate":0.003333333333,"manualAdjustment":1.0,"geValue":0},{"name":"Abyssal lantern","type":"normal","dropRate":0.001428571429,"manualAdjustment":1.0,"geValue":0},{"name":"Abyssal red dye","type":"normal","dropRate":0.0008333333333,"manualAdjustment":1.0,"geValue":0},{"name":"Abyssal green dye","type":"normal","dropRate":0.0008333333333,"manualAdjustment":1.0,"geValue":0},{"name":"Abyssal blue dye","type":"normal","dropRate":0.0008333333333,"manualAdjustment":1.0,"geValue":0},{"name":"Abyssal protector","type":"pet","dropRate":0.00025,"manualAdjustment":0.75,"geValue":0}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":6,"memberItems":["Catalytic talisman","Abyssal needle","Abyssal lantern","Abyssal red dye","Abyssal green dye","Abyssal blue dye"]}]},{"boss":"Wintertodt","actualKPH":30.0,"bossType":"Skilling","items":[{"name":"Burnt page","type":"normal","dropRate":0.02222222222,"manualAdjustment":1.0,"geValue":4785.5},{"name":"Warm gloves","type":"normal","dropRate":0.006666666667,"manualAdjustment":1.0,"geValue":0},{"name":"Bruma torch","type":"normal","dropRate":0.006666666667,"manualAdjustment":1.0,"geValue":0},{"name":"Pyromancer hood","type":"normal","dropRate":0.006666666667,"manualAdjustment":1.0,"geValue":0},{"name":"Pyromancer garb","type":"normal","dropRate":0.006666666667,"manualAdjustment":1.0,"geValue":0},{"name":"Pyromancer robe","type":"normal","dropRate":0.006666666667,"manualAdjustment":1.0,"geValue":0},{"name":"Pyromancer boots","type":"normal","dropRate":0.006666666667,"manualAdjustment":1.0,"geValue":0},{"name":"Tome of fire (empty)","type":"normal","dropRate":0.001,"manualAdjustment":1.0,"geValue":1272293},{"name":"Phoenix","type":"pet","dropRate":0.0002,"manualAdjustment":0.75,"geValue":0},{"name":"Dragon axe","type":"normal","dropRate":0.0001,"manualAdjustment":0.5,"geValue":84532}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":9,"memberItems":["Burnt page","Warm gloves","Bruma torch","Pyromancer hood","Pyromancer garb","Pyromancer robe","Pyromancer boots","Tome of fire (empty)","Dragon axe"]}]},{"boss":"Tempoross","actualKPH":50.0,"bossType":"Skilling","items":[{"name":"Soaked page","type":"normal","dropRate":0.02,"manualAdjustment":1.0,"geValue":2204.5},{"name":"Fish barrel","type":"normal","dropRate":0.0025,"manualAdjustment":1.0,"geValue":0},{"name":"Tackle box","type":"normal","dropRate":0.0025,"manualAdjustment":1.0,"geValue":0},{"name":"Big harpoonfish","type":"normal","dropRate":0.000625,"manualAdjustment":1.0,"geValue":0},{"name":"Tome of water (empty)","type":"normal","dropRate":0.000625,"manualAdjustment":1.0,"geValue":422540},{"name":"Tiny tempor","type":"pet","dropRate":0.000125,"manualAdjustment":0.75,"geValue":0},{"name":"Dragon harpoon","type":"normal","dropRate":0.000125,"manualAdjustment":0.75,"geValue":2885054}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":6,"memberItems":["Soaked page","Fish barrel","Tackle box","Big harpoonfish","Tome of water (empty)","Dragon harpoon"]}]},{"boss":"Zalcano","actualKPH":13.0,"bossType":"Skilling","items":[{"name":"Crystal tool seed","type":"normal","dropRate":0.001218917601,"manualAdjustment":1.0,"geValue":18816323.5},{"name":"Zalcano shard","type":"normal","dropRate":0.001333333333,"manualAdjustment":1.0,"geValue":62927},{"name":"Smolcano","type":"pet","dropRate":0.0004444444444,"manualAdjustment":0.75,"geValue":0},{"name":"Onyx (Zalcano)","type":"jar","dropRate":0.000125,"manualAdjustment":0.3,"geValue":2209996.5}],"bonuses":[{"name":"All Uniques Bonus","type":"all_uniques_bonus","requiredCount":2,"memberItems":["Crystal tool seed","Zalcano shard"]}]}],"metaBonuses":[{"id":"slayer_all_uniques","name":"All Slayer Boss Uniques (30)","contributingBosses":["Shellbane Gryphon","Grotesque Guardians","Abyssal Sire","Kraken","Cerberus","Araxxor","Thermy","Alchemical Hydra"],"memberItems":[{"boss":"Shellbane Gryphon","item":"Belle's folly (tarnished)"},{"boss":"Grotesque Guardians","item":"Granite maul"},{"boss":"Grotesque Guardians","item":"Granite gloves"},{"boss":"Grotesque Guardians","item":"Granite ring"},{"boss":"Grotesque Guardians","item":"Granite hammer"},{"boss":"Grotesque Guardians","item":"Black tourmaline core"},{"boss":"Abyssal Sire","item":"Bludgeon claw"},{"boss":"Abyssal Sire","item":"Bludgeon spine"},{"boss":"Abyssal Sire","item":"Bludgeon axon"},{"boss":"Abyssal Sire","item":"Abyssal dagger"},{"boss":"Abyssal Sire","item":"Abyssal whip"},{"boss":"Kraken","item":"Trident of the seas (full)"},{"boss":"Kraken","item":"Kraken tentacle"},{"boss":"Cerberus","item":"Primordial crystal"},{"boss":"Cerberus","item":"Pegasian crystal"},{"boss":"Cerberus","item":"Eternal crystal"},{"boss":"Cerberus","item":"Smouldering stone"},{"boss":"Araxxor","item":"Noxious pommel"},{"boss":"Araxxor","item":"Noxious point"},{"boss":"Araxxor","item":"Noxious blade"},{"boss":"Araxxor","item":"Araxyte fang"},{"boss":"Thermy","item":"Occult necklace"},{"boss":"Thermy","item":"Smoke battlestaff"},{"boss":"Thermy","item":"Dragon Chainbody"},{"boss":"Alchemical Hydra","item":"Hydra's eye"},{"boss":"Alchemical Hydra","item":"Hydra's fang"},{"boss":"Alchemical Hydra","item":"Hydra's heart"},{"boss":"Alchemical Hydra","item":"Hydra tail"},{"boss":"Alchemical Hydra","item":"Hydra leather"},{"boss":"Alchemical Hydra","item":"Hydra's claw"}],"requiredCount":30},{"id":"gwd_all_uniques","name":"All GWD Uniques (16)","contributingBosses":["Commander Zilyana","General Graardor","Kree'Arra","K'ril Tsutsaroth"],"memberItems":[{"boss":"Commander Zilyana","item":"Saradomin sword"},{"boss":"Commander Zilyana","item":"Saradomin's light"},{"boss":"Commander Zilyana","item":"Armadyl crossbow"},{"boss":"Commander Zilyana","item":"Saradomin hilt"},{"boss":"General Graardor","item":"Bandos chestplate"},{"boss":"General Graardor","item":"Bandos tassets"},{"boss":"General Graardor","item":"Bandos boots"},{"boss":"General Graardor","item":"Bandos hilt"},{"boss":"Kree'Arra","item":"Armadyl helmet"},{"boss":"Kree'Arra","item":"Armadyl chestplate"},{"boss":"Kree'Arra","item":"Armadyl chainskirt"},{"boss":"Kree'Arra","item":"Armadyl hilt"},{"boss":"K'ril Tsutsaroth","item":"Steam battlestaff"},{"boss":"K'ril Tsutsaroth","item":"Zamorakian spear"},{"boss":"K'ril Tsutsaroth","item":"Staff of the dead"},{"boss":"K'ril Tsutsaroth","item":"Zamorak hilt"}],"requiredCount":16},{"id":"dt2_full_sra","name":"Full Soul Reaper Axe (SRA)","contributingBosses":["The Whisperer","Duke Sucellus","Vardorvis","The Leviathan"],"requiredCount":4,"memberItems":[{"boss":"Duke Sucellus","item":"Chromium ingot (DS)"},{"boss":"The Leviathan","item":"Chromium ingot (L)"},{"boss":"Vardorvis","item":"Chromium ingot (V)"},{"boss":"The Whisperer","item":"Chromium ingot (W)"}],"mixAndMatch":true},{"id":"dt2_full_virtus","name":"Full Virtus Set","contributingBosses":["The Whisperer","Duke Sucellus","Vardorvis","The Leviathan"],"requiredCount":3,"memberItems":[{"boss":"Duke Sucellus","item":"Virtus mask (DS)"},{"boss":"Duke Sucellus","item":"Virtus robe top (DS)"},{"boss":"Duke Sucellus","item":"Virtus robe bottom (DS)"},{"boss":"The Leviathan","item":"Virtus mask (L)"},{"boss":"The Leviathan","item":"Virtus robe top (L)"},{"boss":"The Leviathan","item":"Virtus robe bottom (L)"},{"boss":"Vardorvis","item":"Virtus mask (V)"},{"boss":"Vardorvis","item":"Virtus robe top (V)"},{"boss":"Vardorvis","item":"Virtus robe bottom (V)"},{"boss":"The Whisperer","item":"Virtus mask (W)"},{"boss":"The Whisperer","item":"Virtus robe top (W)"},{"boss":"The Whisperer","item":"Virtus robe bottom (W)"}],"mixAndMatch":true}],"assumptions":{"kphNormalizationConstant":60,"uniqueBonusMultiplier":0.75,"collectionLogBonus":0.2,"bountyPoints":{"Major":{"1st Place":2500,"2nd Place":1500,"3rd Place":0},"Minor":{"1st Place":1500,"2nd Place":500,"3rd Place":0}}}};
+const BOUNTIES = [{"type":"Major","number":1,"description":"Raids - Obtain any raids armour piece or offhand"},{"type":"Minor","number":1,"description":"Zulrah - Obtain 3 uniques"},{"type":"Major","number":2,"description":"DT2 - Obtain 1 SRA or Virtus piece"},{"type":"Minor","number":2,"description":"The Hueycoatl - Obtain tome of earth or dragon hunter wand"},{"type":"Major","number":3,"description":"Nex - Obtain any unique (excl. pet, shards)"},{"type":"Minor","number":3,"description":"The Corrupted Gauntlet - Obtain 2 armour seeds or 1 enhanced weapon seed"},{"type":"Major","number":4,"description":"GWD - Obtain 1 hilt"},{"type":"Minor","number":4,"description":"Wilderness - Obtain any wilderness ring"},{"type":"Major","number":5,"description":"Tombs of Amascut - Obtain a Lightbearer or Osmumten's Fang"},{"type":"Minor","number":5,"description":"Moons of Peril - Complete one Moons set"},{"type":"Major","number":6,"description":"Slayer - Obtain 3 slayer boss uniques (excl. pets, teleports, jars)"},{"type":"Minor","number":6,"description":"Guardians of the Rift - Obtain any dye or lantern"},{"type":"Major","number":7,"description":"Doom of Mokhaiotl - Obtain any unique (excl. demon tears, teleport, pet)"},{"type":"Minor","number":7,"description":"The Royal Titans - Complete 2 twinflame staffs"},{"type":"Major","number":8,"description":"Yama - Obtain any unique without using contracts (excl. teleport, shards, contracts, pet)"},{"type":"Minor","number":8,"description":"DKs - Obtain all 4 DKs rings (Warrior, Berserker, Archer, and Seers)"},{"type":"Major","number":9,"description":"Theatre of Blood - Obtain an avernic defender hilt, rapier, or sanguinesti staff"},{"type":"Minor","number":9,"description":"Sarachnis - Obtain 2 cudgels or 1 jar"},{"type":"Major","number":10,"description":"DT2 - Obtain 3 ring rolls/ingots"},{"type":"Minor","number":10,"description":"Zalcano - Obtain a unique (shard or crystal tool seed) or Smolcano"},{"type":"Major","number":11,"description":"Fortis Colosseum - Obtain 2 different uniques (excl. shards, pet, quiver)"},{"type":"Minor","number":11,"description":"Vorkath - Obtain any unique (excl. head), jar, or pet"},{"type":"Major","number":12,"description":"Freestyle - Obtain 1 each of magic, range, and melee weapons from three separate bosses (component pieces such as magic fang count as a full weapon)"},{"type":"Minor","number":12,"description":"Freestyle - Obtain 1 each of head, torso, and leg slot items from three separate bosses (component pieces such as Hueycoatl hide may act as wild cards)"},{"type":"Major","number":13,"description":"Chambers of Xeric - Obtain a unique (excl. prayer scrolls, pet, kits, dust)"},{"type":"Minor","number":13,"description":"Tempoross - Obtain tome or big harpoonfish"},{"type":"Major","number":14,"description":"Phantom Muspah - Obtain 2 venator shards"},{"type":"Minor","number":14,"description":"Wilderness - Obtain 3 different odium or malediction shards (no duplicates)"}];
+
+const $ = id => document.getElementById(id);
+const fmtNum = n => Math.round(n).toLocaleString();
+const fmtGP = n => {
+  if (n >= 1e9) return (n/1e9).toFixed(2).replace(/\.?0+$/,'') + 'B';
+  if (n >= 1e6) return (n/1e6).toFixed(1).replace(/\.?0+$/,'') + 'M';
+  if (n >= 1e3) return (n/1e3).toFixed(0) + 'K';
+  return Math.round(n).toLocaleString();
+};
+
+// ---- Boss/item lookup maps ----
+const BOSS_MAP = {};
+CONFIG.bosses.forEach(b => BOSS_MAP[b.boss] = b);
+function findItem(bossName, itemName) {
+  const b = BOSS_MAP[bossName];
+  if (!b) return null;
+  return b.items.find(it => it.name === itemName) || null;
+}
+
+let STATE = { kph: {}, drops: [], bountyCompletions: [], bountyReveals: [] };
+
+function effectiveKPH(bossName) {
+  if (STATE.kph[bossName] != null) return STATE.kph[bossName];
+  const b = BOSS_MAP[bossName];
+  return b ? b.actualKPH : null;
+}
+
+function itemPointValue(bossName, item) {
+  const kph = effectiveKPH(bossName);
+  if (!kph || !item.dropRate) return null;
+  const base = 1 / item.dropRate;
+  return base * (CONFIG.assumptions.kphNormalizationConstant / kph) * item.manualAdjustment;
+}
+
+// ---- Per-team computation ----
+function computeTeam(team) {
+  const teamDrops = STATE.drops.filter(d => d.team === team);
+  const obtained = new Set();          // "boss||item" keys, presence only
+  let dropPoints = 0, geValue = 0, uniqueDropCount = 0, pendingKPH = false;
+
+  for (const d of teamDrops) {
+    const item = findItem(d.boss, d.item);
+    if (!item) continue;
+    obtained.add(d.boss + '||' + d.item);
+    uniqueDropCount++;
+    const pv = itemPointValue(d.boss, item);
+    if (pv == null) { pendingKPH = true; }
+    else {
+      let val = pv * d.quantity;
+      if (d.isCollectionLog) val += pv * d.quantity * CONFIG.assumptions.collectionLogBonus;
+      dropPoints += val;
+    }
+    if (item.geValue) geValue += item.geValue * d.quantity;
+  }
+
+  // Per-boss bonuses (all_uniques_bonus / sub_group_bonus)
+  let bonusPoints = 0;
+  const bonusStatus = []; // for display
+  for (const b of CONFIG.bosses) {
+    for (const bonus of (b.bonuses || [])) {
+      const achieved = bonus.memberItems.every(name => obtained.has(b.boss + '||' + name));
+      let value = null;
+      if (achieved) {
+        value = 0;
+        for (const name of bonus.memberItems) {
+          const it = findItem(b.boss, name);
+          const pv = it ? itemPointValue(b.boss, it) : null;
+          if (pv == null) { value = null; break; }
+          value += pv;
+        }
+        if (value != null) { value *= CONFIG.assumptions.uniqueBonusMultiplier; bonusPoints += value; }
+      }
+      bonusStatus.push({ boss: b.boss, name: bonus.name, achieved, value });
+    }
+  }
+
+  // Cross-boss meta bonuses
+  const metaStatus = [];
+  for (const mb of CONFIG.metaBonuses) {
+    let achieved, value = null;
+    if (mb.mixAndMatch) {
+      // group member items by name with trailing "(X)" suffix stripped
+      const groups = {};
+      for (const m of mb.memberItems) {
+        const base = m.item.replace(/\s*\([^)]*\)\s*$/, '');
+        (groups[base] = groups[base] || []).push(m);
+      }
+      let groupsAchieved = 0;
+      const achievedMembers = [];
+      for (const base in groups) {
+        const hit = groups[base].find(m => obtained.has(m.boss + '||' + m.item));
+        if (hit) { groupsAchieved++; achievedMembers.push(hit); }
+      }
+      achieved = groupsAchieved >= (mb.requiredCount || Object.keys(groups).length);
+      if (achieved && mb.id.startsWith('slayer') || mb.id.startsWith('gwd')) {
+        // (handled below for point-bearing bonuses)
+      }
+    } else {
+      achieved = mb.memberItems.every(m => obtained.has(m.boss + '||' + m.item));
+    }
+
+    // Only slayer/GWD mega bonuses currently have a defined point value
+    if (achieved && (mb.id === 'slayer_all_uniques' || mb.id === 'gwd_all_uniques')) {
+      value = 0;
+      for (const m of mb.memberItems) {
+        const it = findItem(m.boss, m.item);
+        const pv = it ? itemPointValue(m.boss, it) : null;
+        if (pv == null) { value = null; break; }
+        value += pv;
+      }
+      if (value != null) { value *= CONFIG.assumptions.uniqueBonusMultiplier; bonusPoints += value; }
+    }
+    metaStatus.push({ id: mb.id, name: mb.name, achieved, value, hasValue: mb.id === 'slayer_all_uniques' || mb.id === 'gwd_all_uniques' });
+  }
+
+  // Bounty points
+  let bountyPoints = 0;
+  for (const bc of STATE.bountyCompletions) {
+    if (bc.team !== team) continue;
+    const table = CONFIG.assumptions.bountyPoints[bc.bountyType];
+    if (table && table[bc.placement] != null) bountyPoints += table[bc.placement];
+  }
+
+  return {
+    team, dropPoints, bonusPoints, bountyPoints,
+    totalPoints: dropPoints + bonusPoints + bountyPoints,
+    geValue, uniqueDropCount, pendingKPH, obtained, bonusStatus, metaStatus,
+  };
+}
+
+function render() {
+  const results = TEAMS.map(computeTeam);
+  results.sort((a, b) => b.totalPoints - a.totalPoints);
+  const maxPoints = Math.max(1, ...results.map(r => r.totalPoints));
+
+  $('prizePoolAmt').textContent = fmtGP(PRIZE_POOL) + ' GP';
+
+  // ---- Standings ----
+  $('standings').innerHTML = results.map((r, i) => `
+    <div class="team" style="--tc:${TEAM_COLORS[r.team]}">
+      <div class="top">
+        <div><span class="nm">${r.team}</span><span class="rank">${i===0?'Leading':'#' + (i+1)}</span></div>
+        <div class="val">${fmtNum(r.totalPoints)}<span>PTS</span></div>
+      </div>
+      <div class="track"><div class="fill" style="width:${(r.totalPoints/maxPoints*100).toFixed(1)}%"></div></div>
+      <div class="sub-stats">${fmtGP(r.geValue)} GP value · ${r.uniqueDropCount} drops logged
+        ${r.pendingKPH ? ' · <span style="color:var(--bad)">some items pending KPH input</span>' : ''}</div>
+    </div>
+  `).join('');
+
+  // ---- Bounties ----
+  $('bounties').innerHTML = BOUNTIES.map(b => {
+    const reveal = STATE.bountyReveals.find(r => r.bountyNumber === b.number && r.bountyType === b.type);
+    const revealed = reveal && reveal.revealed;
+    if (!revealed) {
+      return `<div class="bounty-card hidden-b">
+        <div class="btitle">${b.type} Bounty #${b.number}</div>
+        <div class="badge-hidden">Not yet revealed</div>
+      </div>`;
+    }
+    const completions = STATE.bountyCompletions.filter(c => c.bountyNumber === b.number && c.bountyType === b.type);
+    const table = CONFIG.assumptions.bountyPoints[b.type];
+    const statusLines = completions.length
+      ? completions.map(c => `<span class="claimed">${c.team} — ${c.placement} (+${table[c.placement] ?? 0})</span>`).join('')
+      : '<span>Unclaimed</span>';
+    return `<div class="bounty-card">
+      <div class="btitle">${b.type} Bounty #${b.number}</div>
+      <div class="bdesc">${b.description}</div>
+      <div class="bstatus">${statusLines}</div>
+    </div>`;
+  }).join('');
+
+  // ---- Cross-boss meta bonuses ----
+  $('metaBonuses').innerHTML = CONFIG.metaBonuses.map(mb => {
+    const lines = results.map(r => {
+      const ms = r.metaStatus.find(m => m.id === mb.id);
+      const cls = ms.achieved ? 'achieved' : 'pending';
+      const valTxt = ms.achieved
+        ? (ms.hasValue ? (ms.value != null ? `+${fmtNum(ms.value)} pts` : 'pending KPH') : '<span class="novalue">value TBD</span>')
+        : '';
+      return `<div class="${cls}">${r.team}: ${ms.achieved ? '✓ Complete' : 'In progress'} ${valTxt}</div>`;
+    }).join('');
+    return `<div class="meta-card">
+      <div class="mtitle">${mb.name}</div>
+      <div class="mstatus">${lines}</div>
+    </div>`;
+  }).join('');
+
+  // ---- Boss breakdown ----
+  const filterVal = ($('bossFilter').value || '').toLowerCase();
+  const bossesToShow = CONFIG.bosses.filter(b => {
+    if (!filterVal) return true;
+    if (b.boss.toLowerCase().includes(filterVal)) return true;
+    return b.items.some(it => it.name.toLowerCase().includes(filterVal));
+  });
+
+  $('bossList').innerHTML = bossesToShow.map(b => {
+    const kph = effectiveKPH(b.boss);
+    const itemRows = b.items.map(it => {
+      const pv = itemPointValue(b.boss, it);
+      const cells = TEAMS.map(team => {
+        const drop = STATE.drops.find(d => d.team === team && d.boss === b.boss && d.item === it.name);
+        return `<td class="num">${drop ? drop.quantity : '—'}</td>`;
+      }).join('');
+      const tag = it.type === 'jar' ? '<span class="tag jar">Jar</span>' : it.type === 'pet' ? '<span class="tag pet">Pet</span>' : '';
+      return `<tr><td>${it.name}${tag}</td><td class="num">${pv != null ? fmtNum(pv) : '—'}</td>${cells}</tr>`;
+    }).join('');
+
+    const bonusRows = (b.bonuses || []).map(bonus => {
+      const perTeam = TEAMS.map(team => {
+        const r = results.find(x => x.team === team);
+        const status = r.bonusStatus.find(s => s.boss === b.boss && s.name === bonus.name);
+        return status.achieved
+          ? `<span class="achieved">${team} ✓${status.value != null ? ' +' + fmtNum(status.value) : ''}</span>`
+          : `<span class="pending">${team}: —</span>`;
+      }).join(' &nbsp; ');
+      return `<div class="bonus-row">${bonus.name}: ${perTeam}</div>`;
+    }).join('');
+
+    return `<div class="boss-card" data-boss="${b.boss}">
+      <div class="boss-head" onclick="toggleBoss('${b.boss.replace(/'/g,"\\'")}')">
+        <div><span class="bname">${b.boss}</span><span class="bmeta">${b.bossType || ''}</span></div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="bmeta">KPH:</span>
+          <input class="kph-input" type="number" step="0.1" value="${kph ?? ''}" placeholder="—" onclick="event.stopPropagation()" disabled title="Set from the admin page">
+          <span class="chev">▶</span>
+        </div>
+      </div>
+      <div class="boss-body">
+        <table class="items"><thead><tr><th>Item</th><th>Pts</th>${TEAMS.map(t=>`<th>${t}</th>`).join('')}</tr></thead>
+        <tbody>${itemRows}</tbody></table>
+        ${bonusRows}
+      </div>
+    </div>`;
+  }).join('');
+
+  // ---- Recent drops log ----
+  const allDrops = [...STATE.drops].sort((a, b) => b.loggedAt - a.loggedAt).slice(0, 100);
+  if (!allDrops.length) {
+    $('logWrap').innerHTML = '<div class="empty">No drops logged yet.</div>';
+  } else {
+    $('logWrap').innerHTML = '<table class="log"><tbody>' + allDrops.map(d => {
+      const item = findItem(d.boss, d.item);
+      const pv = item ? itemPointValue(d.boss, item) : null;
+      const pts = pv != null ? pv * d.quantity * (d.isCollectionLog ? (1+CONFIG.assumptions.collectionLogBonus) : 1) : null;
+      return `<tr>
+        <td class="when hide-sm">${ago(d.loggedAt)}</td>
+        <td><span class="pill" style="--tc:${TEAM_COLORS[d.team]}">${d.team}</span></td>
+        <td>${d.quantity}× ${d.item}${d.isCollectionLog ? ' <span class="tag jar">CLog</span>' : ''}</td>
+        <td class="hide-sm">${d.boss}</td>
+        <td class="pts">${pts != null ? '+' + fmtNum(pts) : '—'}</td>
+      </tr>`;
+    }).join('') + '</tbody></table>';
+  }
+}
+
+function toggleBoss(bossName) {
+  const card = document.querySelector(`.boss-card[data-boss="${CSS.escape(bossName)}"]`);
+  if (card) card.classList.toggle('open');
+}
+
+function ago(ts) {
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 60) return s + 's ago';
+  if (s < 3600) return Math.floor(s/60) + 'm ago';
+  if (s < 86400) return Math.floor(s/3600) + 'h ago';
+  return Math.floor(s/86400) + 'd ago';
+}
+
+$('bossFilter').addEventListener('input', render);
+
+// ---- Polling ----
+const POLL_MS = 20000;
+async function poll() {
+  try {
+    const r = await fetch('/api/state', { cache: 'no-store' });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    STATE = await r.json();
+    render();
+    $('dot').classList.remove('stale');
+    $('liveTxt').textContent = 'Live';
+  } catch (e) {
+    $('dot').classList.add('stale');
+    $('liveTxt').textContent = 'Reconnecting';
+  }
+}
+poll();
+setInterval(() => { if (!document.hidden) poll(); }, POLL_MS);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) poll(); });
+</script>
+</body>
+</html>

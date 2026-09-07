@@ -58,7 +58,7 @@ export default {
       if (path === '/api/state' && method === 'GET') {
         const [kphRows, dropRows, bountyRows, revealRows] = await Promise.all([
           env.DB.prepare('SELECT boss_name, actual_kph FROM boss_kph').all(),
-          env.DB.prepare('SELECT id, boss_name, item_name, team, quantity, logged_at FROM drops WHERE undone = 0 ORDER BY logged_at ASC').all(),
+          env.DB.prepare('SELECT id, boss_name, item_name, team, quantity, is_collection_log, logged_at FROM drops WHERE undone = 0 ORDER BY logged_at ASC').all(),
           env.DB.prepare('SELECT id, bounty_number, bounty_type, team, placement, logged_at FROM bounty_completions WHERE undone = 0 ORDER BY logged_at ASC').all(),
           env.DB.prepare('SELECT bounty_number, bounty_type, revealed, revealed_at FROM bounty_reveals').all(),
         ]);
@@ -70,7 +70,8 @@ export default {
           kph,
           drops: dropRows.results.map(r => ({
             id: r.id, boss: r.boss_name, item: r.item_name,
-            team: r.team, quantity: r.quantity, loggedAt: r.logged_at,
+            team: r.team, quantity: r.quantity, isCollectionLog: !!r.is_collection_log,
+            loggedAt: r.logged_at,
           })),
           bountyCompletions: bountyRows.results.map(r => ({
             id: r.id, bountyNumber: r.bounty_number, bountyType: r.bounty_type,
@@ -94,13 +95,14 @@ export default {
           const item = String(body.item || '').trim();
           const team = String(body.team || '').trim();
           const quantity = Number(body.quantity) || 1;
+          const isCollectionLog = body.isCollectionLog ? 1 : 0;
           if (!boss || !item || !team) return json({ error: 'boss, item, and team are required' }, 400);
           if (quantity <= 0 || quantity > 100) return json({ error: 'quantity must be between 1 and 100' }, 400);
 
           const now = Date.now();
           const result = await env.DB.prepare(
-            'INSERT INTO drops (boss_name, item_name, team, quantity, logged_at) VALUES (?, ?, ?, ?, ?) RETURNING id'
-          ).bind(boss, item, team, quantity, now).first();
+            'INSERT INTO drops (boss_name, item_name, team, quantity, is_collection_log, logged_at) VALUES (?, ?, ?, ?, ?, ?) RETURNING id'
+          ).bind(boss, item, team, quantity, isCollectionLog, now).first();
 
           await logAudit(env, 'drop_added', `Logged: ${team} +${quantity} ${item} (${boss})`);
           return json({ ok: true, id: result.id }, 201);
