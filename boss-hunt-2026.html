@@ -66,6 +66,37 @@ h2.sec{font-family:'Cinzel',serif;font-weight:900;font-size:22px;text-transform:
 .bounty-card .bstatus .claimed{color:var(--gold-hi)}
 .badge-hidden{display:inline-block;font-family:'Cinzel',serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#514c40;border:1px solid var(--line);padding:2px 8px;margin-top:8px}
 
+.boss-card{background:linear-gradient(#11141a,#0a0c10);border:1px solid #1f1b13;border-top:1px solid #302719;margin-bottom:10px}
+.boss-head{display:flex;justify-content:space-between;align-items:center;padding:13px 18px;gap:10px}
+.boss-head .bimg{width:64px;height:64px;object-fit:contain;image-rendering:pixelated;order:2}
+.boss-head .bname{font-family:'Cinzel',serif;font-weight:600;font-size:21px;letter-spacing:.05em;color:#ddd1b1;order:1}
+.boss-body{padding:0 18px 16px}
+.item-img{width:28px;height:28px;object-fit:contain;vertical-align:middle;margin-right:8px;image-rendering:pixelated}
+.item-name-cell{display:flex;align-items:center}
+.clog-mark{color:var(--gold-hi);font-size:11px;margin-left:5px}
+
+.jump-nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.jump-nav a{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-lo);
+  text-decoration:none;border:1px solid var(--gold-lo);padding:5px 12px;border-radius:3px}
+.jump-nav a:hover{color:var(--gold-hi);border-color:var(--gold-hi)}
+
+.type-section{margin-bottom:34px}
+.type-title{font-family:'Cinzel',serif;font-weight:900;font-size:17px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--gold-lo)}
+
+table.items{width:100%;border-collapse:collapse;font-size:15px;margin-top:8px}
+table.items th{font-family:'Cinzel',serif;font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:#a89f8c;text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+table.items td{padding:6px 8px;border-bottom:1px solid #14110c;color:#cbc1a8}
+table.items td.num{text-align:center;font-family:'Cinzel',serif}
+
+.bonus-row{margin-top:10px;padding:8px 10px;background:rgba(201,162,39,.05);border-left:2px solid var(--gold-lo);font-size:15px}
+.bonus-row .achieved{color:var(--good)}
+.bonus-row .pending{color:var(--dim)}
+
+.meta-card{background:linear-gradient(#12151b,#0a0c10);border:1px solid var(--line);border-top:2px solid #5a1a7a;padding:14px 16px;margin-bottom:10px}
+.meta-card .mtitle{font-family:'Cinzel',serif;font-weight:600;font-size:14px;color:#b060e0}
+.meta-card .mstatus{margin-top:6px;font-size:13px;color:var(--dim)}
+.meta-card .mstatus .achieved{color:var(--good)}
+
 footer{margin-top:50px;text-align:center}
 footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:16px;letter-spacing:.42em;text-indent:.42em;color:var(--gold)}
 footer .note{margin-top:9px;font-size:12px;letter-spacing:.14em;color:#4f4a3d;text-transform:uppercase}
@@ -95,6 +126,11 @@ footer .note{margin-top:9px;font-size:12px;letter-spacing:.14em;color:#4f4a3d;te
   <h2 class="sec">Standings</h2>
   <div class="sec-rule"></div>
   <div id="standings"></div>
+
+  <h2 class="sec">Boss Breakdown</h2>
+  <div class="sec-rule"></div>
+  <div class="jump-nav" id="jumpNav"></div>
+  <div id="bossList"></div>
 
   <footer>
     <div class="mark">MILLIONS</div>
@@ -268,7 +304,82 @@ function render() {
         ${r.pendingKPH ? ' · <span style="color:var(--bad)">some items pending KPH input</span>' : ''}</div>
     </div>
   `).join('');
+
+  // ---- Boss breakdown, grouped by boss type, with cross-boss bonuses appended ----
+  const TYPE_ORDER = ['Slayer','God Wars','Desert Treasure','General','Dagannoth','Wilderness','Raids','Skilling'];
+  const META_BONUS_SECTION = {
+    slayer_all_uniques: 'Slayer', gwd_all_uniques: 'God Wars',
+    dt2_full_sra: 'Desert Treasure', dt2_full_virtus: 'Desert Treasure',
+  };
+
+  function renderBossCard(b) {
+    const rowsHtml = b.displayItems.map(di => {
+      if (di.kind === 'item') {
+        const pv = itemPointValue(b.boss, di);
+        const cells = TEAMS.map(team => {
+          const matching = STATE.drops.filter(d => d.team === team && d.boss === b.boss && d.item === di.name);
+          if (!matching.length) return `<td class="num">—</td>`;
+          const total = matching.reduce((sum, d) => sum + d.quantity, 0);
+          const anyClog = matching.some(d => d.isCollectionLog);
+          const clog = anyClog ? '<span class="clog-mark" title="Collection log">📜</span>' : '';
+          return `<td class="num">${total}${clog}</td>`;
+        }).join('');
+        return `<tr><td><div class="item-name-cell"><img class="item-img" src="${di.img}" onerror="this.style.display='none'" alt="">${di.name}</div></td><td class="num">${pv != null ? fmtNum(pv) : '—'}</td>${cells}</tr>`;
+      }
+      if (di.kind === 'all_uniques' || di.kind === 'sub_group') {
+        const bonusName = di.kind === 'all_uniques' ? 'All Uniques Bonus' : di.name;
+        const perTeam = TEAMS.map(team => {
+          const r = results.find(x => x.team === team);
+          const status = r.bonusStatus.find(s => s.boss === b.boss && s.name === bonusName);
+          return status.achieved
+            ? `<span class="achieved">${team} ✓${status.value != null ? ' +' + fmtNum(status.value) : ''}</span>`
+            : `<span class="pending">${team}: —</span>`;
+        }).join(' &nbsp; ');
+        return `<tr><td colspan="${2+TEAMS.length}"><div class="bonus-row">${bonusName}: ${perTeam}</div></td></tr>`;
+      }
+      return '';
+    }).join('');
+
+    return `<div class="boss-card" data-boss="${b.boss}">
+      <div class="boss-head">
+        <img class="bimg" src="${b.img}" onerror="this.style.display='none'" alt="">
+        <span class="bname">${b.boss}</span>
+      </div>
+      <div class="boss-body">
+        <table class="items"><thead><tr><th>Item</th><th>Pts</th>${TEAMS.map(t=>`<th>${t}</th>`).join('')}</tr></thead>
+        <tbody>${rowsHtml}</tbody></table>
+      </div>
+    </div>`;
+  }
+
+  function renderMetaCard(mb) {
+    const lines = results.map(r => {
+      const ms = r.metaStatus.find(m => m.id === mb.id);
+      const cls = ms.achieved ? 'achieved' : 'pending';
+      const valTxt = ms.achieved ? (ms.value != null ? `+${fmtNum(ms.value)} pts` : 'pending KPH') : '';
+      return `<div class="${cls}">${r.team}: ${ms.achieved ? '✓ Complete' : 'In progress'} ${valTxt}</div>`;
+    }).join('');
+    return `<div class="meta-card"><div class="mtitle">${mb.name}</div><div class="mstatus">${lines}</div></div>`;
+  }
+
+  const bossesByType = {};
+  CONFIG.bosses.forEach(b => { (bossesByType[b.bossType || 'Wilderness'] = bossesByType[b.bossType || 'Wilderness'] || []).push(b); });
+
+  const activeTypes = TYPE_ORDER.filter(t => bossesByType[t]);
+  $('jumpNav').innerHTML = activeTypes.map(t => `<a href="#type-${slugify(t)}">${t}</a>`).join('');
+
+  $('bossList').innerHTML = activeTypes.map(type => {
+    const bosses = bossesByType[type];
+    const metaCards = CONFIG.metaBonuses.filter(mb => META_BONUS_SECTION[mb.id] === type).map(renderMetaCard).join('');
+    return `<div class="type-section" id="type-${slugify(type)}">
+      <div class="type-title">${type}</div>
+      ${bosses.map(renderBossCard).join('')}
+      ${metaCards}
+    </div>`;
+  }).join('');
 }
+
+function slugify(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
 
 // ---- Polling ----
 const POLL_MS = 20000;
