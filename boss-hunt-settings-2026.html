@@ -48,6 +48,7 @@ table.list td{padding:7px 8px;border-bottom:1px solid #14110c;color:#cbc1a8;vert
 table.list input[type=number]{width:80px;padding:5px 7px;font-size:14px;background:#0a0c10;border:1px solid #2a2418;color:#e2d8bd;outline:none}
 table.list input[type=number]:focus{border-color:var(--gold)}
 table.list .sub{color:#6b6558;font-size:12px}
+table.list .type-header-row td{background:rgba(201,162,39,.06);font-family:'Cinzel',serif;font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);padding:8px 8px;border-bottom:1px solid var(--gold-lo)}
 button{background:linear-gradient(#1a1610,#0f0d09);border:1px solid var(--gold-lo);color:var(--gold-hi);
   padding:6px 14px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:'Cinzel',serif;font-size:11px}
 button:hover{border-color:var(--gold);color:#fff6d8}
@@ -90,9 +91,11 @@ footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-sp
     <h2 class="sec">Boss KPH</h2>
     <div class="sec-rule"></div>
     <div class="card">
-      <div class="hint">Point values recalculate live on the public board as soon as you save a KPH here. Leave blank until you're ready — it'll show as "pending KPH" on the board.</div>
+      <div class="hint">Point values recalculate live on the public board as soon as you save. Leave a boss blank until you're ready — it'll show as "pending KPH" on the board.</div>
       <div class="filter-row"><input type="text" id="kphFilter" placeholder="Search bosses…"></div>
-      <table class="list" id="kphTable"><thead><tr><th>Boss</th><th>KPH</th><th></th></tr></thead><tbody></tbody></table>
+      <table class="list" id="kphTable"><thead><tr><th>Boss</th><th>KPH</th></tr></thead><tbody></tbody></table>
+      <button id="kphSaveAll" style="margin-top:14px">Save All</button>
+      <div id="kphSaveMsg"></div>
     </div>
 
     <h2 class="sec">Manual Point Adjustments</h2>
@@ -100,7 +103,9 @@ footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-sp
     <div class="card">
       <div class="hint">Matches the "Manual Adjustment" column in your spreadsheet — 0.75 for jars/pets, 1.0 for everything else by default. Override any specific item here if needed.</div>
       <div class="filter-row"><input type="text" id="adjFilter" placeholder="Search items or bosses…"></div>
-      <table class="list" id="adjTable"><thead><tr><th>Item</th><th>Boss</th><th>Adjustment</th><th></th></tr></thead><tbody></tbody></table>
+      <table class="list" id="adjTable"><thead><tr><th>Item</th><th>Boss</th><th>Adjustment</th></tr></thead><tbody></tbody></table>
+      <button id="adjSaveAll" style="margin-top:14px">Save All</button>
+      <div id="adjSaveMsg"></div>
     </div>
 
   </section>
@@ -163,80 +168,108 @@ async function loadState(){
 function renderKphTable(){
   const filterVal = ($('kphFilter').value || '').toLowerCase();
   const tbody = $('kphTable').querySelector('tbody');
-  const bosses = CONFIG.bosses.filter(b => !filterVal || b.boss.toLowerCase().includes(filterVal));
-  tbody.innerHTML = bosses.map(b => {
-    const current = STATE.kph[b.boss];
-    return `<tr data-boss="${b.boss}">
-      <td>${b.boss}</td>
-      <td><input type="number" step="0.1" min="0.1" class="kph-input" value="${current ?? ''}" placeholder="—"></td>
-      <td style="text-align:right"><button data-save-kph="${b.boss}">Save</button></td>
-    </tr>`;
-  }).join('');
-
-  tbody.querySelectorAll('[data-save-kph]').forEach(btn => {
-    btn.onclick = async () => {
-      const boss = btn.dataset.saveKph;
-      const row = tbody.querySelector(`tr[data-boss="${CSS.escape(boss)}"]`);
-      const kph = parseFloat(row.querySelector('.kph-input').value);
-      if (!Number.isFinite(kph) || kph <= 0) return alert('Enter a valid positive KPH.');
-      btn.disabled = true;
-      try{
-        const r = await api('/api/admin/kph', {
-          method:'POST', headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({ boss, kph }),
-        });
-        if (!r.ok) throw new Error((await r.json()).error || 'Failed');
-        await loadState();
-      } catch(e){ alert('Failed: ' + e.message); }
-      btn.disabled = false;
-    };
+  const TYPE_ORDER = ['Slayer','God Wars','Desert Treasure','General','Dagannoth','Other','Raid','Skilling'];
+  const byType = {};
+  CONFIG.bosses.forEach(b => {
+    if (filterVal && !b.boss.toLowerCase().includes(filterVal)) return;
+    const type = b.bossType || 'Other';
+    (byType[type] = byType[type] || []).push(b);
   });
+
+  tbody.innerHTML = TYPE_ORDER.filter(t => byType[t] && byType[t].length).map(type => {
+    const rows = byType[type].map(b => {
+      const current = STATE.kph[b.boss];
+      return `<tr data-boss="${b.boss}">
+        <td>${b.boss}</td>
+        <td><input type="number" step="0.1" min="0.1" class="kph-input" value="${current ?? ''}" placeholder="—"></td>
+      </tr>`;
+    }).join('');
+    return `<tr class="type-header-row"><td colspan="2">${type}</td></tr>${rows}`;
+  }).join('');
 }
+$('kphFilter').addEventListener('input', renderKphTable);
+
+$('kphSaveAll').onclick = async () => {
+  const tbody = $('kphTable').querySelector('tbody');
+  const rows = [...tbody.querySelectorAll('tr[data-boss]')];
+  $('kphSaveAll').disabled = true;
+  let okCount = 0, failCount = 0, skipCount = 0;
+  try{
+    await Promise.all(rows.map(async row => {
+      const boss = row.dataset.boss;
+      const val = row.querySelector('.kph-input').value;
+      if (val === '') { skipCount++; return; } // leave blank ones untouched
+      const kph = parseFloat(val);
+      if (!Number.isFinite(kph) || kph <= 0) { failCount++; return; }
+      const r = await api('/api/admin/kph', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ boss, kph }),
+      });
+      if (r.ok) okCount++; else failCount++;
+    }));
+    say($('kphSaveMsg'), `Saved ${okCount} boss${okCount===1?'':'es'}.${failCount ? ' ' + failCount + ' failed.' : ''}`, failCount === 0);
+    await loadState();
+  } catch(e){
+    say($('kphSaveMsg'), 'Failed: ' + e.message, false);
+  }
+  $('kphSaveAll').disabled = false;
+};
+
 $('kphFilter').addEventListener('input', renderKphTable);
 
 // ── Manual adjustments table ─────────────────────────────
 function renderAdjTable(){
   const filterVal = ($('adjFilter').value || '').toLowerCase();
   const tbody = $('adjTable').querySelector('tbody');
-  const rows = [];
+  const TYPE_ORDER = ['Slayer','God Wars','Desert Treasure','General','Dagannoth','Other','Raid','Skilling'];
+  const byType = {};
   CONFIG.bosses.forEach(b => {
+    const type = b.bossType || 'Other';
     b.displayItems.forEach(di => {
       if (di.kind !== 'item') return;
       if (filterVal && !di.name.toLowerCase().includes(filterVal) && !b.boss.toLowerCase().includes(filterVal)) return;
-      rows.push({ boss: b.boss, item: di.name, defaultAdj: di.manualAdjustment });
+      (byType[type] = byType[type] || []).push({ boss: b.boss, item: di.name, defaultAdj: di.manualAdjustment });
     });
   });
-  tbody.innerHTML = rows.map(r => {
-    const override = STATE.manualAdjustments[r.boss + '||' + r.item];
-    const current = override != null ? override : r.defaultAdj;
-    return `<tr data-boss="${r.boss}" data-item="${r.item}">
-      <td>${r.item}</td>
-      <td class="sub">${r.boss}</td>
-      <td><input type="number" step="0.05" min="0" max="10" class="adj-input" value="${current}"></td>
-      <td style="text-align:right"><button data-save-adj="${r.boss}||${r.item}">Save</button></td>
-    </tr>`;
-  }).join('');
 
-  tbody.querySelectorAll('[data-save-adj]').forEach(btn => {
-    btn.onclick = async () => {
-      const [boss, item] = btn.dataset.saveAdj.split('||');
-      const row = tbody.querySelector(`tr[data-boss="${CSS.escape(boss)}"][data-item="${CSS.escape(item)}"]`);
-      const adjustment = parseFloat(row.querySelector('.adj-input').value);
-      if (!Number.isFinite(adjustment) || adjustment < 0) return alert('Enter a valid non-negative number.');
-      btn.disabled = true;
-      try{
-        const r = await api('/api/admin/manual-adjustment', {
-          method:'POST', headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({ boss, item, adjustment }),
-        });
-        if (!r.ok) throw new Error((await r.json()).error || 'Failed');
-        await loadState();
-      } catch(e){ alert('Failed: ' + e.message); }
-      btn.disabled = false;
-    };
-  });
+  tbody.innerHTML = TYPE_ORDER.filter(t => byType[t] && byType[t].length).map(type => {
+    const rows = byType[type].map(r => {
+      const override = STATE.manualAdjustments[r.boss + '||' + r.item];
+      const current = override != null ? override : r.defaultAdj;
+      return `<tr data-boss="${r.boss}" data-item="${r.item}">
+        <td>${r.item}</td>
+        <td class="sub">${r.boss}</td>
+        <td><input type="number" step="0.05" min="0" max="10" class="adj-input" value="${current}"></td>
+      </tr>`;
+    }).join('');
+    return `<tr class="type-header-row"><td colspan="3">${type}</td></tr>${rows}`;
+  }).join('');
 }
 $('adjFilter').addEventListener('input', renderAdjTable);
+
+$('adjSaveAll').onclick = async () => {
+  const tbody = $('adjTable').querySelector('tbody');
+  const rows = [...tbody.querySelectorAll('tr[data-boss]')];
+  $('adjSaveAll').disabled = true;
+  let okCount = 0, failCount = 0;
+  try{
+    await Promise.all(rows.map(async row => {
+      const boss = row.dataset.boss, item = row.dataset.item;
+      const adjustment = parseFloat(row.querySelector('.adj-input').value);
+      if (!Number.isFinite(adjustment) || adjustment < 0) { failCount++; return; }
+      const r = await api('/api/admin/manual-adjustment', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ boss, item, adjustment }),
+      });
+      if (r.ok) okCount++; else failCount++;
+    }));
+    say($('adjSaveMsg'), `Saved ${okCount} item${okCount===1?'':'s'}.${failCount ? ' ' + failCount + ' failed.' : ''}`, failCount === 0);
+    await loadState();
+  } catch(e){
+    say($('adjSaveMsg'), 'Failed: ' + e.message, false);
+  }
+  $('adjSaveAll').disabled = false;
+};
 
 if (pw) tryAuth(pw).then(ok => ok ? unlock() : sessionStorage.removeItem('bh_pw'));
 </script>

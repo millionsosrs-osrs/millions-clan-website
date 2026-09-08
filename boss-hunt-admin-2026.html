@@ -235,7 +235,17 @@ $('signout').onclick = () => { sessionStorage.removeItem('bh_pw'); location.relo
 // ── Drop logging form ────────────────────────────────────
 function populateDropForm(){
   TEAMS.forEach(t => $('dropTeam').add(new Option(t, t)));
-  CONFIG.bosses.forEach(b => $('dropBoss').add(new Option(b.boss, b.boss)));
+
+  const TYPE_ORDER = ['Slayer','God Wars','Desert Treasure','General','Dagannoth','Other','Raid','Skilling'];
+  const byType = {};
+  CONFIG.bosses.forEach(b => { const t = b.bossType || 'Other'; (byType[t] = byType[t] || []).push(b); });
+  TYPE_ORDER.filter(t => byType[t] && byType[t].length).forEach(type => {
+    const group = document.createElement('optgroup');
+    group.label = type;
+    byType[type].forEach(b => group.appendChild(new Option(b.boss, b.boss)));
+    $('dropBoss').appendChild(group);
+  });
+
   fillItemsForBoss();
   $('dropBoss').addEventListener('change', fillItemsForBoss);
 }
