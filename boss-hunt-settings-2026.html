@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Millions — Boss Hunt · Live Scoreboard</title>
-<meta name="description" content="Live scoreboard for the Millions clan Boss Hunt event.">
+<title>Millions — Boss Hunt · Settings</title>
+<meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&family=Barlow+Condensed:wght@400;600&family=IM+Fell+English:ital@1&display=swap" rel="stylesheet">
@@ -13,7 +13,6 @@
   --void:#06070a; --ink:#0b0d12; --panel:#11141a;
   --gold:#c9a227; --gold-hi:#eed595; --gold-lo:#5c4810;
   --parch:#c4bca8; --dim:#7a7365; --line:#201c14;
-  --team-1:#c9a227; --team-2:#7190b6; --team-3:#a63f2c;
   --good:#4caf50; --bad:#a63f2c;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -24,109 +23,38 @@ body{
   color:var(--parch); font-family:'Barlow Condensed',system-ui,sans-serif;
   -webkit-font-smoothing:antialiased; min-height:100vh;
 }
-.wrap{max-width:1080px;margin:0 auto;padding:0 24px 64px}
-.mast{padding:38px 0 0;text-align:center}
+.wrap{max-width:900px;margin:0 auto;padding:0 24px 64px}
+.mast{padding:32px 0 0;text-align:center}
 .mast .clan{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-spacing:.4em;text-indent:.4em;color:var(--gold)}
-.mast .ev{font-family:'Cinzel',serif;font-weight:900;font-size:30px;line-height:1;margin-top:8px;text-transform:uppercase;letter-spacing:.05em;
+.mast .ev{font-family:'Cinzel',serif;font-weight:900;font-size:26px;line-height:1;margin-top:8px;text-transform:uppercase;letter-spacing:.05em;
   background:linear-gradient(178deg,#fdf2d6 6%,var(--gold-hi) 40%,var(--gold) 64%,#7d6214 98%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.mast .sub{margin-top:6px;font-size:14px;color:var(--dim);letter-spacing:.1em}
 .mastrule{margin-top:16px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-lo) 12%,var(--gold) 50%,var(--gold-lo) 88%,transparent)}
-.live{display:flex;justify-content:center;align-items:center;gap:8px;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-top:14px}
-.top-nav{text-align:center;margin-top:10px}
-.top-nav a{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-lo);text-decoration:none;border-bottom:1px solid var(--gold-lo)}
-.top-nav a:hover{color:var(--gold-hi);border-color:var(--gold-hi)}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--good);animation:pulse 2.4s ease-in-out infinite}
-.dot.stale{background:var(--bad);animation:none}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+nav.top{display:flex;justify-content:center;gap:20px;margin-top:10px}
+nav.top a{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);text-decoration:none}
+nav.top a:hover{color:var(--gold-hi)}
 
-h2.sec{font-family:'Cinzel',serif;font-weight:900;font-size:22px;text-transform:uppercase;letter-spacing:.13em;color:#ddd1b1;margin:40px 0 4px}
-.sec-rule{height:1px;background:linear-gradient(90deg,var(--gold),rgba(0,0,0,0) 55%);margin-bottom:22px}
+h2.sec{font-family:'Cinzel',serif;font-weight:900;font-size:20px;text-transform:uppercase;letter-spacing:.12em;color:#ddd1b1;margin:36px 0 4px}
+.sec-rule{height:1px;background:linear-gradient(90deg,var(--gold),rgba(0,0,0,0) 55%);margin-bottom:18px}
+.card{background:linear-gradient(#11141a,#0a0c10);border:1px solid #1f1b13;border-top:1px solid #302719;padding:22px 20px;margin-bottom:16px}
+.hint{font-size:13px;color:#5c5648;margin-bottom:14px;line-height:1.4}
 
-.prizepool{text-align:center;margin-top:20px;font-family:'Cinzel',serif}
-.prizepool .amt{font-size:26px;font-weight:900;color:var(--gold-hi)}
-.prizepool .lbl{font-size:12px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;margin-top:2px}
-
-.team{margin-bottom:22px}
-.team .top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:7px}
-.team .nm{font-family:'Cinzel',serif;font-weight:900;font-size:21px;letter-spacing:.06em;color:var(--tc)}
-.team .rank{font-size:13px;letter-spacing:.2em;color:#514c40;text-transform:uppercase;margin-left:10px}
-.team .val{font-family:'Cinzel',serif;font-weight:900;font-size:24px;color:#e2d8bd}
-.team .val span{font-size:14px;color:var(--dim);letter-spacing:.14em;margin-left:8px}
-.team .sub-stats{font-size:13px;color:var(--dim);margin-top:4px;letter-spacing:.04em}
-.track{position:relative;height:26px;background:#0d1015;border:1px solid var(--line);overflow:hidden;margin-top:6px}
-.fill{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,var(--tc),color-mix(in srgb,var(--tc) 55%, #000));transition:width 900ms cubic-bezier(.22,.8,.3,1)}
-.fill::after{content:'';position:absolute;top:0;right:0;bottom:0;width:2px;background:#fff;opacity:.5}
-
-.bounty-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
-.bounty-card{background:linear-gradient(#12151b,#0a0c10);border:1px solid var(--line);border-top:2px solid var(--gold-lo);padding:14px 16px}
-.bounty-card.hidden-b{opacity:.5}
-.bounty-card .btitle{font-family:'Cinzel',serif;font-weight:600;font-size:13px;letter-spacing:.06em;color:var(--gold-hi);text-transform:uppercase}
-.bounty-card .bdesc{font-size:14px;color:var(--parch);margin-top:5px;line-height:1.4}
-.bounty-card .bstatus{margin-top:9px;font-size:13px;color:var(--dim);display:flex;flex-direction:column;gap:2px}
-.bounty-card .bstatus .claimed{color:var(--gold-hi)}
-.badge-hidden{display:inline-block;font-family:'Cinzel',serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#514c40;border:1px solid var(--line);padding:2px 8px;margin-top:8px}
-
-.boss-card{background:linear-gradient(#11141a,#0a0c10);border:1px solid #1f1b13;border-top:1px solid #302719;margin-bottom:10px}
-.boss-head{display:flex;justify-content:space-between;align-items:center;padding:13px 18px;gap:10px}
-.boss-head .bimg{width:64px;height:64px;object-fit:contain;image-rendering:pixelated;order:2}
-.boss-head .bname{font-family:'Cinzel',serif;font-weight:600;font-size:21px;letter-spacing:.05em;color:#ddd1b1;order:1}
-.boss-head .bmeta{font-size:12px;color:var(--dim);letter-spacing:.06em;margin-left:10px}
-.boss-body{padding:0 18px 16px}
-.item-img{width:28px;height:28px;object-fit:contain;vertical-align:middle;margin-right:8px;image-rendering:pixelated}
-.item-name-cell{display:flex;align-items:center}
-.clog-mark{color:var(--gold-hi);font-size:11px;margin-left:5px}
-
-.type-section{margin-bottom:34px}
-.type-title{font-family:'Cinzel',serif;font-weight:900;font-size:17px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--gold-lo)}
-
-.bounty-combo{background:linear-gradient(#12151b,#0a0c10);border:1px solid var(--line);border-top:2px solid var(--gold-lo);padding:14px 16px}
-.bounty-combo .bnum{font-family:'Cinzel',serif;font-weight:900;font-size:13px;letter-spacing:.1em;color:var(--gold-hi);text-transform:uppercase;margin-bottom:8px}
-.bounty-combo .btype-row{margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--line)}
-.bounty-combo .btype-row:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.bounty-combo .btype-label{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
-.bounty-combo .bdesc{font-size:14px;color:var(--parch);margin-top:3px;line-height:1.4}
-.bounty-combo .bstatus{margin-top:6px;font-size:13px;color:var(--dim)}
-.bounty-combo .bstatus .claimed{color:var(--gold-hi);display:block}
-
-table.items{width:100%;border-collapse:collapse;font-size:15px;margin-top:8px}
-table.items th{font-family:'Cinzel',serif;font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:#a89f8c;text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
-table.items td{padding:6px 8px;border-bottom:1px solid #14110c;color:#cbc1a8}
-table.items td.num{text-align:center;font-family:'Cinzel',serif}
-.tag{font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:1px 6px;border-radius:2px;margin-left:6px}
-.tag.clog{background:#1a1408;border:1px solid #5c4810;color:#c9a227}
-
-.bonus-row{margin-top:10px;padding:8px 10px;background:rgba(201,162,39,.05);border-left:2px solid var(--gold-lo);font-size:15px}
-.bonus-row .achieved{color:var(--good)}
-.bonus-row .pending{color:var(--dim)}
-
-.meta-bonus-section{margin-top:20px}
-.meta-card{background:linear-gradient(#12151b,#0a0c10);border:1px solid var(--line);border-top:2px solid #5a1a7a;padding:14px 16px;margin-bottom:10px}
-.meta-card .mtitle{font-family:'Cinzel',serif;font-weight:600;font-size:14px;color:#b060e0}
-.meta-card .mstatus{margin-top:6px;font-size:13px;color:var(--dim)}
-.meta-card .mstatus .achieved{color:var(--good)}
-.novalue{font-size:11px;color:#7a7365;font-style:italic}
-
-.filter-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
-.filter-row input{flex:1;min-width:180px;background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:8px 12px;color:var(--parch);font-family:'Barlow Condensed';font-size:15px;outline:none}
+.filter-row{margin-bottom:14px}
+.filter-row input{width:100%;background:var(--ink);border:1px solid var(--line);border-radius:4px;padding:9px 12px;color:var(--parch);font-family:'Barlow Condensed';font-size:15px;outline:none}
 .filter-row input:focus{border-color:var(--gold-lo)}
 
-table.log{width:100%;border-collapse:collapse;font-size:16px}
-table.log th{font-family:'Cinzel',serif;font-weight:600;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#514c40;text-align:left;padding:0 10px 10px;border-bottom:1px solid var(--line)}
-table.log td{padding:9px 10px;border-bottom:1px solid #14110c;color:#cbc1a8;vertical-align:middle}
-table.log tr:last-child td{border-bottom:none}
-.pill{display:inline-block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border:1px solid var(--tc);color:var(--tc);white-space:nowrap}
-td.pts{font-family:'Cinzel',serif;font-weight:900;color:var(--gold-hi);text-align:right;white-space:nowrap}
-td.when{color:#6b6558;font-size:14px;white-space:nowrap}
-.empty{padding:40px 0;text-align:center;color:#5c5648;font-family:'IM Fell English',serif;font-style:italic;font-size:17px}
+table.list{width:100%;border-collapse:collapse;font-size:14px}
+table.list th{font-family:'Cinzel',serif;font-weight:600;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#8b8371;text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+table.list td{padding:7px 8px;border-bottom:1px solid #14110c;color:#cbc1a8;vertical-align:middle}
+table.list input[type=number]{width:80px;padding:5px 7px;font-size:14px;background:#0a0c10;border:1px solid #2a2418;color:#e2d8bd;outline:none}
+table.list input[type=number]:focus{border-color:var(--gold)}
+table.list .sub{color:#6b6558;font-size:12px}
+button{background:linear-gradient(#1a1610,#0f0d09);border:1px solid var(--gold-lo);color:var(--gold-hi);
+  padding:6px 14px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:'Cinzel',serif;font-size:11px}
+button:hover{border-color:var(--gold);color:#fff6d8}
+button:disabled{opacity:.45;cursor:not-allowed}
 
-footer{margin-top:50px;text-align:center}
-footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:16px;letter-spacing:.42em;text-indent:.42em;color:var(--gold)}
-footer .note{margin-top:9px;font-size:12px;letter-spacing:.14em;color:#4f4a3d;text-transform:uppercase}
-
-@media (max-width:640px){
-  .team .val{font-size:20px}
-  table.log .hide-sm{display:none}
-}
+footer{margin-top:44px;text-align:center}
+footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-spacing:.4em;text-indent:.4em;color:var(--gold)}
 </style>
 </head>
 <body>
@@ -134,324 +62,183 @@ footer .note{margin-top:9px;font-size:12px;letter-spacing:.14em;color:#4f4a3d;te
 
   <header class="mast">
     <div class="clan">MILLIONS</div>
-    <div class="ev">Boss Hunt</div>
-    <div class="sub">Live Scoreboard</div>
+    <div class="ev">Boss Hunt — Settings</div>
   </header>
   <div class="mastrule"></div>
-  <div class="live"><span class="dot" id="dot"></span><span id="liveTxt">Live</span></div>
-  <nav class="top-nav"><a href="/boss-hunt-activity-2026">Bounties &amp; Recent Drops →</a></nav>
+  <nav class="top">
+    <a href="/boss-hunt-2026">Public Board</a>
+    <a href="/boss-hunt-admin-2026">Admin</a>
+  </nav>
 
-  <div class="prizepool">
-    <div class="amt" id="prizePoolAmt">—</div>
-    <div class="lbl">Current Prize Pool</div>
-  </div>
+  <!-- ── Sign in ───────────────────────────────────────────── -->
+  <section id="gate">
+    <h2 class="sec">Sign In</h2>
+    <div class="sec-rule"></div>
+    <div class="card">
+      <div class="hint" style="margin-bottom:0">
+        <label style="display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#6b6558;margin-bottom:6px;font-weight:600">Admin password</label>
+        <input type="password" id="pw" autocomplete="current-password" style="width:100%;background:#0a0c10;border:1px solid #2a2418;color:#e2d8bd;padding:10px 11px;outline:none;margin-bottom:12px">
+      </div>
+      <button id="signin" style="padding:11px 22px">Sign In</button>
+      <div id="gateMsg"></div>
+    </div>
+  </section>
 
-  <h2 class="sec">Standings</h2>
-  <div class="sec-rule"></div>
-  <div id="standings"></div>
+  <!-- ── Main panel ────────────────────────────────────────── -->
+  <section id="panel" hidden>
 
-  <h2 class="sec">Boss Breakdown</h2>
-  <div class="sec-rule"></div>
-  <div class="filter-row">
-    <input type="text" id="bossFilter" placeholder="Search bosses or items…">
-  </div>
-  <div id="bossList"></div>
+    <h2 class="sec">Boss KPH</h2>
+    <div class="sec-rule"></div>
+    <div class="card">
+      <div class="hint">Point values recalculate live on the public board as soon as you save a KPH here. Leave blank until you're ready — it'll show as "pending KPH" on the board.</div>
+      <div class="filter-row"><input type="text" id="kphFilter" placeholder="Search bosses…"></div>
+      <table class="list" id="kphTable"><thead><tr><th>Boss</th><th>KPH</th><th></th></tr></thead><tbody></tbody></table>
+    </div>
+
+    <h2 class="sec">Manual Point Adjustments</h2>
+    <div class="sec-rule"></div>
+    <div class="card">
+      <div class="hint">Matches the "Manual Adjustment" column in your spreadsheet — 0.75 for jars/pets, 1.0 for everything else by default. Override any specific item here if needed.</div>
+      <div class="filter-row"><input type="text" id="adjFilter" placeholder="Search items or bosses…"></div>
+      <table class="list" id="adjTable"><thead><tr><th>Item</th><th>Boss</th><th>Adjustment</th><th></th></tr></thead><tbody></tbody></table>
+    </div>
+
+  </section>
 
   <footer>
     <div class="mark">MILLIONS</div>
-    <div class="note">Updates automatically</div>
   </footer>
 </div>
 
 <script>
-const TEAMS = ["Team A", "Team B", "Team C"];
-const TEAM_COLORS = { "Team A": "var(--team-1)", "Team B": "var(--team-2)", "Team C": "var(--team-3)" };
-// Prize pool now comes from the admin-editable event_settings table via /api/state
-
 const CONFIG = {"bosses":[{"boss":"Shellbane Gryphon","actualKPH":65.0,"bossType":"Slayer","displayItems":[{"kind":"item","name":"Belle's folly (tarnished)","type":"normal","dropRate":0.003636363636,"manualAdjustment":1.0,"geValue":876566.5,"img":"https://oldschool.runescape.wiki/images/Belle%27s_folly_(tarnished).png"},{"kind":"item","name":"Jar of Feathers","type":"jar","dropRate":0.0005,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Jar_of_Feathers.png"},{"kind":"item","name":"Gull","type":"pet","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Gull.png"}],"img":"https://oldschool.runescape.wiki/images/Shellbane_gryphon.png"},{"boss":"Grotesque Guardians","actualKPH":24.0,"bossType":"Slayer","displayItems":[{"kind":"item","name":"Granite maul","type":"normal","dropRate":0.008,"manualAdjustment":1.0,"geValue":188263,"img":"https://oldschool.runescape.wiki/images/Granite_maul.png"},{"kind":"item","name":"Granite gloves","type":"normal","dropRate":0.004,"manualAdjustment":1.0,"geValue":93183.5,"img":"https://oldschool.runescape.wiki/images/Granite_gloves.png"},{"kind":"item","name":"Granite ring","type":"normal","dropRate":0.004,"manualAdjustment":1.0,"geValue":31149.5,"img":"https://oldschool.runescape.wiki/images/Granite_ring.png"},{"kind":"item","name":"Granite hammer","type":"normal","dropRate":0.002666666667,"manualAdjustment":1.0,"geValue":4445108,"img":"https://oldschool.runescape.wiki/images/Granite_hammer.png"},{"kind":"item","name":"Black tourmaline core","type":"normal","dropRate":0.002,"manualAdjustment":1.0,"geValue":2185651,"img":"https://oldschool.runescape.wiki/images/Black_tourmaline_core.png"},{"kind":"all_uniques","requiredCount":5,"memberItems":["Granite maul","Granite gloves","Granite ring","Granite hammer","Black tourmaline core"]},{"kind":"item","name":"Jar of Stone","type":"jar","dropRate":0.0002,"manualAdjustment":0.4,"geValue":1223549.5,"img":"https://oldschool.runescape.wiki/images/Jar_of_Stone.png"},{"kind":"item","name":"Noon","type":"pet","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Noon.png"}],"img":"https://oldschool.runescape.wiki/images/Dusk.png"},{"boss":"Abyssal Sire","actualKPH":32.0,"bossType":"Slayer","displayItems":[{"kind":"item","name":"Bludgeon claw","type":"normal","dropRate":0.004854368932,"manualAdjustment":1.0,"geValue":6760930.333,"img":"https://oldschool.runescape.wiki/images/Bludgeon_claw.png"},{"kind":"item","name":"Bludgeon spine","type":"normal","dropRate":0.004854368932,"manualAdjustment":1.0,"geValue":6760930.333,"img":"https://oldschool.runescape.wiki/images/Bludgeon_spine.png"},{"kind":"item","name":"Bludgeon axon","type":"normal","dropRate":0.004854368932,"manualAdjustment":1.0,"geValue":6760930.333,"img":"https://oldschool.runescape.wiki/images/Bludgeon_axon.png"},{"kind":"item","name":"Abyssal dagger","type":"normal","dropRate":0.002032520325,"manualAdjustment":1.0,"geValue":2213779.5,"img":"https://oldschool.runescape.wiki/images/Abyssal_dagger.png"},{"kind":"item","name":"Abyssal whip","type":"normal","dropRate":0.0009380863039,"manualAdjustment":1.0,"geValue":1342094.5,"img":"https://oldschool.runescape.wiki/images/Abyssal_whip.png"},{"kind":"all_uniques","requiredCount":5,"memberItems":["Bludgeon claw","Bludgeon spine","Bludgeon axon","Abyssal dagger","Abyssal whip"]},{"kind":"item","name":"Jar of Miasma","type":"jar","dropRate":0.001016260163,"manualAdjustment":0.75,"geValue":28412.5,"img":"https://oldschool.runescape.wiki/images/Jar_of_Miasma.png"},{"kind":"item","name":"Abyssal orphan","type":"pet","dropRate":0.000390625,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Abyssal_orphan.png"}],"img":"https://oldschool.runescape.wiki/images/Abyssal_Sire.png"},{"boss":"Kraken","actualKPH":60.0,"bossType":"Slayer","displayItems":[{"kind":"item","name":"Trident of the Seas","type":"normal","dropRate":0.001953125,"manualAdjustment":1.0,"geValue":661259,"img":"https://oldschool.runescape.wiki/images/Trident_of_the_Seas.png"},{"kind":"item","name":"Kraken tentacle","type":"normal","dropRate":0.0025,"manualAdjustment":1.0,"geValue":357892,"img":"https://oldschool.runescape.wiki/images/Kraken_tentacle.png"},{"kind":"all_uniques","requiredCount":2,"memberItems":["Trident of the Seas","Kraken tentacle"]},{"kind":"item","name":"Jar of Dirt","type":"jar","dropRate":0.001,"manualAdjustment":0.75,"geValue":31153,"img":"https://oldschool.runescape.wiki/images/Jar_of_Dirt.png"},{"kind":"item","name":"Pet Kraken","type":"pet","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Pet_Kraken.png"}],"img":"https://oldschool.runescape.wiki/images/Kraken.png"},{"boss":"Cerberus","actualKPH":35.0,"bossType":"Slayer","displayItems":[{"kind":"item","name":"Primordial crystal","type":"normal","dropRate":0.001923076923,"manualAdjustment":1.0,"geValue":22616604,"img":"https://oldschool.runescape.wiki/images/Primordial_crystal.png"},{"kind":"item","name":"Pegasian crystal","type":"normal","dropRate":0.001923076923,"manualAdjustment":1.0,"geValue":160544.5,"img":"https://oldschool.runescape.wiki/images/Pegasian_crystal.png"},{"kind":"item","name":"Eternal crystal","type":"normal","dropRate":0.001923076923,"manualAdjustment":1.0,"geValue":4553973,"img":"https://oldschool.runescape.wiki/images/Eternal_crystal.png"},{"kind":"item","name":"Smouldering stone","type":"normal","dropRate":0.001923076923,"manualAdjustment":1.0,"geValue":2150589.5,"img":"https://oldschool.runescape.wiki/images/Smouldering_stone.png"},{"kind":"all_uniques","requiredCount":4,"memberItems":["Primordial crystal","Pegasian crystal","Eternal crystal","Smouldering stone"]},{"kind":"item","name":"Jar of Souls","type":"jar","dropRate":0.0005,"manualAdjustment":0.75,"geValue":36499.5,"img":"https://oldschool.runescape.wiki/images/Jar_of_Souls.png"},{"kind":"item","name":"Hellpuppy","type":"pet","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Hellpuppy.png"}],"img":"https://oldschool.runescape.wiki/images/Cerberus.png"},{"boss":"Araxxor","actualKPH":25.0,"bossType":"Slayer","displayItems":[{"kind":"item","name":"Noxious pommel","type":"normal","dropRate":0.005,"manualAdjustment":1.0,"geValue":16875280.5,"img":"https://oldschool.runescape.wiki/images/Noxious_pommel.png"},{"kind":"item","name":"Noxious point","type":"normal","dropRate":0.005,"manualAdjustment":1.0,"geValue":16875280.5,"img":"https://oldschool.runescape.wiki/images/Noxious_point.png"},{"kind":"item","name":"Noxious blade","type":"normal","dropRate":0.005,"manualAdjustment":1.0,"geValue":16875280.5,"img":"https://oldschool.runescape.wiki/images/Noxious_blade.png"},{"kind":"item","name":"Araxyte fang","type":"normal","dropRate":0.001666666667,"manualAdjustment":1.0,"geValue":38713602.5,"img":"https://oldschool.runescape.wiki/images/Araxyte_fang.png"},{"kind":"all_uniques","requiredCount":4,"memberItems":["Noxious pommel","Noxious point","Noxious blade","Araxyte fang"]},{"kind":"item","name":"Jar of Venom","type":"jar","dropRate":0.0006666666667,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Jar_of_Venom.png"},{"kind":"item","name":"Nid","type":"pet","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Nid.png"}],"img":"https://oldschool.runescape.wiki/images/Araxxor.png"},{"boss":"Thermonuclear Smoke Devil","actualKPH":70.0,"bossType":"Slayer","displayItems":[{"kind":"item","name":"Occult necklace","type":"normal","dropRate":0.002857142857142857,"manualAdjustment":1.0,"geValue":745974,"img":"https://oldschool.runescape.wiki/images/Occult_necklace.png"},{"kind":"item","name":"Smoke battlestaff","type":"normal","dropRate":0.0019531249998092654,"manualAdjustment":1.0,"geValue":2880667,"img":"https://oldschool.runescape.wiki/images/Smoke_battlestaff.png"},{"kind":"all_uniques","requiredCount":2,"memberItems":["Occult necklace","Smoke battlestaff"]},{"kind":"item","name":"Dragon chainbody","type":"normal","dropRate":0.0005000000000833333,"manualAdjustment":1.0,"geValue":365530,"img":"https://oldschool.runescape.wiki/images/Dragon_chainbody.png"},{"kind":"item","name":"Jar of Smoke","type":"jar","dropRate":0.0003750000000625,"manualAdjustment":0.75,"geValue":75663,"img":"https://oldschool.runescape.wiki/images/Jar_of_Smoke.png"},{"kind":"item","name":"Pet Smoke Devil","type":"pet","dropRate":0.0002941176470203768,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Pet_Smoke_Devil.png"}],"img":"https://oldschool.runescape.wiki/images/Thermonuclear_smoke_devil.png"},{"boss":"Alchemical Hydra","actualKPH":20.0,"bossType":"Slayer","displayItems":[{"kind":"item","name":"Hydra's eye","type":"normal","dropRate":0.005524861878,"manualAdjustment":1.0,"geValue":1369544.5,"img":"https://oldschool.runescape.wiki/images/Hydra%27s_eye.png"},{"kind":"item","name":"Hydra's fang","type":"normal","dropRate":0.005524861878,"manualAdjustment":1.0,"geValue":1369544.5,"img":"https://oldschool.runescape.wiki/images/Hydra%27s_fang.png"},{"kind":"item","name":"Hydra's heart","type":"normal","dropRate":0.005524861878,"manualAdjustment":1.0,"geValue":1369544.5,"img":"https://oldschool.runescape.wiki/images/Hydra%27s_heart.png"},{"kind":"item","name":"Hydra tail","type":"normal","dropRate":0.001949317739,"manualAdjustment":1.0,"geValue":111879,"img":"https://oldschool.runescape.wiki/images/Hydra_tail.png"},{"kind":"item","name":"Hydra leather","type":"normal","dropRate":0.001945525292,"manualAdjustment":1.0,"geValue":13687869,"img":"https://oldschool.runescape.wiki/images/Hydra_leather.png"},{"kind":"item","name":"Hydra's claw","type":"normal","dropRate":0.000999000999,"manualAdjustment":1.0,"geValue":65358333,"img":"https://oldschool.runescape.wiki/images/Hydra%27s_claw.png"},{"kind":"all_uniques","requiredCount":6,"memberItems":["Hydra's eye","Hydra's fang","Hydra's heart","Hydra tail","Hydra leather","Hydra's claw"]},{"kind":"item","name":"Jar of Chemicals","type":"jar","dropRate":0.0005,"manualAdjustment":0.75,"geValue":57575,"img":"https://oldschool.runescape.wiki/images/Jar_of_Chemicals.png"},{"kind":"item","name":"Ikkle Hydra","type":"pet","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Ikkle_Hydra_%28serpentine%29.png"},{"kind":"meta","metaId":"slayer_all_uniques","label":"All slayer boss uniques (29)"}],"img":"https://oldschool.runescape.wiki/images/Alchemical_Hydra_%28serpentine%29.png"},{"boss":"Commander Zilyana","actualKPH":25.0,"bossType":"God Wars","displayItems":[{"kind":"item","name":"Saradomin sword","type":"normal","dropRate":0.007874015748,"manualAdjustment":1.0,"geValue":267845.5,"img":"https://oldschool.runescape.wiki/images/Saradomin_sword.png"},{"kind":"item","name":"Saradomin's light","type":"normal","dropRate":0.003937007874,"manualAdjustment":1.0,"geValue":89500.5,"img":"https://oldschool.runescape.wiki/images/Saradomin%27s_light.png"},{"kind":"item","name":"Armadyl crossbow","type":"normal","dropRate":0.001968503937,"manualAdjustment":1.0,"geValue":30757206.5,"img":"https://oldschool.runescape.wiki/images/Armadyl_crossbow.png"},{"kind":"item","name":"Saradomin hilt","type":"normal","dropRate":0.001968503937,"manualAdjustment":1.0,"geValue":27206226.5,"img":"https://oldschool.runescape.wiki/images/Saradomin_hilt.png"},{"kind":"all_uniques","requiredCount":4,"memberItems":["Saradomin sword","Saradomin's light","Armadyl crossbow","Saradomin hilt"]},{"kind":"item","name":"Pet Zilyana","type":"pet","dropRate":0.0002,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Pet_Zilyana.png"}],"img":"https://oldschool.runescape.wiki/images/Commander_Zilyana.png"},{"boss":"General Graardor","actualKPH":25.0,"bossType":"God Wars","displayItems":[{"kind":"item","name":"Bandos chestplate","type":"normal","dropRate":0.002624671916,"manualAdjustment":1.0,"geValue":25217900,"img":"https://oldschool.runescape.wiki/images/Bandos_chestplate.png"},{"kind":"item","name":"Bandos tassets","type":"normal","dropRate":0.002624671916,"manualAdjustment":1.0,"geValue":16964205,"img":"https://oldschool.runescape.wiki/images/Bandos_tassets.png"},{"kind":"item","name":"Bandos boots","type":"normal","dropRate":0.002624671916,"manualAdjustment":1.0,"geValue":523846.5,"img":"https://oldschool.runescape.wiki/images/Bandos_boots.png"},{"kind":"item","name":"Bandos hilt","type":"normal","dropRate":0.001968503937,"manualAdjustment":1.0,"geValue":17937434.5,"img":"https://oldschool.runescape.wiki/images/Bandos_hilt.png"},{"kind":"all_uniques","requiredCount":4,"memberItems":["Bandos chestplate","Bandos tassets","Bandos boots","Bandos hilt"]},{"kind":"item","name":"Pet General Graardor","type":"pet","dropRate":0.0002,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Pet_General_Graardor.png"}],"img":"https://oldschool.runescape.wiki/images/General_Graardor.png"},{"boss":"Kree'Arra","actualKPH":25.0,"bossType":"God Wars","displayItems":[{"kind":"item","name":"Armadyl helmet","type":"normal","dropRate":0.002624671916,"manualAdjustment":1.0,"geValue":8100219.5,"img":"https://oldschool.runescape.wiki/images/Armadyl_helmet.png"},{"kind":"item","name":"Armadyl chestplate","type":"normal","dropRate":0.002624671916,"manualAdjustment":1.0,"geValue":32601021.5,"img":"https://oldschool.runescape.wiki/images/Armadyl_chestplate.png"},{"kind":"item","name":"Armadyl chainskirt","type":"normal","dropRate":0.002624671916,"manualAdjustment":1.0,"geValue":24307768.5,"img":"https://oldschool.runescape.wiki/images/Armadyl_chainskirt.png"},{"kind":"item","name":"Armadyl hilt","type":"normal","dropRate":0.001968503937,"manualAdjustment":1.0,"geValue":8138834.5,"img":"https://oldschool.runescape.wiki/images/Armadyl_hilt.png"},{"kind":"all_uniques","requiredCount":4,"memberItems":["Armadyl helmet","Armadyl chestplate","Armadyl chainskirt","Armadyl hilt"]},{"kind":"item","name":"Pet Kree'arra","type":"pet","dropRate":0.0002,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Pet_Kree%27arra.png"}],"img":"https://oldschool.runescape.wiki/images/Kree%27arra.png"},{"boss":"K'ril Tsutsaroth","actualKPH":25.0,"bossType":"God Wars","displayItems":[{"kind":"item","name":"Steam battlestaff","type":"normal","dropRate":0.007874015748,"manualAdjustment":1.0,"geValue":68993,"img":"https://oldschool.runescape.wiki/images/Steam_battlestaff.png"},{"kind":"item","name":"Zamorakian spear","type":"normal","dropRate":0.007874015748,"manualAdjustment":1.0,"geValue":1574500,"img":"https://oldschool.runescape.wiki/images/Zamorakian_spear.png"},{"kind":"item","name":"Staff of the Dead","type":"normal","dropRate":0.001968503937,"manualAdjustment":1.0,"geValue":8304724,"img":"https://oldschool.runescape.wiki/images/Staff_of_the_Dead.png"},{"kind":"item","name":"Zamorak hilt","type":"normal","dropRate":0.001968503937,"manualAdjustment":1.0,"geValue":17775000,"img":"https://oldschool.runescape.wiki/images/Zamorak_hilt.png"},{"kind":"all_uniques","requiredCount":4,"memberItems":["Steam battlestaff","Zamorakian spear","Staff of the Dead","Zamorak hilt"]},{"kind":"item","name":"Pet K'ril Tsutsaroth","type":"pet","dropRate":0.0002,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Pet_K%27ril_Tsutsaroth.png"},{"kind":"meta","metaId":"gwd_all_uniques","label":"All GWD uniques (16)"}],"img":"https://oldschool.runescape.wiki/images/K%27ril_Tsutsaroth.png"},{"boss":"Duke Sucellus","actualKPH":25.0,"bossType":"Desert Treasure","displayItems":[{"kind":"item","name":"Chromium ingot (DS)","type":"normal","dropRate":0.004166666667,"manualAdjustment":1.0,"geValue":58459.5,"img":"https://oldschool.runescape.wiki/images/Chromium_ingot.png"},{"kind":"item","name":"Magus vestige","type":"normal","dropRate":0.004166666667,"manualAdjustment":1.0,"geValue":11371379.17,"img":"https://oldschool.runescape.wiki/images/Magus_vestige.png"},{"kind":"item","name":"Eye of the Duke","type":"normal","dropRate":0.001388888889,"manualAdjustment":1.0,"geValue":71125000,"img":"https://oldschool.runescape.wiki/images/Eye_of_the_Duke.png","contributesTo":"dt2_full_sra"},{"kind":"item","name":"Virtus mask (DS)","type":"normal","dropRate":0.000462962963,"manualAdjustment":1.0,"geValue":8756367.5,"contributesTo":"dt2_full_virtus","img":"https://oldschool.runescape.wiki/images/Virtus_mask.png"},{"kind":"item","name":"Virtus robe top (DS)","type":"normal","dropRate":0.000462962963,"manualAdjustment":1.0,"geValue":51555318,"contributesTo":"dt2_full_virtus","img":"https://oldschool.runescape.wiki/images/Virtus_robe_top.png"},{"kind":"item","name":"Virtus robe bottom (DS)","type":"normal","dropRate":0.000462962963,"manualAdjustment":1.0,"geValue":38537557,"contributesTo":"dt2_full_virtus","img":"https://oldschool.runescape.wiki/images/Virtus_robe_bottom.png"},{"kind":"all_uniques","requiredCount":2,"memberItems":["Chromium ingot (DS)","Magus vestige"]},{"kind":"item","name":"Baron","type":"pet","dropRate":0.0004,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Baron.png"}],"img":"https://oldschool.runescape.wiki/images/Duke_Sucellus.png"},{"boss":"The Leviathan","actualKPH":24.0,"bossType":"Desert Treasure","displayItems":[{"kind":"item","name":"Chromium ingot (L)","type":"normal","dropRate":0.00390625,"manualAdjustment":1.0,"geValue":58459.5,"img":"https://oldschool.runescape.wiki/images/Chromium_ingot.png"},{"kind":"item","name":"Venator vestige","type":"normal","dropRate":0.00390625,"manualAdjustment":1.0,"geValue":16075819.67,"img":"https://oldschool.runescape.wiki/images/Venator_vestige.png"},{"kind":"item","name":"Leviathan's lure","type":"normal","dropRate":0.001302083333,"manualAdjustment":1.0,"geValue":71125000,"img":"https://oldschool.runescape.wiki/images/Leviathan%27s_lure.png","contributesTo":"dt2_full_sra"},{"kind":"item","name":"Virtus mask (L)","type":"normal","dropRate":0.0004340277778,"manualAdjustment":1.0,"geValue":8756367.5,"contributesTo":"dt2_full_virtus","img":"https://oldschool.runescape.wiki/images/Virtus_mask.png"},{"kind":"item","name":"Virtus robe top (L)","type":"normal","dropRate":0.0004340277778,"manualAdjustment":1.0,"geValue":51555318,"contributesTo":"dt2_full_virtus","img":"https://oldschool.runescape.wiki/images/Virtus_robe_top.png"},{"kind":"item","name":"Virtus robe bottom (L)","type":"normal","dropRate":0.0004340277778,"manualAdjustment":1.0,"geValue":38537557,"contributesTo":"dt2_full_virtus","img":"https://oldschool.runescape.wiki/images/Virtus_robe_bottom.png"},{"kind":"all_uniques","requiredCount":2,"memberItems":["Chromium ingot (L)","Venator vestige"]},{"kind":"item","name":"Lil'viathan","type":"pet","dropRate":0.0004,"manualAdjustment":0.85,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Lil%27viathan.png"}],"img":"https://oldschool.runescape.wiki/images/The_Leviathan.png"},{"boss":"Vardorvis","actualKPH":30.0,"bossType":"Desert Treasure","displayItems":[{"kind":"item","name":"Chromium ingot (V)","type":"normal","dropRate":0.002757099531,"manualAdjustment":1.0,"geValue":58459.5,"img":"https://oldschool.runescape.wiki/images/Chromium_ingot.png"},{"kind":"item","name":"Ultor vestige","type":"normal","dropRate":0.002757352941,"manualAdjustment":1.0,"geValue":43089841.83,"img":"https://oldschool.runescape.wiki/images/Ultor_vestige.png"},{"kind":"item","name":"Executioner's axe head","type":"normal","dropRate":0.0009191176471,"manualAdjustment":1.0,"geValue":71125000,"img":"https://oldschool.runescape.wiki/images/Executioner%27s_axe_head.png","contributesTo":"dt2_full_sra"},{"kind":"item","name":"Virtus mask (V)","type":"normal","dropRate":0.000306372549,"manualAdjustment":1.0,"geValue":8756367.5,"contributesTo":"dt2_full_virtus","img":"https://oldschool.runescape.wiki/images/Virtus_mask.png"},{"kind":"item","name":"Virtus robe top (V)","type":"normal","dropRate":0.000306372549,"manualAdjustment":1.0,"geValue":51555318,"contributesTo":"dt2_full_virtus","img":"https://oldschool.runescape.wiki/images/Virtus_robe_top.png"},{"kind":"item","name":"Virtus robe bottom (V)","type":"normal","dropRate":0.000306372549,"manualAdjustment":1.0,"geValue":38537557,"contributesTo":"dt2_full_virtus","img":"https://oldschool.runescape.wiki/images/Virtus_robe_bottom.png"},{"kind":"all_uniques","requiredCount":2,"memberItems":["Chromium ingot (V)","Ultor vestige"]},{"kind":"item","name":"Butch","type":"pet","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Butch.png"}],"img":"https://oldschool.runescape.wiki/images/Vardorvis.png"},{"boss":"The Whisperer","actualKPH":18.0,"bossType":"Desert Treasure","displayItems":[{"kind":"item","name":"Chromium ingot (W)","type":"normal","dropRate":0.005858230814,"manualAdjustment":1.0,"geValue":58459.5,"img":"https://oldschool.runescape.wiki/images/Chromium_ingot.png"},{"kind":"item","name":"Bellator vestige","type":"normal","dropRate":0.005859375,"manualAdjustment":1.0,"geValue":10411056.33,"img":"https://oldschool.runescape.wiki/images/Bellator_vestige.png"},{"kind":"item","name":"Siren's staff","type":"normal","dropRate":0.001953125,"manualAdjustment":1.0,"geValue":71125000,"img":"https://oldschool.runescape.wiki/images/Siren%27s_staff.png","contributesTo":"dt2_full_sra"},{"kind":"item","name":"Virtus mask (W)","type":"normal","dropRate":0.0006510416667,"manualAdjustment":1.0,"geValue":8756367.5,"contributesTo":"dt2_full_virtus","img":"https://oldschool.runescape.wiki/images/Virtus_mask.png"},{"kind":"item","name":"Virtus robe top (W)","type":"normal","dropRate":0.0006510416667,"manualAdjustment":1.0,"geValue":51555318,"contributesTo":"dt2_full_virtus","img":"https://oldschool.runescape.wiki/images/Virtus_robe_top.png"},{"kind":"item","name":"Virtus robe bottom (W)","type":"normal","dropRate":0.0006510416667,"manualAdjustment":1.0,"geValue":38537557,"contributesTo":"dt2_full_virtus","img":"https://oldschool.runescape.wiki/images/Virtus_robe_bottom.png"},{"kind":"all_uniques","requiredCount":2,"memberItems":["Chromium ingot (W)","Bellator vestige"]},{"kind":"item","name":"Wisp","type":"pet","dropRate":0.0005,"manualAdjustment":0.85,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Wisp.png"},{"kind":"meta","metaId":"dt2_full_sra","label":"Full SRA"},{"kind":"meta","metaId":"dt2_full_virtus","label":"Full Virtus"}],"img":"https://oldschool.runescape.wiki/images/The_Whisperer.png"},{"boss":"Barrows","actualKPH":10.0,"bossType":"General","displayItems":[{"kind":"item","name":"Ahrim's hood","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":391763,"img":"https://oldschool.runescape.wiki/images/Ahrim%27s_hood.png"},{"kind":"item","name":"Ahrim's robetop","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":2232111,"img":"https://oldschool.runescape.wiki/images/Ahrim%27s_robetop.png"},{"kind":"item","name":"Ahrim's robeskirt","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":1708886,"img":"https://oldschool.runescape.wiki/images/Ahrim%27s_robeskirt.png"},{"kind":"item","name":"Ahrim's staff","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":243341.5,"img":"https://oldschool.runescape.wiki/images/Ahrim%27s_staff.png"},{"kind":"sub_group","name":"All Ahrim uniques (4)","groupLabel":"Ahrim uniques","requiredCount":4,"memberItems":["Ahrim's hood","Ahrim's robetop","Ahrim's robeskirt","Ahrim's staff"]},{"kind":"item","name":"Dharok's helm","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":328004,"img":"https://oldschool.runescape.wiki/images/Dharok%27s_helm.png"},{"kind":"item","name":"Dharok's platebody","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":927504.5,"img":"https://oldschool.runescape.wiki/images/Dharok%27s_platebody.png"},{"kind":"item","name":"Dharok's platelegs","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":849561.5,"img":"https://oldschool.runescape.wiki/images/Dharok%27s_platelegs.png"},{"kind":"item","name":"Dharok's greataxe","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":1806208,"img":"https://oldschool.runescape.wiki/images/Dharok%27s_greataxe.png"},{"kind":"sub_group","name":"All Dharok uniques (4)","groupLabel":"Dharok uniques","requiredCount":4,"memberItems":["Dharok's helm","Dharok's platebody","Dharok's platelegs","Dharok's greataxe"]},{"kind":"item","name":"Guthan's helm","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":130882,"img":"https://oldschool.runescape.wiki/images/Guthan%27s_helm.png"},{"kind":"item","name":"Guthan's platebody","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":206484,"img":"https://oldschool.runescape.wiki/images/Guthan%27s_platebody.png"},{"kind":"item","name":"Guthan's chainskirt","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":227500.5,"img":"https://oldschool.runescape.wiki/images/Guthan%27s_chainskirt.png"},{"kind":"item","name":"Guthan's warspear","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":95501,"img":"https://oldschool.runescape.wiki/images/Guthan%27s_warspear.png"},{"kind":"sub_group","name":"All Guthan uniques (4)","groupLabel":"Guthan uniques","requiredCount":4,"memberItems":["Guthan's helm","Guthan's platebody","Guthan's chainskirt","Guthan's warspear"]},{"kind":"item","name":"Karil's coif","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":66865,"img":"https://oldschool.runescape.wiki/images/Karil%27s_coif.png"},{"kind":"item","name":"Karil's leathertop","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":1280000,"img":"https://oldschool.runescape.wiki/images/Karil%27s_leathertop.png"},{"kind":"item","name":"Karil's leatherskirt","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":617022.5,"img":"https://oldschool.runescape.wiki/images/Karil%27s_leatherskirt.png"},{"kind":"item","name":"Karil's crossbow","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":105301,"img":"https://oldschool.runescape.wiki/images/Karil%27s_crossbow.png"},{"kind":"sub_group","name":"All Karil uniques (4)","groupLabel":"Karil uniques","requiredCount":4,"memberItems":["Karil's coif","Karil's leathertop","Karil's leatherskirt","Karil's crossbow"]},{"kind":"item","name":"Torag's helm","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":143757,"img":"https://oldschool.runescape.wiki/images/Torag%27s_helm.png"},{"kind":"item","name":"Torag's platebody","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":288715.5,"img":"https://oldschool.runescape.wiki/images/Torag%27s_platebody.png"},{"kind":"item","name":"Torag's platelegs","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":289068,"img":"https://oldschool.runescape.wiki/images/Torag%27s_platelegs.png"},{"kind":"item","name":"Torag's hammers","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":98561.5,"img":"https://oldschool.runescape.wiki/images/Torag%27s_hammers.png"},{"kind":"sub_group","name":"All Torag uniques (4)","groupLabel":"Torag uniques","requiredCount":4,"memberItems":["Torag's helm","Torag's platebody","Torag's platelegs","Torag's hammers"]},{"kind":"item","name":"Verac's helm","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":113500,"img":"https://oldschool.runescape.wiki/images/Verac%27s_helm.png"},{"kind":"item","name":"Verac's brassard","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":173919,"img":"https://oldschool.runescape.wiki/images/Verac%27s_brassard.png"},{"kind":"item","name":"Verac's plateskirt","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":298512,"img":"https://oldschool.runescape.wiki/images/Verac%27s_plateskirt.png"},{"kind":"item","name":"Verac's flail","type":"normal","dropRate":0.04441483455474128,"manualAdjustment":1.0,"geValue":96525.5,"img":"https://oldschool.runescape.wiki/images/Verac%27s_flail.png"},{"kind":"sub_group","name":"All Verac uniques (4)","groupLabel":"Verac uniques","requiredCount":4,"memberItems":["Verac's helm","Verac's brassard","Verac's plateskirt","Verac's flail"]}],"img":"https://oldschool.runescape.wiki/images/Dharok_the_Wretched.png"},{"boss":"Corporeal Beast","actualKPH":40.0,"bossType":"General","displayItems":[{"kind":"item","name":"Spectral sigil","type":"normal","dropRate":0.0001831501832,"manualAdjustment":1.0,"geValue":27544443.5,"img":"https://oldschool.runescape.wiki/images/Spectral_sigil.png"},{"kind":"item","name":"Arcane sigil","type":"normal","dropRate":0.0001831501832,"manualAdjustment":1.0,"geValue":97077999.5,"img":"https://oldschool.runescape.wiki/images/Arcane_sigil.png"},{"kind":"item","name":"Elysian sigil","type":"normal","dropRate":6.105006105e-05,"manualAdjustment":1.0,"geValue":542393994.5,"img":"https://oldschool.runescape.wiki/images/Elysian_sigil.png"},{"kind":"all_uniques","requiredCount":3,"memberItems":["Spectral sigil","Arcane sigil","Elysian sigil"]},{"kind":"item","name":"Jar of Spirits","type":"jar","dropRate":0.00025,"manualAdjustment":0.75,"geValue":54961,"img":"https://oldschool.runescape.wiki/images/Jar_of_Spirits.png"},{"kind":"item","name":"Pet dark core","type":"pet","dropRate":5e-05,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Pet_dark_core.png"}],"img":"https://oldschool.runescape.wiki/images/Corporeal_Beast.png"},{"boss":"Dagannoth Kings","actualKPH":20.0,"bossType":"Slayer","displayItems":[{"kind":"item","name":"Berserker ring","type":"normal","dropRate":0.0078125,"manualAdjustment":1.0,"geValue":3033988,"img":"https://oldschool.runescape.wiki/images/Berserker_ring.png"},{"kind":"item","name":"Warrior ring","type":"normal","dropRate":0.0078125,"manualAdjustment":1.0,"geValue":54612,"img":"https://oldschool.runescape.wiki/images/Warrior_ring.png"},{"kind":"item","name":"Seers ring","type":"normal","dropRate":0.0078125,"manualAdjustment":1.0,"geValue":1018387.5,"img":"https://oldschool.runescape.wiki/images/Seers_ring.png"},{"kind":"item","name":"Archers ring","type":"normal","dropRate":0.0078125,"manualAdjustment":1.0,"geValue":2978191.5,"img":"https://oldschool.runescape.wiki/images/Archers_ring.png"},{"kind":"all_uniques","requiredCount":4,"memberItems":["Berserker ring","Warrior ring","Seers ring","Archers ring"]},{"kind":"item","name":"Pet Dagannoth Prime","type":"normal","dropRate":0.0002666666666666667,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Pet_Dagannoth_Prime.png"},{"kind":"item","name":"Pet Dagannoth Rex","type":"normal","dropRate":0.0002666666666666667,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Pet_Dagannoth_Rex.png"},{"kind":"item","name":"Pet Dagannoth Supreme","type":"normal","dropRate":0.0002666666666666667,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Pet_Dagannoth_Supreme.png"}],"img":"https://oldschool.runescape.wiki/images/Dagannoth_Supreme.png"},{"boss":"Doom of Mokhaiotl","actualKPH":5.0,"bossType":"General","displayItems":[{"kind":"item","name":"Avernic treads","type":"normal","dropRate":0.00625,"manualAdjustment":1.0,"geValue":232630130,"img":"https://oldschool.runescape.wiki/images/Avernic_treads.png"},{"kind":"item","name":"Eye of Ayak","type":"normal","dropRate":0.006756756757,"manualAdjustment":1.0,"geValue":65181176,"img":"https://oldschool.runescape.wiki/images/Eye_of_Ayak.png"},{"kind":"item","name":"Mokhaiotl cloth","type":"normal","dropRate":0.007142857143,"manualAdjustment":1.0,"geValue":79050998,"img":"https://oldschool.runescape.wiki/images/Mokhaiotl_cloth.png"},{"kind":"all_uniques","requiredCount":3,"memberItems":["Avernic treads","Eye of Ayak","Mokhaiotl cloth"]},{"kind":"item","name":"Dom","type":"pet","dropRate":0.004329004329,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Dom.png"}],"img":"https://oldschool.runescape.wiki/images/Doom_of_Mokhaiotl.png"},{"boss":"Moons of Peril","actualKPH":null,"bossType":"General","displayItems":[{"kind":"item","name":"Eclipse atlatl","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":2203925.5,"img":"https://oldschool.runescape.wiki/images/Eclipse_atlatl.png"},{"kind":"item","name":"Eclipse moon helm","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":843538.5,"img":"https://oldschool.runescape.wiki/images/Eclipse_moon_helm.png"},{"kind":"item","name":"Eclipse moon chestplate","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":1994228.5,"img":"https://oldschool.runescape.wiki/images/Eclipse_moon_chestplate.png"},{"kind":"item","name":"Eclipse moon tassets","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":1986554.5,"img":"https://oldschool.runescape.wiki/images/Eclipse_moon_tassets.png"},{"kind":"sub_group","name":"All Eclipse moon uniques (4)","groupLabel":"Eclipse moon uniques","requiredCount":4,"memberItems":["Eclipse atlatl","Eclipse moon helm","Eclipse moon chestplate","Eclipse moon tassets"]},{"kind":"item","name":"Dual macuahuitl","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":6807139.5,"img":"https://oldschool.runescape.wiki/images/Dual_macuahuitl.png"},{"kind":"item","name":"Blood moon helm","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":934295,"img":"https://oldschool.runescape.wiki/images/Blood_moon_helm.png"},{"kind":"item","name":"Blood moon chestplate","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":4870854.5,"img":"https://oldschool.runescape.wiki/images/Blood_moon_chestplate.png"},{"kind":"item","name":"Blood moon tassets","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":11373015.5,"img":"https://oldschool.runescape.wiki/images/Blood_moon_tassets.png"},{"kind":"sub_group","name":"All Blood moon uniques (4)","groupLabel":"Blood moon uniques","requiredCount":4,"memberItems":["Eclipse moon helm","Eclipse moon chestplate","Eclipse moon tassets","Blood moon helm","Blood moon chestplate","Blood moon tassets"]},{"kind":"item","name":"Blue moon spear","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":345954.5,"img":"https://oldschool.runescape.wiki/images/Blue_moon_spear.png"},{"kind":"item","name":"Blue moon helm","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":832668,"img":"https://oldschool.runescape.wiki/images/Blue_moon_helm.png"},{"kind":"item","name":"Blue moon chestplate","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":1684948.5,"img":"https://oldschool.runescape.wiki/images/Blue_moon_chestplate.png"},{"kind":"item","name":"Blue moon tassets","type":"normal","dropRate":0.0048335123532179,"manualAdjustment":1.0,"geValue":5800037.5,"img":"https://oldschool.runescape.wiki/images/Blue_moon_tassets.png"},{"kind":"sub_group","name":"All Blue moon uniques (4)","groupLabel":"Blue moon uniques","requiredCount":4,"memberItems":["Eclipse moon helm","Eclipse moon chestplate","Eclipse moon tassets","Blood moon helm","Blood moon chestplate","Blood moon tassets","Blue moon spear","Blue moon helm","Blue moon chestplate","Blue moon tassets"]}],"img":"https://oldschool.runescape.wiki/images/Blood_Moon.png"},{"boss":"Nex","actualKPH":10.0,"bossType":"General","displayItems":[{"kind":"item","name":"Zaryte vambraces","type":"normal","dropRate":0.001162790698,"manualAdjustment":1.0,"geValue":89906747.5,"img":"https://oldschool.runescape.wiki/images/Zaryte_vambraces.png"},{"kind":"item","name":"Nihil horn","type":"normal","dropRate":0.0007751937984,"manualAdjustment":1.0,"geValue":330375500,"img":"https://oldschool.runescape.wiki/images/Nihil_horn.png"},{"kind":"item","name":"Torva full helm (damaged)","type":"normal","dropRate":0.0007751937984,"manualAdjustment":1.0,"geValue":225074061,"img":"https://oldschool.runescape.wiki/images/Torva_full_helm_(damaged).png"},{"kind":"item","name":"Torva platebody (damaged)","type":"normal","dropRate":0.0007751937984,"manualAdjustment":1.0,"geValue":196585984.5,"img":"https://oldschool.runescape.wiki/images/Torva_platebody_(damaged).png"},{"kind":"item","name":"Torva platelegs (damaged)","type":"normal","dropRate":0.0007751937984,"manualAdjustment":1.0,"geValue":142105612.5,"img":"https://oldschool.runescape.wiki/images/Torva_platelegs_(damaged).png"},{"kind":"item","name":"Ancient hilt","type":"normal","dropRate":0.0003875968992,"manualAdjustment":1.0,"geValue":37325216,"img":"https://oldschool.runescape.wiki/images/Ancient_hilt.png"},{"kind":"all_uniques","requiredCount":6,"memberItems":["Zaryte vambraces","Nihil horn","Torva full helm (damaged)","Torva platebody (damaged)","Torva platelegs (damaged)","Ancient hilt"]},{"kind":"item","name":"Nexling","type":"pet","dropRate":0.0004,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Nexling.png"}],"img":"https://oldschool.runescape.wiki/images/Nex.png"},{"boss":"Nightmare","actualKPH":10.0,"bossType":"General","displayItems":[{"kind":"item","name":"Nightmare staff","type":"normal","dropRate":0.001918604651,"manualAdjustment":1.0,"geValue":46599045.5,"img":"https://oldschool.runescape.wiki/images/Nightmare_staff.png"},{"kind":"item","name":"Inquisitor's great helm","type":"normal","dropRate":0.001375,"manualAdjustment":1.0,"geValue":31164811,"img":"https://oldschool.runescape.wiki/images/Inquisitor%27s_great_helm.png"},{"kind":"item","name":"Inquisitor's hauberk","type":"normal","dropRate":0.001375,"manualAdjustment":1.0,"geValue":82383940.5,"img":"https://oldschool.runescape.wiki/images/Inquisitor%27s_hauberk.png"},{"kind":"item","name":"Inquisitor's plateskirt","type":"normal","dropRate":0.001375,"manualAdjustment":1.0,"geValue":81762500,"img":"https://oldschool.runescape.wiki/images/Inquisitor%27s_plateskirt.png"},{"kind":"item","name":"Inquisitor's mace","type":"normal","dropRate":0.0007692307692,"manualAdjustment":1.0,"geValue":237700000,"img":"https://oldschool.runescape.wiki/images/Inquisitor%27s_mace.png"},{"kind":"item","name":"Eldritch orb","type":"normal","dropRate":0.0006010928962,"manualAdjustment":1.0,"geValue":192553065.5,"img":"https://oldschool.runescape.wiki/images/Eldritch_orb.png"},{"kind":"item","name":"Harmonised orb","type":"normal","dropRate":0.0006010928962,"manualAdjustment":1.0,"geValue":184500000,"img":"https://oldschool.runescape.wiki/images/Harmonised_orb.png"},{"kind":"item","name":"Volatile orb","type":"normal","dropRate":0.0006010928962,"manualAdjustment":1.0,"geValue":41246516.5,"img":"https://oldschool.runescape.wiki/images/Volatile_orb.png"},{"kind":"all_uniques","requiredCount":8,"memberItems":["Nightmare staff","Inquisitor's great helm","Inquisitor's hauberk","Inquisitor's plateskirt","Inquisitor's mace","Eldritch orb","Harmonised orb","Volatile orb"]},{"kind":"item","name":"Parasitic egg","type":"normal","dropRate":0.005,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Parasitic_egg.png"},{"kind":"item","name":"Jar of Dreams","type":"jar","dropRate":0.0005263157895,"manualAdjustment":0.75,"geValue":4000500,"img":"https://oldschool.runescape.wiki/images/Jar_of_Dreams.png"},{"kind":"item","name":"Little Nightmare","type":"pet","dropRate":0.0004166666667,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Little_Nightmare.png"}],"img":"https://oldschool.runescape.wiki/images/The_Nightmare.png"},{"boss":"Phantom Muspah","actualKPH":20.0,"bossType":"General","displayItems":[{"kind":"item","name":"Venator shard","type":"normal","dropRate":0.01,"manualAdjustment":1.5,"geValue":14663444,"img":"https://oldschool.runescape.wiki/images/Venator_shard.png"},{"kind":"item","name":"Ancient icon","type":"normal","dropRate":0.02,"manualAdjustment":1.5,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Ancient_icon.png"},{"kind":"all_uniques","requiredCount":2,"memberItems":["Venator shard","Ancient icon"]},{"kind":"item","name":"Muphin","type":"pet","dropRate":0.0004,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Muphin_%28ranged%29.png"}],"img":"https://oldschool.runescape.wiki/images/Phantom_Muspah_%28ranged%29.png"},{"boss":"Sarachnis","actualKPH":60.0,"bossType":"General","displayItems":[{"kind":"item","name":"Sarachnis cudgel","type":"normal","dropRate":0.002604166667,"manualAdjustment":1.0,"geValue":516000,"img":"https://oldschool.runescape.wiki/images/Sarachnis_cudgel.png"},{"kind":"item","name":"Jar of Eyes","type":"jar","dropRate":0.0005,"manualAdjustment":0.75,"geValue":118500,"img":"https://oldschool.runescape.wiki/images/Jar_of_Eyes.png"},{"kind":"item","name":"Sraracha","type":"pet","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Sraracha.png"}],"img":"https://oldschool.runescape.wiki/images/Sarachnis.png"},{"boss":"The Fortis Colloseum","actualKPH":1.35,"bossType":"General","displayItems":[{"kind":"item","name":"Echo crystal","type":"normal","dropRate":0.057418465781891276,"manualAdjustment":1.0,"geValue":2838565,"img":"https://oldschool.runescape.wiki/images/Echo_crystal.png"},{"kind":"item","name":"Sunfire fanatic helm","type":"normal","dropRate":0.03348737525952715,"manualAdjustment":1.0,"geValue":1400759,"img":"https://oldschool.runescape.wiki/images/Sunfire_fanatic_helm.png"},{"kind":"item","name":"Sunfire fanatic cuirass","type":"normal","dropRate":0.03348737525952715,"manualAdjustment":1.0,"geValue":3204230,"img":"https://oldschool.runescape.wiki/images/Sunfire_fanatic_cuirass.png"},{"kind":"item","name":"Sunfire fanatic chausses","type":"normal","dropRate":0.03348737525952715,"manualAdjustment":1.0,"geValue":3764713.5,"img":"https://oldschool.runescape.wiki/images/Sunfire_fanatic_chausses.png"},{"kind":"item","name":"Tonalztics of Ralos","type":"normal","dropRate":0.008543065593657627,"manualAdjustment":1.0,"geValue":47148752,"img":"https://oldschool.runescape.wiki/images/Tonalztics_of_Ralos.png"},{"kind":"all_uniques","requiredCount":5,"memberItems":["Echo crystal","Sunfire fanatic helm","Sunfire fanatic cuirass","Sunfire fanatic chausses","Tonalztics of Ralos"]},{"kind":"item","name":"Smol Heredit","type":"normal","dropRate":0.006666666666333332,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Smol_Heredit.png"}],"img":"https://oldschool.runescape.wiki/images/Sol_Heredit.png"},{"boss":"The Corrupted Gauntlet","actualKPH":7.0,"bossType":"General","displayItems":[{"kind":"item","name":"Crystal weapon seed","type":"normal","dropRate":0.02,"manualAdjustment":1.0,"geValue":387545,"img":"https://oldschool.runescape.wiki/images/Crystal_weapon_seed.png"},{"kind":"item","name":"Crystal armour seed","type":"normal","dropRate":0.02,"manualAdjustment":1.0,"geValue":7592519.5,"img":"https://oldschool.runescape.wiki/images/Crystal_armour_seed.png"},{"kind":"item","name":"Enhanced crystal weapon seed","type":"normal","dropRate":0.0025,"manualAdjustment":1.0,"geValue":159135900.5,"img":"https://oldschool.runescape.wiki/images/Enhanced_crystal_weapon_seed.png"},{"kind":"all_uniques","requiredCount":3,"memberItems":["Crystal weapon seed","Crystal armour seed","Enhanced crystal weapon seed"]},{"kind":"item","name":"Youngllef","type":"pet","dropRate":0.00125,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Youngllef.png"}],"img":"https://oldschool.runescape.wiki/images/Corrupted_Hunllef.png"},{"boss":"The Hueycoatl","actualKPH":15.0,"bossType":"General","displayItems":[{"kind":"item","name":"Hueycoatl hide","type":"normal","dropRate":0.01163873371,"manualAdjustment":1.0,"geValue":531250,"img":"https://oldschool.runescape.wiki/images/Hueycoatl_hide.png"},{"kind":"item","name":"Tome of Earth","type":"normal","dropRate":0.003703703704,"manualAdjustment":1.0,"geValue":579893.5,"img":"https://oldschool.runescape.wiki/images/Tome_of_Earth.png"},{"kind":"item","name":"Dragon hunter wand","type":"normal","dropRate":0.003174603175,"manualAdjustment":1.0,"geValue":17736348.5,"img":"https://oldschool.runescape.wiki/images/Dragon_hunter_wand.png"},{"kind":"all_uniques","requiredCount":3,"memberItems":["Hueycoatl hide","Tome of Earth","Dragon hunter wand"]},{"kind":"item","name":"Huberte","type":"pet","dropRate":0.0008333333333,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Huberte.png"}],"img":"https://oldschool.runescape.wiki/images/The_Hueycoatl.png"},{"boss":"The Royal Titans","actualKPH":40.0,"bossType":"General","displayItems":[{"kind":"item","name":"Fire element staff crown","type":"normal","dropRate":0.006666666667,"manualAdjustment":1.0,"geValue":2292328,"img":"https://oldschool.runescape.wiki/images/Fire_element_staff_crown.png"},{"kind":"item","name":"Ice element staff crown","type":"normal","dropRate":0.006666666667,"manualAdjustment":1.0,"geValue":3767881,"img":"https://oldschool.runescape.wiki/images/Ice_element_staff_crown.png"},{"kind":"all_uniques","requiredCount":2,"memberItems":["Fire element staff crown","Ice element staff crown"]},{"kind":"item","name":"Bran","type":"pet","dropRate":0.0001666666667,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Bran.png"}],"img":"https://oldschool.runescape.wiki/images/Branda_the_Fire_Queen.png"},{"boss":"Vorkath","actualKPH":30.0,"bossType":"General","displayItems":[{"kind":"item","name":"Dragonbone necklace","type":"normal","dropRate":0.001,"manualAdjustment":0.8,"geValue":97841.5,"img":"https://oldschool.runescape.wiki/images/Dragonbone_necklace.png"},{"kind":"item","name":"Draconic visage","type":"normal","dropRate":0.0002,"manualAdjustment":0.8,"geValue":3778319,"img":"https://oldschool.runescape.wiki/images/Draconic_visage.png"},{"kind":"item","name":"Skeletal visage","type":"normal","dropRate":0.0002,"manualAdjustment":0.8,"geValue":15753661.5,"img":"https://oldschool.runescape.wiki/images/Skeletal_visage.png"},{"kind":"all_uniques","requiredCount":3,"memberItems":["Dragonbone necklace","Draconic visage","Skeletal visage"]},{"kind":"item","name":"Jar of Decay","type":"jar","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":48948,"img":"https://oldschool.runescape.wiki/images/Jar_of_Decay.png"},{"kind":"item","name":"Vorki","type":"pet","dropRate":0.0003333333333,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Vorki.png"}],"img":"https://oldschool.runescape.wiki/images/Vorkath.png"},{"boss":"Yama","actualKPH":18.0,"bossType":"General","displayItems":[{"kind":"item","name":"Soulflame horn","type":"normal","dropRate":0.001666666667,"manualAdjustment":1.0,"geValue":4586486,"img":"https://oldschool.runescape.wiki/images/Soulflame_horn.png"},{"kind":"item","name":"Oathplate helm","type":"normal","dropRate":0.0008333333333,"manualAdjustment":1.0,"geValue":96400001.5,"img":"https://oldschool.runescape.wiki/images/Oathplate_helm.png"},{"kind":"item","name":"Oathplate chest","type":"normal","dropRate":0.0008333333333,"manualAdjustment":1.0,"geValue":101414640,"img":"https://oldschool.runescape.wiki/images/Oathplate_chest.png"},{"kind":"item","name":"Oathplate legs","type":"normal","dropRate":0.0008333333333,"manualAdjustment":1.0,"geValue":100068406,"img":"https://oldschool.runescape.wiki/images/Oathplate_legs.png"},{"kind":"all_uniques","requiredCount":4,"memberItems":["Soulflame horn","Oathplate helm","Oathplate chest","Oathplate legs"]},{"kind":"item","name":"Yami","type":"pet","dropRate":0.0002,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Yami.png"}],"img":"https://oldschool.runescape.wiki/images/Yama.png"},{"boss":"Zulrah","actualKPH":40.0,"bossType":"General","displayItems":[{"kind":"item","name":"Tanzanite fang","type":"normal","dropRate":0.001953125,"manualAdjustment":1.0,"geValue":9925000,"img":"https://oldschool.runescape.wiki/images/Tanzanite_fang.png"},{"kind":"item","name":"Magic fang","type":"normal","dropRate":0.001953125,"manualAdjustment":1.0,"geValue":3631140,"img":"https://oldschool.runescape.wiki/images/Magic_fang.png"},{"kind":"item","name":"Serpentine visage","type":"normal","dropRate":0.001953125,"manualAdjustment":1.0,"geValue":3649795,"img":"https://oldschool.runescape.wiki/images/Serpentine_visage.png"},{"kind":"item","name":"Uncut onyx","type":"normal","dropRate":0.001953125,"manualAdjustment":1.0,"geValue":2160056.5,"img":"https://oldschool.runescape.wiki/images/Uncut_onyx.png"},{"kind":"all_uniques","requiredCount":4,"memberItems":["Tanzanite fang","Magic fang","Serpentine visage","Uncut onyx"]},{"kind":"item","name":"Tanzanite mutagen","type":"normal","dropRate":0.000152590219,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Tanzanite_mutagen.png"},{"kind":"item","name":"Magma mutagen","type":"normal","dropRate":0.000152590219,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Magma_mutagen.png"},{"kind":"item","name":"Jar of Swamp","type":"jar","dropRate":0.0003333333333,"manualAdjustment":0.5,"geValue":61373.5,"img":"https://oldschool.runescape.wiki/images/Jar_of_Swamp.png"},{"kind":"item","name":"Pet Snakeling","type":"normal","dropRate":0.00025,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Pet_Snakeling.png"}],"img":"https://oldschool.runescape.wiki/images/Zulrah_%28serpentine%29.png"},{"boss":"Chambers of Xeric","actualKPH":3.5,"bossType":"Raid","displayItems":[{"kind":"item","name":"Arcane prayer scroll","type":"normal","dropRate":0.01336541032,"manualAdjustment":1.2,"geValue":5467956,"img":"https://oldschool.runescape.wiki/images/Arcane_prayer_scroll.png"},{"kind":"item","name":"Dexterous prayer scroll","type":"normal","dropRate":0.01336541032,"manualAdjustment":1.2,"geValue":23833333,"img":"https://oldschool.runescape.wiki/images/Dexterous_prayer_scroll.png"},{"kind":"item","name":"Dragon hunter crossbow","type":"normal","dropRate":0.002673010612,"manualAdjustment":1.0,"geValue":46969220,"img":"https://oldschool.runescape.wiki/images/Dragon_hunter_crossbow.png"},{"kind":"item","name":"Twisted buckler","type":"normal","dropRate":0.002673010612,"manualAdjustment":1.0,"geValue":16780775.5,"img":"https://oldschool.runescape.wiki/images/Twisted_buckler.png"},{"kind":"item","name":"Dinh's bulwark","type":"normal","dropRate":0.002004771356,"manualAdjustment":1.0,"geValue":15392088.5,"img":"https://oldschool.runescape.wiki/images/Dinh%27s_bulwark.png"},{"kind":"item","name":"Ancestral hat","type":"normal","dropRate":0.002004771356,"manualAdjustment":1.0,"geValue":61402500,"img":"https://oldschool.runescape.wiki/images/Ancestral_hat.png"},{"kind":"item","name":"Ancestral robe bottom","type":"normal","dropRate":0.002004771356,"manualAdjustment":1.0,"geValue":105156425.5,"img":"https://oldschool.runescape.wiki/images/Ancestral_robe_bottom.png"},{"kind":"item","name":"Ancestral robe top","type":"normal","dropRate":0.002004771356,"manualAdjustment":1.0,"geValue":149216829,"img":"https://oldschool.runescape.wiki/images/Ancestral_robe_top.png"},{"kind":"item","name":"Dragon claws","type":"normal","dropRate":0.002004771356,"manualAdjustment":1.0,"geValue":48068807.5,"img":"https://oldschool.runescape.wiki/images/Dragon_claws.png"},{"kind":"item","name":"Elder maul","type":"normal","dropRate":0.001336505306,"manualAdjustment":1.0,"geValue":98999052,"img":"https://oldschool.runescape.wiki/images/Elder_maul.png"},{"kind":"item","name":"Kodai insignia","type":"normal","dropRate":0.001336505306,"manualAdjustment":1.0,"geValue":83450000,"img":"https://oldschool.runescape.wiki/images/Kodai_insignia.png"},{"kind":"item","name":"Twisted bow","type":"normal","dropRate":0.001336505306,"manualAdjustment":1.0,"geValue":1583650000,"img":"https://oldschool.runescape.wiki/images/Twisted_bow.png"},{"kind":"all_uniques","requiredCount":12,"memberItems":["Arcane prayer scroll","Dexterous prayer scroll","Dragon hunter crossbow","Twisted buckler","Dinh's bulwark","Ancestral hat","Ancestral robe bottom","Ancestral robe top","Dragon claws","Elder maul","Kodai insignia","Twisted bow"]},{"kind":"item","name":"Olmlet","type":"pet","dropRate":0.002127885945,"manualAdjustment":1.2,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Olmlet.png"},{"kind":"item","name":"Twisted ancestral colour kit","type":"normal","dropRate":0.005079365079365079,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Twisted_ancestral_colour_kit.png"},{"kind":"item","name":"Metamorphic dust","type":"normal","dropRate":0.0017857142857142857,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Metamorphic_dust.png"}],"img":"https://oldschool.runescape.wiki/images/Great_Olm.png"},{"boss":"Theatre of Blood","actualKPH":3.1,"bossType":"Raid","displayItems":[{"kind":"item","name":"Avernic defender hilt","type":"normal","dropRate":0.01156737999,"manualAdjustment":1.0,"geValue":40715423.5,"img":"https://oldschool.runescape.wiki/images/Avernic_defender_hilt.png"},{"kind":"item","name":"Ghrazi rapier","type":"normal","dropRate":0.002891844997,"manualAdjustment":1.0,"geValue":33949280,"img":"https://oldschool.runescape.wiki/images/Ghrazi_rapier.png"},{"kind":"item","name":"Sanguinesti staff (uncharged)","type":"normal","dropRate":0.002891844997,"manualAdjustment":1.0,"geValue":19884998.5,"img":"https://oldschool.runescape.wiki/images/Sanguinesti_staff_(uncharged).png"},{"kind":"item","name":"Justiciar faceguard","type":"normal","dropRate":0.002891844997,"manualAdjustment":1.0,"geValue":14467250,"img":"https://oldschool.runescape.wiki/images/Justiciar_faceguard.png"},{"kind":"item","name":"Justiciar chestguard","type":"normal","dropRate":0.002891844997,"manualAdjustment":1.0,"geValue":14484253,"img":"https://oldschool.runescape.wiki/images/Justiciar_chestguard.png"},{"kind":"item","name":"Justiciar legguards","type":"normal","dropRate":0.002891844997,"manualAdjustment":1.0,"geValue":12956492,"img":"https://oldschool.runescape.wiki/images/Justiciar_legguards.png"},{"kind":"item","name":"Scythe of Vitur","type":"normal","dropRate":0.001445922499,"manualAdjustment":1.0,"geValue":1518250500,"img":"https://oldschool.runescape.wiki/images/Scythe_of_Vitur.png"},{"kind":"all_uniques","requiredCount":7,"memberItems":["Avernic defender hilt","Ghrazi rapier","Sanguinesti staff (uncharged)","Justiciar faceguard","Justiciar chestguard","Justiciar legguards","Scythe of Vitur"]},{"kind":"item","name":"Lil' Zik","type":"pet","dropRate":0.001538461538,"manualAdjustment":0.8,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Lil%27_Zik.png"},{"kind":"item","name":"Holy ornament kit","type":"normal","dropRate":0.006929510156001003,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Holy_ornament_kit.png"},{"kind":"item","name":"Sanguine ornament kit","type":"normal","dropRate":0.00395972008914343,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Sanguine_ornament_kit.png"},{"kind":"item","name":"Sanguine dust","type":"normal","dropRate":0.002519821874581398,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Sanguine_dust.png"}],"img":"https://oldschool.runescape.wiki/images/Verzik_Vitur_%28final_form%29.png"},{"boss":"Tombs of Amascut","actualKPH":2.5,"bossType":"Raid","displayItems":[{"kind":"item","name":"Osmumten's fang","type":"normal","dropRate":0.008915039999773023,"manualAdjustment":1.0,"geValue":23041260.5,"img":"https://oldschool.runescape.wiki/images/Osmumten%27s_fang.png"},{"kind":"item","name":"Lightbearer","type":"normal","dropRate":0.011143440000088366,"manualAdjustment":1.0,"geValue":5700441,"img":"https://oldschool.runescape.wiki/images/Lightbearer.png"},{"kind":"item","name":"Elidinis' ward","type":"normal","dropRate":0.006685920000918512,"manualAdjustment":1.0,"geValue":3828584,"img":"https://oldschool.runescape.wiki/images/Elidinis%27_ward.png"},{"kind":"item","name":"Masori mask","type":"normal","dropRate":0.004457519999886511,"manualAdjustment":1.0,"geValue":17894180,"img":"https://oldschool.runescape.wiki/images/Masori_mask.png"},{"kind":"item","name":"Masori body","type":"normal","dropRate":0.004457519999886511,"manualAdjustment":1.0,"geValue":56426975.5,"img":"https://oldschool.runescape.wiki/images/Masori_body.png"},{"kind":"item","name":"Masori chaps","type":"normal","dropRate":0.004457519999886511,"manualAdjustment":1.0,"geValue":38066664.5,"img":"https://oldschool.runescape.wiki/images/Masori_chaps.png"},{"kind":"item","name":"Tumeken's shadow (uncharged)","type":"normal","dropRate":0.0022283999990328745,"manualAdjustment":1.0,"geValue":912705001.5,"img":"https://oldschool.runescape.wiki/images/Tumeken%27s_shadow_(uncharged).png"},{"kind":"all_uniques","requiredCount":7,"memberItems":["Osmumten's fang","Lightbearer","Elidinis' ward","Masori mask","Masori body","Masori chaps","Tumeken's shadow (uncharged)"]},{"kind":"item","name":"Tumeken's guardian","type":"normal","dropRate":0.0027979199999715733,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Tumeken%27s_guardian.png"}],"img":"https://oldschool.runescape.wiki/images/Elidinis%27_Warden_%28level-544%29.png"},{"boss":"Callisto/Artio","actualKPH":null,"bossType":null,"displayItems":[{"kind":"item","name":"Claws of Callisto","type":"normal","dropRate":0.001155802126675913,"manualAdjustment":1.0,"geValue":47755,"img":"https://oldschool.runescape.wiki/images/Claws_of_Callisto.png"},{"kind":"item","name":"Voidwaker hilt","type":"normal","dropRate":0.0007832080200501254,"manualAdjustment":1.0,"geValue":9990851.5,"img":"https://oldschool.runescape.wiki/images/Voidwaker_hilt.png"},{"kind":"item","name":"Tyrannical ring","type":"normal","dropRate":0.0009976057462090981,"manualAdjustment":1.0,"geValue":313220,"img":"https://oldschool.runescape.wiki/images/Tyrannical_ring.png"},{"kind":"all_uniques","requiredCount":3,"memberItems":["Claws of Callisto","Voidwaker hilt","Tyrannical ring"]},{"kind":"item","name":"Dragon 2h sword","type":"normal","dropRate":0.0019952114924181963,"manualAdjustment":1.0,"geValue":134199,"img":"https://oldschool.runescape.wiki/images/Dragon_2h_sword.png"},{"kind":"item","name":"Dragon pickaxe","type":"normal","dropRate":0.0019952114924181963,"manualAdjustment":1.0,"geValue":448000,"img":"https://oldschool.runescape.wiki/images/Dragon_pickaxe.png"},{"kind":"item","name":"Callisto cub","type":"normal","dropRate":0.0003401360544217687,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Callisto_cub.png"}],"img":"https://oldschool.runescape.wiki/images/Callisto.png"},{"boss":"Vet'ion/Calvar'ion","actualKPH":null,"bossType":null,"displayItems":[{"kind":"item","name":"Skull of Vet'ion","type":"normal","dropRate":0.0012020342117040487,"manualAdjustment":1.0,"geValue":50022.5,"img":"https://oldschool.runescape.wiki/images/Skull_of_Vet%27ion.png"},{"kind":"item","name":"Voidwaker blade","type":"normal","dropRate":0.0008145363410902987,"manualAdjustment":1.0,"geValue":2160000,"img":"https://oldschool.runescape.wiki/images/Voidwaker_blade.png"},{"kind":"item","name":"Ring of the gods","type":"normal","dropRate":0.0010375099759995007,"manualAdjustment":1.0,"geValue":741670.5,"img":"https://oldschool.runescape.wiki/images/Ring_of_the_gods.png"},{"kind":"all_uniques","requiredCount":3,"memberItems":["Skull of Vet'ion","Voidwaker blade","Ring of the gods"]},{"kind":"item","name":"Dragon 2h sword","type":"normal","dropRate":0.0019952114924181963,"manualAdjustment":1.0,"geValue":134199,"img":"https://oldschool.runescape.wiki/images/Dragon_2h_sword.png"},{"kind":"item","name":"Dragon pickaxe","type":"normal","dropRate":0.0019952114924181963,"manualAdjustment":1.0,"geValue":448000,"img":"https://oldschool.runescape.wiki/images/Dragon_pickaxe.png"},{"kind":"item","name":"Vet'ion Jr.","type":"normal","dropRate":0.0003537414966098693,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Vet%27ion_Jr..png"}],"img":"https://oldschool.runescape.wiki/images/Vet%27ion.png"},{"boss":"Venenatis/Spindel","actualKPH":null,"bossType":null,"displayItems":[{"kind":"item","name":"Fangs of Venenatis","type":"normal","dropRate":0.0018950437318106545,"manualAdjustment":1.0,"geValue":53503,"img":"https://oldschool.runescape.wiki/images/Fangs_of_Venenatis.png"},{"kind":"item","name":"Voidwaker gem","type":"normal","dropRate":0.001031746031707819,"manualAdjustment":1.0,"geValue":26554000,"img":"https://oldschool.runescape.wiki/images/Voidwaker_gem.png"},{"kind":"item","name":"Treasonous ring","type":"normal","dropRate":0.0007254464282880511,"manualAdjustment":1.0,"geValue":115000,"img":"https://oldschool.runescape.wiki/images/Treasonous_ring.png"},{"kind":"all_uniques","requiredCount":3,"memberItems":["Fangs of Venenatis","Voidwaker gem","Treasonous ring"]},{"kind":"item","name":"Dragon 2h sword","type":"normal","dropRate":0.0019952114924181963,"manualAdjustment":1.0,"geValue":134199,"img":"https://oldschool.runescape.wiki/images/Dragon_2h_sword.png"},{"kind":"item","name":"Dragon pickaxe","type":"normal","dropRate":0.0019952114924181963,"manualAdjustment":1.0,"geValue":448000,"img":"https://oldschool.runescape.wiki/images/Dragon_pickaxe.png"},{"kind":"item","name":"Venenatis spiderling","type":"normal","dropRate":0.0003301587301782951,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Venenatis_spiderling.png"}],"img":"https://oldschool.runescape.wiki/images/Venenatis.png"},{"boss":"Odium/Malediction","actualKPH":null,"bossType":null,"displayItems":[{"kind":"item","name":"Odium shard 1","type":"normal","dropRate":0.0033482142857142855,"manualAdjustment":1.0,"geValue":2227125,"img":"https://oldschool.runescape.wiki/images/Odium_shard_1.png"},{"kind":"item","name":"Odium shard 2","type":"normal","dropRate":0.001506696428542001,"manualAdjustment":1.0,"geValue":829100,"img":"https://oldschool.runescape.wiki/images/Odium_shard_2.png"},{"kind":"item","name":"Odium shard 3","type":"normal","dropRate":0.004017857143484933,"manualAdjustment":1.0,"geValue":426975,"img":"https://oldschool.runescape.wiki/images/Odium_shard_3.png"},{"kind":"sub_group","name":"All odium shards (3)","groupLabel":"odium shards","requiredCount":3,"memberItems":["Odium shard 1","Odium shard 2","Odium shard 3"]},{"kind":"item","name":"Malediction shard 1","type":"normal","dropRate":0.0033482142857142855,"manualAdjustment":1.0,"geValue":730000,"img":"https://oldschool.runescape.wiki/images/Malediction_shard_1.png"},{"kind":"item","name":"Malediction shard 2","type":"normal","dropRate":0.001506696428542001,"manualAdjustment":1.0,"geValue":365500,"img":"https://oldschool.runescape.wiki/images/Malediction_shard_2.png"},{"kind":"item","name":"Malediction shard 3","type":"normal","dropRate":0.004017857143484933,"manualAdjustment":1.0,"geValue":439039,"img":"https://oldschool.runescape.wiki/images/Malediction_shard_3.png"},{"kind":"sub_group","name":"All malediction shards (3)","groupLabel":"malediction shards","requiredCount":3,"memberItems":["Malediction shard 1","Malediction shard 2","Malediction shard 3"]},{"kind":"item","name":"Scorpia's offspring","type":"normal","dropRate":0.0006802721088435374,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Scorpia%27s_offspring.png"},{"kind":"item","name":"Fedora","type":"normal","dropRate":0.0030133928576136994,"manualAdjustment":1.0,"geValue":4825.5,"img":"https://oldschool.runescape.wiki/images/Fedora.png"},{"kind":"item","name":"Pet Chaos Elemental","type":"normal","dropRate":0.0008571428571428571,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Pet_Chaos_Elemental.png"}],"img":"https://oldschool.runescape.wiki/images/Odium%2FMalediction.png"},{"boss":"Guardians of the Rift","actualKPH":20.0,"bossType":"Skilling","displayItems":[{"kind":"item","name":"Catalytic talisman","type":"normal","dropRate":0.005,"manualAdjustment":1.0,"geValue":3702.5,"img":"https://oldschool.runescape.wiki/images/Catalytic_talisman.png"},{"kind":"item","name":"Abyssal needle","type":"normal","dropRate":0.003333333333,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Abyssal_needle.png"},{"kind":"item","name":"Abyssal lantern","type":"normal","dropRate":0.001428571429,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Abyssal_lantern.png"},{"kind":"item","name":"Abyssal red dye","type":"normal","dropRate":0.0008333333333,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Abyssal_red_dye.png"},{"kind":"item","name":"Abyssal green dye","type":"normal","dropRate":0.0008333333333,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Abyssal_green_dye.png"},{"kind":"item","name":"Abyssal blue dye","type":"normal","dropRate":0.0008333333333,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Abyssal_blue_dye.png"},{"kind":"all_uniques","requiredCount":6,"memberItems":["Catalytic talisman","Abyssal needle","Abyssal lantern","Abyssal red dye","Abyssal green dye","Abyssal blue dye"]},{"kind":"item","name":"Abyssal protector","type":"pet","dropRate":0.00025,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Abyssal_protector.png"}],"img":"https://oldschool.runescape.wiki/images/The_Great_Guardian.png"},{"boss":"Wintertodt","actualKPH":30.0,"bossType":"Skilling","displayItems":[{"kind":"item","name":"Burnt page","type":"normal","dropRate":0.02222222222,"manualAdjustment":1.0,"geValue":4785.5,"img":"https://oldschool.runescape.wiki/images/Burnt_page.png"},{"kind":"item","name":"Warm gloves","type":"normal","dropRate":0.006666666667,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Warm_gloves.png"},{"kind":"item","name":"Bruma torch","type":"normal","dropRate":0.006666666667,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Bruma_torch.png"},{"kind":"item","name":"Pyromancer hood","type":"normal","dropRate":0.006666666667,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Pyromancer_hood.png"},{"kind":"item","name":"Pyromancer garb","type":"normal","dropRate":0.006666666667,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Pyromancer_garb.png"},{"kind":"item","name":"Pyromancer robe","type":"normal","dropRate":0.006666666667,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Pyromancer_robe.png"},{"kind":"item","name":"Pyromancer boots","type":"normal","dropRate":0.006666666667,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Pyromancer_boots.png"},{"kind":"item","name":"Tome of Fire","type":"normal","dropRate":0.001,"manualAdjustment":1.0,"geValue":1272293,"img":"https://oldschool.runescape.wiki/images/Tome_of_Fire.png"},{"kind":"all_uniques","requiredCount":8,"memberItems":["Burnt page","Warm gloves","Bruma torch","Pyromancer hood","Pyromancer garb","Pyromancer robe","Pyromancer boots","Tome of Fire"]},{"kind":"item","name":"Phoenix","type":"pet","dropRate":0.0002,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Phoenix.png"},{"kind":"item","name":"Dragon axe","type":"normal","dropRate":0.0001,"manualAdjustment":0.5,"geValue":84532,"img":"https://oldschool.runescape.wiki/images/Dragon_axe.png"}],"img":"https://oldschool.runescape.wiki/images/Wintertodt.png"},{"boss":"Tempoross","actualKPH":50.0,"bossType":"Skilling","displayItems":[{"kind":"item","name":"Soaked page","type":"normal","dropRate":0.02,"manualAdjustment":1.0,"geValue":2204.5,"img":"https://oldschool.runescape.wiki/images/Soaked_page.png"},{"kind":"item","name":"Fish barrel","type":"normal","dropRate":0.0025,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Fish_barrel.png"},{"kind":"item","name":"Tackle box","type":"normal","dropRate":0.0025,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Tackle_box.png"},{"kind":"item","name":"Big harpoonfish","type":"normal","dropRate":0.000625,"manualAdjustment":1.0,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Big_harpoonfish.png"},{"kind":"item","name":"Tome of Water","type":"normal","dropRate":0.000625,"manualAdjustment":1.0,"geValue":422540,"img":"https://oldschool.runescape.wiki/images/Tome_of_Water.png"},{"kind":"all_uniques","requiredCount":5,"memberItems":["Soaked page","Fish barrel","Tackle box","Big harpoonfish","Tome of Water"]},{"kind":"item","name":"Tiny tempor","type":"pet","dropRate":0.000125,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Tiny_tempor.png"},{"kind":"item","name":"Dragon harpoon","type":"normal","dropRate":0.000125,"manualAdjustment":0.75,"geValue":2885054,"img":"https://oldschool.runescape.wiki/images/Dragon_harpoon.png"}],"img":"https://oldschool.runescape.wiki/images/Tempoross.png"},{"boss":"Zalcano","actualKPH":13.0,"bossType":"Skilling","displayItems":[{"kind":"item","name":"Crystal tool seed","type":"normal","dropRate":0.001218917601,"manualAdjustment":1.0,"geValue":18816323.5,"img":"https://oldschool.runescape.wiki/images/Crystal_tool_seed.png"},{"kind":"item","name":"Zalcano shard","type":"normal","dropRate":0.001333333333,"manualAdjustment":1.0,"geValue":62927,"img":"https://oldschool.runescape.wiki/images/Zalcano_shard.png"},{"kind":"all_uniques","requiredCount":2,"memberItems":["Crystal tool seed","Zalcano shard"]},{"kind":"item","name":"Smolcano","type":"pet","dropRate":0.0004444444444,"manualAdjustment":0.75,"geValue":0,"img":"https://oldschool.runescape.wiki/images/Smolcano.png"},{"kind":"item","name":"Onyx (Zalcano)","type":"jar","dropRate":0.000125,"manualAdjustment":0.3,"geValue":2209996.5,"img":"https://oldschool.runescape.wiki/images/Uncut_onyx.png"}],"img":"https://oldschool.runescape.wiki/images/Zalcano.png"},{"boss":"Mad Angel","actualKPH":null,"bossType":"General","img":"https://oldschool.runescape.wiki/images/Mad_Angel.png","displayItems":[{"kind":"item","name":"Hallowfell","type":"normal","dropRate":0.007874015748031496,"manualAdjustment":1.0,"geValue":null,"img":"https://oldschool.runescape.wiki/images/Hallowfell.png"},{"kind":"item","name":"Jar of Light","type":"normal","dropRate":0.001,"manualAdjustment":1.0,"geValue":null,"img":"https://oldschool.runescape.wiki/images/Jar_of_Light.png"},{"kind":"item","name":"Aggy","type":"pet","dropRate":0.0005,"manualAdjustment":0.75,"geValue":null,"img":"https://oldschool.runescape.wiki/images/Aggy.png"}]},{"boss":"Maggot King","actualKPH":null,"bossType":"General","img":"https://oldschool.runescape.wiki/images/Maggot_King.png","displayItems":[{"kind":"item","name":"Elder venator fang","type":"normal","dropRate":0.0029411764705882353,"manualAdjustment":1.0,"geValue":null,"img":"https://oldschool.runescape.wiki/images/Elder_venator_fang.png"},{"kind":"item","name":"Crimson kisten","type":"normal","dropRate":0.0019230769230769232,"manualAdjustment":1.0,"geValue":null,"img":"https://oldschool.runescape.wiki/images/Crimson_kisten.png"},{"kind":"all_uniques","requiredCount":2,"memberItems":["Elder venator fang","Crimson kisten"]},{"kind":"item","name":"Maggot marquess","type":"pet","dropRate":0.00028571428571428574,"manualAdjustment":0.75,"geValue":null,"img":"https://oldschool.runescape.wiki/images/Maggot_marquess.png"}]}],"metaBonuses":[{"id":"slayer_all_uniques","name":"All Slayer Boss Uniques (37)","contributingBosses":["Shellbane Gryphon","Grotesque Guardians","Abyssal Sire","Kraken","Cerberus","Araxxor","Thermonuclear Smoke Devil","Alchemical Hydra","Dagannoth Kings"],"memberItems":[{"boss":"Shellbane Gryphon","item":"Belle's folly (tarnished)"},{"boss":"Grotesque Guardians","item":"Granite maul"},{"boss":"Grotesque Guardians","item":"Granite gloves"},{"boss":"Grotesque Guardians","item":"Granite ring"},{"boss":"Grotesque Guardians","item":"Granite hammer"},{"boss":"Grotesque Guardians","item":"Black tourmaline core"},{"boss":"Abyssal Sire","item":"Bludgeon claw"},{"boss":"Abyssal Sire","item":"Bludgeon spine"},{"boss":"Abyssal Sire","item":"Bludgeon axon"},{"boss":"Abyssal Sire","item":"Abyssal dagger"},{"boss":"Abyssal Sire","item":"Abyssal whip"},{"boss":"Kraken","item":"Trident of the seas (full)"},{"boss":"Kraken","item":"Kraken tentacle"},{"boss":"Cerberus","item":"Primordial crystal"},{"boss":"Cerberus","item":"Pegasian crystal"},{"boss":"Cerberus","item":"Eternal crystal"},{"boss":"Cerberus","item":"Smouldering stone"},{"boss":"Araxxor","item":"Noxious pommel"},{"boss":"Araxxor","item":"Noxious point"},{"boss":"Araxxor","item":"Noxious blade"},{"boss":"Araxxor","item":"Araxyte fang"},{"boss":"Thermonuclear Smoke Devil","item":"Occult necklace"},{"boss":"Thermonuclear Smoke Devil","item":"Smoke battlestaff"},{"boss":"Thermonuclear Smoke Devil","item":"Dragon chainbody"},{"boss":"Alchemical Hydra","item":"Hydra's eye"},{"boss":"Alchemical Hydra","item":"Hydra's fang"},{"boss":"Alchemical Hydra","item":"Hydra's heart"},{"boss":"Alchemical Hydra","item":"Hydra tail"},{"boss":"Alchemical Hydra","item":"Hydra leather"},{"boss":"Alchemical Hydra","item":"Hydra's claw"},{"boss":"Dagannoth Kings","item":"Berserker ring"},{"boss":"Dagannoth Kings","item":"Warrior ring"},{"boss":"Dagannoth Kings","item":"Seers ring"},{"boss":"Dagannoth Kings","item":"Archers ring"},{"boss":"Dagannoth Kings","item":"Pet Dagannoth Prime"},{"boss":"Dagannoth Kings","item":"Pet Dagannoth Rex"},{"boss":"Dagannoth Kings","item":"Pet Dagannoth Supreme"}],"requiredCount":37},{"id":"gwd_all_uniques","name":"All GWD Uniques (16)","contributingBosses":["Commander Zilyana","General Graardor","Kree'Arra","K'ril Tsutsaroth"],"memberItems":[{"boss":"Commander Zilyana","item":"Saradomin sword"},{"boss":"Commander Zilyana","item":"Saradomin's light"},{"boss":"Commander Zilyana","item":"Armadyl crossbow"},{"boss":"Commander Zilyana","item":"Saradomin hilt"},{"boss":"General Graardor","item":"Bandos chestplate"},{"boss":"General Graardor","item":"Bandos tassets"},{"boss":"General Graardor","item":"Bandos boots"},{"boss":"General Graardor","item":"Bandos hilt"},{"boss":"Kree'Arra","item":"Armadyl helmet"},{"boss":"Kree'Arra","item":"Armadyl chestplate"},{"boss":"Kree'Arra","item":"Armadyl chainskirt"},{"boss":"Kree'Arra","item":"Armadyl hilt"},{"boss":"K'ril Tsutsaroth","item":"Steam battlestaff"},{"boss":"K'ril Tsutsaroth","item":"Zamorakian spear"},{"boss":"K'ril Tsutsaroth","item":"Staff of the Dead"},{"boss":"K'ril Tsutsaroth","item":"Zamorak hilt"}],"requiredCount":16},{"id":"dt2_full_sra","name":"Full Soul Reaper Axe (SRA)","contributingBosses":["The Whisperer","Duke Sucellus","Vardorvis","The Leviathan"],"requiredCount":4,"memberItems":[{"boss":"Duke Sucellus","item":"Eye of the Duke"},{"boss":"The Leviathan","item":"Leviathan's lure"},{"boss":"Vardorvis","item":"Executioner's axe head"},{"boss":"The Whisperer","item":"Siren's staff"}],"mixAndMatch":true},{"id":"dt2_full_virtus","name":"Full Virtus Set","contributingBosses":["The Whisperer","Duke Sucellus","Vardorvis","The Leviathan"],"requiredCount":3,"memberItems":[{"boss":"Duke Sucellus","item":"Virtus mask (DS)"},{"boss":"Duke Sucellus","item":"Virtus robe top (DS)"},{"boss":"Duke Sucellus","item":"Virtus robe bottom (DS)"},{"boss":"The Leviathan","item":"Virtus mask (L)"},{"boss":"The Leviathan","item":"Virtus robe top (L)"},{"boss":"The Leviathan","item":"Virtus robe bottom (L)"},{"boss":"Vardorvis","item":"Virtus mask (V)"},{"boss":"Vardorvis","item":"Virtus robe top (V)"},{"boss":"Vardorvis","item":"Virtus robe bottom (V)"},{"boss":"The Whisperer","item":"Virtus mask (W)"},{"boss":"The Whisperer","item":"Virtus robe top (W)"},{"boss":"The Whisperer","item":"Virtus robe bottom (W)"}],"mixAndMatch":true}],"assumptions":{"kphNormalizationConstant":60,"uniqueBonusMultiplier":0.75,"collectionLogBonus":0.2,"bountyPoints":{"Major":{"1st Place":2500,"2nd Place":1500,"3rd Place":0},"Minor":{"1st Place":1500,"2nd Place":500,"3rd Place":0}}}};
-const BOUNTIES = [{"type":"Major","number":1,"description":"Raids - Obtain any raids armour piece or offhand"},{"type":"Minor","number":1,"description":"Zulrah - Obtain 3 uniques"},{"type":"Major","number":2,"description":"DT2 - Obtain 1 SRA or Virtus piece"},{"type":"Minor","number":2,"description":"The Hueycoatl - Obtain tome of earth or dragon hunter wand"},{"type":"Major","number":3,"description":"Nex - Obtain any unique (excl. pet, shards)"},{"type":"Minor","number":3,"description":"The Corrupted Gauntlet - Obtain 2 armour seeds or 1 enhanced weapon seed"},{"type":"Major","number":4,"description":"GWD - Obtain 1 hilt"},{"type":"Minor","number":4,"description":"Wilderness - Obtain any wilderness ring"},{"type":"Major","number":5,"description":"Tombs of Amascut - Obtain a Lightbearer or Osmumten's Fang"},{"type":"Minor","number":5,"description":"Moons of Peril - Complete one Moons set"},{"type":"Major","number":6,"description":"Slayer - Obtain 3 slayer boss uniques (excl. pets, teleports, jars)"},{"type":"Minor","number":6,"description":"Guardians of the Rift - Obtain any dye or lantern"},{"type":"Major","number":7,"description":"Doom of Mokhaiotl - Obtain any unique (excl. demon tears, teleport, pet)"},{"type":"Minor","number":7,"description":"The Royal Titans - Complete 2 twinflame staffs"},{"type":"Major","number":8,"description":"Yama - Obtain any unique without using contracts (excl. teleport, shards, contracts, pet)"},{"type":"Minor","number":8,"description":"DKs - Obtain all 4 DKs rings (Warrior, Berserker, Archer, and Seers)"},{"type":"Major","number":9,"description":"Theatre of Blood - Obtain an avernic defender hilt, rapier, or sanguinesti staff"},{"type":"Minor","number":9,"description":"Sarachnis - Obtain 2 cudgels or 1 jar"},{"type":"Major","number":10,"description":"DT2 - Obtain 3 ring rolls/ingots"},{"type":"Minor","number":10,"description":"Zalcano - Obtain a unique (shard or crystal tool seed) or Smolcano"},{"type":"Major","number":11,"description":"Fortis Colosseum - Obtain 2 different uniques (excl. shards, pet, quiver)"},{"type":"Minor","number":11,"description":"Vorkath - Obtain any unique (excl. head), jar, or pet"},{"type":"Major","number":12,"description":"Freestyle - Obtain 1 each of magic, range, and melee weapons from three separate bosses (component pieces such as magic fang count as a full weapon)"},{"type":"Minor","number":12,"description":"Freestyle - Obtain 1 each of head, torso, and leg slot items from three separate bosses (component pieces such as Hueycoatl hide may act as wild cards)"},{"type":"Major","number":13,"description":"Chambers of Xeric - Obtain a unique (excl. prayer scrolls, pet, kits, dust)"},{"type":"Minor","number":13,"description":"Tempoross - Obtain tome or big harpoonfish"},{"type":"Major","number":14,"description":"Phantom Muspah - Obtain 2 venator shards"},{"type":"Minor","number":14,"description":"Wilderness - Obtain 3 different odium or malediction shards (no duplicates)"}];
-
 const $ = id => document.getElementById(id);
-const fmtNum = n => Math.round(n).toLocaleString();
-const fmtGP = n => {
-  if (n >= 1e9) return (n/1e9).toFixed(2).replace(/\.?0+$/,'') + 'B';
-  if (n >= 1e6) return (n/1e6).toFixed(1).replace(/\.?0+$/,'') + 'M';
-  if (n >= 1e3) return (n/1e3).toFixed(0) + 'K';
-  return Math.round(n).toLocaleString();
+let pw = sessionStorage.getItem('bh_pw') || '';
+
+function say(el, text, ok){ el.innerHTML = `<div style="margin-top:14px;padding:10px 13px;font-size:15px;border-left:2px solid ${ok?'var(--good)':'var(--bad)'};color:${ok?'#8fbf92':'#c0705f'};background:${ok?'rgba(76,175,80,.07)':'rgba(166,63,44,.08)'}">${text}</div>`; }
+
+async function api(path, opts={}){
+  const headers = Object.assign({'Authorization': 'Bearer ' + pw}, opts.headers||{});
+  const r = await fetch(path, Object.assign({}, opts, {headers}));
+  if (r.status === 401){ sessionStorage.removeItem('bh_pw'); location.reload(); throw new Error('Unauthorized'); }
+  return r;
+}
+
+async function tryAuth(candidate){
+  const r = await fetch('/api/admin/probe', {
+    method: 'POST', headers: {'Content-Type':'application/json', 'Authorization':'Bearer ' + candidate}, body: '{}',
+  });
+  return r.status !== 401;
+}
+
+let STATE = { kph: {}, manualAdjustments: {} };
+
+async function unlock(){
+  $('gate').hidden = true;
+  $('panel').hidden = false;
+  await loadState();
+}
+
+$('signin').onclick = async () => {
+  const cand = $('pw').value.trim();
+  if (!cand) return say($('gateMsg'), 'Enter the password.', false);
+  $('signin').disabled = true;
+  try{
+    if (await tryAuth(cand)){
+      pw = cand; sessionStorage.setItem('bh_pw', pw); unlock();
+    } else say($('gateMsg'), 'Wrong password.', false);
+  } catch(e){ say($('gateMsg'), 'Could not reach the server.', false); }
+  $('signin').disabled = false;
 };
+$('pw').addEventListener('keydown', e => { if (e.key === 'Enter') $('signin').click(); });
 
-// ---- Boss/item lookup maps ----
-const BOSS_MAP = {};
-CONFIG.bosses.forEach(b => BOSS_MAP[b.boss] = b);
-function findItem(bossName, itemName) {
-  const b = BOSS_MAP[bossName];
-  if (!b) return null;
-  const di = b.displayItems.find(d => d.kind === 'item' && d.name === itemName);
-  return di || null;
+async function loadState(){
+  const r = await fetch('/api/state', { cache: 'no-store' });
+  STATE = await r.json();
+  renderKphTable();
+  renderAdjTable();
 }
 
-let STATE = { kph: {}, prizePool: 0, manualAdjustments: {}, drops: [], bountyCompletions: [], bountyReveals: [] };
-
-function effectiveKPH(bossName) {
-  if (STATE.kph[bossName] != null) return STATE.kph[bossName];
-  const b = BOSS_MAP[bossName];
-  return b ? b.actualKPH : null;
-}
-
-function effectiveManualAdjustment(bossName, item) {
-  const key = bossName + '||' + item.name;
-  if (STATE.manualAdjustments && STATE.manualAdjustments[key] != null) return STATE.manualAdjustments[key];
-  return item.manualAdjustment;
-}
-
-function itemPointValue(bossName, item) {
-  const kph = effectiveKPH(bossName);
-  if (!kph || !item.dropRate) return null;
-  const base = 1 / item.dropRate;
-  return base * (CONFIG.assumptions.kphNormalizationConstant / kph) * effectiveManualAdjustment(bossName, item);
-}
-
-// ---- Per-team computation ----
-function computeTeam(team) {
-  const teamDrops = STATE.drops.filter(d => d.team === team);
-  const obtained = new Set();          // "boss||item" keys, presence only
-  let dropPoints = 0, geValue = 0, uniqueDropCount = 0, pendingKPH = false;
-
-  for (const d of teamDrops) {
-    const item = findItem(d.boss, d.item);
-    if (!item) continue;
-    obtained.add(d.boss + '||' + d.item);
-    uniqueDropCount++;
-    const pv = itemPointValue(d.boss, item);
-    if (pv == null) { pendingKPH = true; }
-    else {
-      let val = pv * d.quantity;
-      if (d.isCollectionLog) val += pv * d.quantity * CONFIG.assumptions.collectionLogBonus;
-      dropPoints += val;
-    }
-    if (item.geValue) geValue += item.geValue * d.quantity;
-  }
-
-  // Per-boss bonuses (all_uniques / sub_group), now sourced from displayItems
-  let bonusPoints = 0;
-  const bonusStatus = []; // for display
-  for (const b of CONFIG.bosses) {
-    for (const di of b.displayItems) {
-      if (di.kind !== 'all_uniques' && di.kind !== 'sub_group') continue;
-      const bonusName = di.kind === 'all_uniques' ? 'All Uniques Bonus' : di.name;
-      const achieved = di.memberItems.every(name => obtained.has(b.boss + '||' + name));
-      let value = null;
-      if (achieved) {
-        value = 0;
-        for (const name of di.memberItems) {
-          const it = findItem(b.boss, name);
-          const pv = it ? itemPointValue(b.boss, it) : null;
-          if (pv == null) { value = null; break; }
-          value += pv;
-        }
-        if (value != null) { value *= CONFIG.assumptions.uniqueBonusMultiplier; bonusPoints += value; }
-      }
-      bonusStatus.push({ boss: b.boss, name: bonusName, achieved, value });
-    }
-  }
-
-  // Cross-boss meta bonuses
-  const metaStatus = [];
-  for (const mb of CONFIG.metaBonuses) {
-    let achieved, value = null;
-    if (mb.mixAndMatch) {
-      // group member items by name with trailing "(X)" suffix stripped
-      const groups = {};
-      for (const m of mb.memberItems) {
-        const base = m.item.replace(/\s*\([^)]*\)\s*$/, '');
-        (groups[base] = groups[base] || []).push(m);
-      }
-      let groupsAchieved = 0;
-      const achievedMembers = [];
-      for (const base in groups) {
-        const hit = groups[base].find(m => obtained.has(m.boss + '||' + m.item));
-        if (hit) { groupsAchieved++; achievedMembers.push(hit); }
-      }
-      achieved = groupsAchieved >= (mb.requiredCount || Object.keys(groups).length);
-      if (achieved && mb.id.startsWith('slayer') || mb.id.startsWith('gwd')) {
-        // (handled below for point-bearing bonuses)
-      }
-    } else {
-      achieved = mb.memberItems.every(m => obtained.has(m.boss + '||' + m.item));
-    }
-
-    // Only slayer/GWD mega bonuses currently have a defined point value
-    if (achieved && (mb.id === 'slayer_all_uniques' || mb.id === 'gwd_all_uniques')) {
-      value = 0;
-      for (const m of mb.memberItems) {
-        const it = findItem(m.boss, m.item);
-        const pv = it ? itemPointValue(m.boss, it) : null;
-        if (pv == null) { value = null; break; }
-        value += pv;
-      }
-      if (value != null) { value *= CONFIG.assumptions.uniqueBonusMultiplier; bonusPoints += value; }
-    }
-    metaStatus.push({ id: mb.id, name: mb.name, achieved, value, hasValue: mb.id === 'slayer_all_uniques' || mb.id === 'gwd_all_uniques' });
-  }
-
-  // Bounty points
-  let bountyPoints = 0;
-  for (const bc of STATE.bountyCompletions) {
-    if (bc.team !== team) continue;
-    const table = CONFIG.assumptions.bountyPoints[bc.bountyType];
-    if (table && table[bc.placement] != null) bountyPoints += table[bc.placement];
-  }
-
-  return {
-    team, dropPoints, bonusPoints, bountyPoints,
-    totalPoints: dropPoints + bonusPoints + bountyPoints,
-    geValue, uniqueDropCount, pendingKPH, obtained, bonusStatus, metaStatus,
-  };
-}
-
-function render() {
-  const results = TEAMS.map(computeTeam);
-  results.sort((a, b) => b.totalPoints - a.totalPoints);
-  const maxPoints = Math.max(1, ...results.map(r => r.totalPoints));
-
-  $('prizePoolAmt').textContent = fmtGP(STATE.prizePool || 0) + ' GP';
-
-  // ---- Standings ----
-  $('standings').innerHTML = results.map((r, i) => `
-    <div class="team" style="--tc:${TEAM_COLORS[r.team]}">
-      <div class="top">
-        <div><span class="nm">${r.team}</span><span class="rank">${i===0?'Leading':'#' + (i+1)}</span></div>
-        <div class="val">${fmtNum(r.totalPoints)}<span>PTS</span></div>
-      </div>
-      <div class="track"><div class="fill" style="width:${(r.totalPoints/maxPoints*100).toFixed(1)}%"></div></div>
-      <div class="sub-stats">${fmtGP(r.geValue)} GP value · ${r.uniqueDropCount} drops logged
-        ${r.pendingKPH ? ' · <span style="color:var(--bad)">some items pending KPH input</span>' : ''}</div>
-    </div>
-  `).join('');
-
-  // ---- Boss breakdown, grouped by boss type, with cross-boss bonuses appended ----
-  const TYPE_ORDER = ['Slayer','God Wars','Desert Treasure','General','Dagannoth','Other','Raid','Skilling'];
-  const META_BONUS_SECTION = {
-    slayer_all_uniques: 'Slayer', gwd_all_uniques: 'God Wars',
-    dt2_full_sra: 'Desert Treasure', dt2_full_virtus: 'Desert Treasure',
-  };
-
-  const filterVal = ($('bossFilter').value || '').toLowerCase();
-  const matches = b => !filterVal || b.boss.toLowerCase().includes(filterVal) || b.items.some(it => it.name.toLowerCase().includes(filterVal));
-
-  function renderBossCard(b) {
-    const rowsHtml = b.displayItems.map(di => {
-      if (di.kind === 'item') {
-        const pv = itemPointValue(b.boss, di);
-        const cells = TEAMS.map(team => {
-          const matching = STATE.drops.filter(d => d.team === team && d.boss === b.boss && d.item === di.name);
-          if (!matching.length) return `<td class="num">—</td>`;
-          const total = matching.reduce((sum, d) => sum + d.quantity, 0);
-          const anyClog = matching.some(d => d.isCollectionLog);
-          const clog = anyClog ? '<span class="clog-mark" title="Collection log">📜</span>' : '';
-          return `<td class="num">${total}${clog}</td>`;
-        }).join('');
-        return `<tr><td><div class="item-name-cell"><img class="item-img" src="${di.img}" onerror="this.style.display='none'" alt="">${di.name}</div></td><td class="num">${pv != null ? fmtNum(pv) : '—'}</td>${cells}</tr>`;
-      }
-      if (di.kind === 'all_uniques' || di.kind === 'sub_group') {
-        const bonusName = di.kind === 'all_uniques' ? 'All Uniques Bonus' : di.name;
-        const perTeam = TEAMS.map(team => {
-          const r = results.find(x => x.team === team);
-          const status = r.bonusStatus.find(s => s.boss === b.boss && s.name === bonusName);
-          return status.achieved
-            ? `<span class="achieved">${team} ✓${status.value != null ? ' +' + fmtNum(status.value) : ''}</span>`
-            : `<span class="pending">${team}: —</span>`;
-        }).join(' &nbsp; ');
-        return `<tr><td colspan="${2+TEAMS.length}"><div class="bonus-row">${bonusName}: ${perTeam}</div></td></tr>`;
-      }
-      if (di.kind === 'meta') {
-        return ''; // rendered once at the end of the boss-type section instead
-      }
-      return '';
-    }).join('');
-
-    return `<div class="boss-card" data-boss="${b.boss}">
-      <div class="boss-head">
-        <img class="bimg" src="${b.img}" onerror="this.style.display='none'" alt="">
-        <span class="bname">${b.boss}</span>
-      </div>
-      <div class="boss-body">
-        <table class="items"><thead><tr><th>Item</th><th>Pts</th>${TEAMS.map(t=>`<th>${t}</th>`).join('')}</tr></thead>
-        <tbody>${rowsHtml}</tbody></table>
-      </div>
-    </div>`;
-  }
-
-  function renderMetaCard(mb) {
-    const lines = results.map(r => {
-      const ms = r.metaStatus.find(m => m.id === mb.id);
-      const cls = ms.achieved ? 'achieved' : 'pending';
-      const valTxt = ms.achieved
-        ? (ms.hasValue ? (ms.value != null ? `+${fmtNum(ms.value)} pts` : 'pending KPH') : '<span class="novalue">value TBD</span>')
-        : '';
-      return `<div class="${cls}">${r.team}: ${ms.achieved ? '✓ Complete' : 'In progress'} ${valTxt}</div>`;
-    }).join('');
-    return `<div class="meta-card"><div class="mtitle">${mb.name}</div><div class="mstatus">${lines}</div></div>`;
-  }
-
-  const bossesByType = {};
-  CONFIG.bosses.forEach(b => { (bossesByType[b.bossType || 'Other'] = bossesByType[b.bossType || 'Other'] || []).push(b); });
-
-  $('bossList').innerHTML = TYPE_ORDER.filter(t => bossesByType[t]).map(type => {
-    const bosses = bossesByType[type].filter(matches);
-    const metaCards = CONFIG.metaBonuses.filter(mb => META_BONUS_SECTION[mb.id] === type).map(renderMetaCard).join('');
-    if (!bosses.length && !metaCards) return '';
-    return `<div class="type-section">
-      <div class="type-title">${type}</div>
-      ${bosses.map(renderBossCard).join('')}
-      ${metaCards}
-    </div>`;
+// ── KPH table ─────────────────────────────────────────────
+function renderKphTable(){
+  const filterVal = ($('kphFilter').value || '').toLowerCase();
+  const tbody = $('kphTable').querySelector('tbody');
+  const bosses = CONFIG.bosses.filter(b => !filterVal || b.boss.toLowerCase().includes(filterVal));
+  tbody.innerHTML = bosses.map(b => {
+    const current = STATE.kph[b.boss];
+    return `<tr data-boss="${b.boss}">
+      <td>${b.boss}</td>
+      <td><input type="number" step="0.1" min="0.1" class="kph-input" value="${current ?? ''}" placeholder="—"></td>
+      <td style="text-align:right"><button data-save-kph="${b.boss}">Save</button></td>
+    </tr>`;
   }).join('');
+
+  tbody.querySelectorAll('[data-save-kph]').forEach(btn => {
+    btn.onclick = async () => {
+      const boss = btn.dataset.saveKph;
+      const row = tbody.querySelector(`tr[data-boss="${CSS.escape(boss)}"]`);
+      const kph = parseFloat(row.querySelector('.kph-input').value);
+      if (!Number.isFinite(kph) || kph <= 0) return alert('Enter a valid positive KPH.');
+      btn.disabled = true;
+      try{
+        const r = await api('/api/admin/kph', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ boss, kph }),
+        });
+        if (!r.ok) throw new Error((await r.json()).error || 'Failed');
+        await loadState();
+      } catch(e){ alert('Failed: ' + e.message); }
+      btn.disabled = false;
+    };
+  });
 }
+$('kphFilter').addEventListener('input', renderKphTable);
 
-function ago(ts) {
-  const s = Math.floor((Date.now() - ts) / 1000);
-  if (s < 60) return s + 's ago';
-  if (s < 3600) return Math.floor(s/60) + 'm ago';
-  if (s < 86400) return Math.floor(s/3600) + 'h ago';
-  return Math.floor(s/86400) + 'd ago';
+// ── Manual adjustments table ─────────────────────────────
+function renderAdjTable(){
+  const filterVal = ($('adjFilter').value || '').toLowerCase();
+  const tbody = $('adjTable').querySelector('tbody');
+  const rows = [];
+  CONFIG.bosses.forEach(b => {
+    b.displayItems.forEach(di => {
+      if (di.kind !== 'item') return;
+      if (filterVal && !di.name.toLowerCase().includes(filterVal) && !b.boss.toLowerCase().includes(filterVal)) return;
+      rows.push({ boss: b.boss, item: di.name, defaultAdj: di.manualAdjustment });
+    });
+  });
+  tbody.innerHTML = rows.map(r => {
+    const override = STATE.manualAdjustments[r.boss + '||' + r.item];
+    const current = override != null ? override : r.defaultAdj;
+    return `<tr data-boss="${r.boss}" data-item="${r.item}">
+      <td>${r.item}</td>
+      <td class="sub">${r.boss}</td>
+      <td><input type="number" step="0.05" min="0" max="10" class="adj-input" value="${current}"></td>
+      <td style="text-align:right"><button data-save-adj="${r.boss}||${r.item}">Save</button></td>
+    </tr>`;
+  }).join('');
+
+  tbody.querySelectorAll('[data-save-adj]').forEach(btn => {
+    btn.onclick = async () => {
+      const [boss, item] = btn.dataset.saveAdj.split('||');
+      const row = tbody.querySelector(`tr[data-boss="${CSS.escape(boss)}"][data-item="${CSS.escape(item)}"]`);
+      const adjustment = parseFloat(row.querySelector('.adj-input').value);
+      if (!Number.isFinite(adjustment) || adjustment < 0) return alert('Enter a valid non-negative number.');
+      btn.disabled = true;
+      try{
+        const r = await api('/api/admin/manual-adjustment', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ boss, item, adjustment }),
+        });
+        if (!r.ok) throw new Error((await r.json()).error || 'Failed');
+        await loadState();
+      } catch(e){ alert('Failed: ' + e.message); }
+      btn.disabled = false;
+    };
+  });
 }
+$('adjFilter').addEventListener('input', renderAdjTable);
 
-$('bossFilter').addEventListener('input', render);
-
-// ---- Polling ----
-const POLL_MS = 20000;
-let lastStateJSON = null;
-
-async function poll() {
-  try {
-    const r = await fetch('/api/state', { cache: 'no-store' });
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const newState = await r.json();
-    const newStateJSON = JSON.stringify(newState);
-
-    // Skip the re-render entirely if nothing actually changed — this is
-    // what was causing the page to "jump": every poll rebuilt the whole
-    // DOM (all ~340 images re-requested), which shifts scroll position as
-    // things load/fail at different times, even when no data changed.
-    if (newStateJSON !== lastStateJSON) {
-      const scrollY = window.scrollY;
-      STATE = newState;
-      lastStateJSON = newStateJSON;
-      render();
-      window.scrollTo(0, scrollY);
-    }
-
-    $('dot').classList.remove('stale');
-    $('liveTxt').textContent = 'Live';
-  } catch (e) {
-    $('dot').classList.add('stale');
-    $('liveTxt').textContent = 'Reconnecting';
-  }
-}
-poll();
-setInterval(() => { if (!document.hidden) poll(); }, POLL_MS);
-document.addEventListener('visibilitychange', () => { if (!document.hidden) poll(); });
+if (pw) tryAuth(pw).then(ok => ok ? unlock() : sessionStorage.removeItem('bh_pw'));
 </script>
 </body>
 </html>
