@@ -11,6 +11,7 @@
  *   POST   /api/admin/bounty/:id/undo
  *   POST   /api/admin/kph           { boss, kph }
  *   POST   /api/admin/bounty-reveal { bountyNumber, bountyType, revealed }
+ *   POST   /api/admin/prize-pool    { amount }
  *   GET    /api/admin/audit-log
  *
  * Everything else falls through to static assets automatically.
@@ -56,18 +57,22 @@ export default {
     try {
       // ---------------------------------------------------------- PUBLIC
       if (path === '/api/state' && method === 'GET') {
-        const [kphRows, dropRows, bountyRows, revealRows] = await Promise.all([
+        const [kphRows, dropRows, bountyRows, revealRows, settingsRows] = await Promise.all([
           env.DB.prepare('SELECT boss_name, actual_kph FROM boss_kph').all(),
           env.DB.prepare('SELECT id, boss_name, item_name, team, quantity, is_collection_log, logged_at FROM drops WHERE undone = 0 ORDER BY logged_at ASC').all(),
           env.DB.prepare('SELECT id, bounty_number, bounty_type, team, placement, logged_at FROM bounty_completions WHERE undone = 0 ORDER BY logged_at ASC').all(),
           env.DB.prepare('SELECT bounty_number, bounty_type, revealed, revealed_at FROM bounty_reveals').all(),
+          env.DB.prepare('SELECT key, value FROM event_settings').all(),
         ]);
 
         const kph = {};
         for (const r of kphRows.results) kph[r.boss_name] = r.actual_kph;
+        const settings = {};
+        for (const r of settingsRows.results) settings[r.key] = r.value;
 
         return json({
           kph,
+          prizePool: Number(settings.prizePool || 0),
           drops: dropRows.results.map(r => ({
             id: r.id, boss: r.boss_name, item: r.item_name,
             team: r.team, quantity: r.quantity, isCollectionLog: !!r.is_collection_log,
@@ -183,6 +188,22 @@ export default {
           ).bind(bountyNumber, bountyType, revealed ? 1 : 0, revealed ? Date.now() : null).run();
 
           await logAudit(env, 'bounty_revealed', `Bounty #${bountyNumber} (${bountyType}) ${revealed ? 'revealed' : 'hidden'}`);
+          return json({ ok: true });
+        }
+
+        // POST /api/admin/prize-pool
+        if (path === '/api/admin/prize-pool' && method === 'POST') {
+          const body = await request.json();
+          const amount = Number(body.amount);
+          if (!Number.isFinite(amount) || amount < 0)
+            return json({ error: 'amount must be a non-negative number' }, 400);
+
+          await env.DB.prepare(
+            `INSERT INTO event_settings (key, value) VALUES ('prizePool', ?)
+             ON CONFLICT(key) DO UPDATE SET value = excluded.value`
+          ).bind(String(Math.round(amount))).run();
+
+          await logAudit(env, 'prize_pool_updated', `Prize pool set to ${Math.round(amount).toLocaleString()} GP`);
           return json({ ok: true });
         }
 
