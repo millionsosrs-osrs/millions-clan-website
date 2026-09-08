@@ -17,6 +17,7 @@ CREATE TABLE drops (
   boss_name           TEXT NOT NULL,
   item_name           TEXT NOT NULL,
   team                TEXT NOT NULL,
+  rsn                 TEXT,
   quantity            INTEGER NOT NULL DEFAULT 1,
   is_collection_log   INTEGER NOT NULL DEFAULT 0,
   logged_at           INTEGER NOT NULL,
@@ -46,6 +47,24 @@ CREATE TABLE bounty_reveals (
   revealed       INTEGER NOT NULL DEFAULT 0,
   revealed_at    INTEGER,
   PRIMARY KEY (bounty_number, bounty_type)
+);
+
+-- Simple key/value settings store — currently just the prize pool, but flexible
+-- for any other admin-editable event-wide setting later without a schema change.
+CREATE TABLE event_settings (
+  key    TEXT PRIMARY KEY,
+  value  TEXT
+);
+INSERT INTO event_settings (key, value) VALUES ('prizePool', '0');
+
+-- Per-item manual point-value multiplier (matches the "Manual Adjustment"
+-- column in your spreadsheet — normally 0.75 for jars/pets, 1.0 otherwise,
+-- but editable per item here if you need to adjust a specific one).
+CREATE TABLE item_manual_adjustments (
+  boss_name   TEXT NOT NULL,
+  item_name   TEXT NOT NULL,
+  adjustment  REAL NOT NULL,
+  PRIMARY KEY (boss_name, item_name)
 );
 
 -- Human-readable audit trail of every admin action, shown on the admin
