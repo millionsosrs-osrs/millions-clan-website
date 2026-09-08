@@ -12,6 +12,7 @@
  *   POST   /api/admin/kph           { boss, kph }
  *   POST   /api/admin/bounty-reveal { bountyNumber, bountyType, revealed }
  *   POST   /api/admin/prize-pool    { amount }
+ *   POST   /api/admin/manual-adjustment { boss, item, adjustment }
  *   GET    /api/admin/audit-log
  *
  * Everything else falls through to static assets automatically.
@@ -57,25 +58,29 @@ export default {
     try {
       // ---------------------------------------------------------- PUBLIC
       if (path === '/api/state' && method === 'GET') {
-        const [kphRows, dropRows, bountyRows, revealRows, settingsRows] = await Promise.all([
+        const [kphRows, dropRows, bountyRows, revealRows, settingsRows, adjustRows] = await Promise.all([
           env.DB.prepare('SELECT boss_name, actual_kph FROM boss_kph').all(),
-          env.DB.prepare('SELECT id, boss_name, item_name, team, quantity, is_collection_log, logged_at FROM drops WHERE undone = 0 ORDER BY logged_at ASC').all(),
+          env.DB.prepare('SELECT id, boss_name, item_name, team, rsn, quantity, is_collection_log, logged_at FROM drops WHERE undone = 0 ORDER BY logged_at ASC').all(),
           env.DB.prepare('SELECT id, bounty_number, bounty_type, team, placement, logged_at FROM bounty_completions WHERE undone = 0 ORDER BY logged_at ASC').all(),
           env.DB.prepare('SELECT bounty_number, bounty_type, revealed, revealed_at FROM bounty_reveals').all(),
           env.DB.prepare('SELECT key, value FROM event_settings').all(),
+          env.DB.prepare('SELECT boss_name, item_name, adjustment FROM item_manual_adjustments').all(),
         ]);
 
         const kph = {};
         for (const r of kphRows.results) kph[r.boss_name] = r.actual_kph;
         const settings = {};
         for (const r of settingsRows.results) settings[r.key] = r.value;
+        const manualAdjustments = {};
+        for (const r of adjustRows.results) manualAdjustments[r.boss_name + '||' + r.item_name] = r.adjustment;
 
         return json({
           kph,
           prizePool: Number(settings.prizePool || 0),
+          manualAdjustments,
           drops: dropRows.results.map(r => ({
             id: r.id, boss: r.boss_name, item: r.item_name,
-            team: r.team, quantity: r.quantity, isCollectionLog: !!r.is_collection_log,
+            team: r.team, rsn: r.rsn, quantity: r.quantity, isCollectionLog: !!r.is_collection_log,
             loggedAt: r.logged_at,
           })),
           bountyCompletions: bountyRows.results.map(r => ({
@@ -99,6 +104,7 @@ export default {
           const boss = String(body.boss || '').trim();
           const item = String(body.item || '').trim();
           const team = String(body.team || '').trim();
+          const rsn = String(body.rsn || '').trim().slice(0, 32) || null;
           const quantity = Number(body.quantity) || 1;
           const isCollectionLog = body.isCollectionLog ? 1 : 0;
           if (!boss || !item || !team) return json({ error: 'boss, item, and team are required' }, 400);
@@ -106,10 +112,10 @@ export default {
 
           const now = Date.now();
           const result = await env.DB.prepare(
-            'INSERT INTO drops (boss_name, item_name, team, quantity, is_collection_log, logged_at) VALUES (?, ?, ?, ?, ?, ?) RETURNING id'
-          ).bind(boss, item, team, quantity, isCollectionLog, now).first();
+            'INSERT INTO drops (boss_name, item_name, team, rsn, quantity, is_collection_log, logged_at) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id'
+          ).bind(boss, item, team, rsn, quantity, isCollectionLog, now).first();
 
-          await logAudit(env, 'drop_added', `Logged: ${team} +${quantity} ${item} (${boss})`);
+          await logAudit(env, 'drop_added', `Logged: ${rsn ? rsn + ' (' + team + ')' : team} — ${item} (${boss})`);
           return json({ ok: true, id: result.id }, 201);
         }
 
@@ -121,7 +127,7 @@ export default {
           if (!row) return json({ error: 'Not found' }, 404);
           await env.DB.prepare('UPDATE drops SET undone = 1, undone_at = ? WHERE id = ?')
             .bind(Date.now(), id).run();
-          await logAudit(env, 'drop_undone', `Undid: ${row.team} +${row.quantity} ${row.item_name} (${row.boss_name})`);
+          await logAudit(env, 'drop_undone', `Undid: ${row.team} — ${row.item_name} (${row.boss_name})`);
           return json({ ok: true });
         }
 
@@ -204,6 +210,25 @@ export default {
           ).bind(String(Math.round(amount))).run();
 
           await logAudit(env, 'prize_pool_updated', `Prize pool set to ${Math.round(amount).toLocaleString()} GP`);
+          return json({ ok: true });
+        }
+
+        // POST /api/admin/manual-adjustment
+        if (path === '/api/admin/manual-adjustment' && method === 'POST') {
+          const body = await request.json();
+          const boss = String(body.boss || '').trim();
+          const item = String(body.item || '').trim();
+          const adjustment = Number(body.adjustment);
+          if (!boss || !item) return json({ error: 'boss and item are required' }, 400);
+          if (!Number.isFinite(adjustment) || adjustment < 0 || adjustment > 10)
+            return json({ error: 'adjustment must be a number between 0 and 10' }, 400);
+
+          await env.DB.prepare(
+            `INSERT INTO item_manual_adjustments (boss_name, item_name, adjustment) VALUES (?, ?, ?)
+             ON CONFLICT(boss_name, item_name) DO UPDATE SET adjustment = excluded.adjustment`
+          ).bind(boss, item, adjustment).run();
+
+          await logAudit(env, 'manual_adjustment_updated', `Manual adjustment for ${item} (${boss}) set to ${adjustment}`);
           return json({ ok: true });
         }
 
