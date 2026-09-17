@@ -94,6 +94,80 @@ export default {
         }, 200);
       }
 
+      // ------------------------------------------------- PUBLIC SUBMISSION
+      // Anyone can submit a drop with evidence — no password needed, since
+      // nothing here touches the live scoreboard until an admin approves it.
+      if (path === '/api/submit-drop' && method === 'POST') {
+        const form = await request.formData();
+        const boss = String(form.get('boss') || '').trim();
+        const item = String(form.get('item') || '').trim();
+        const team = String(form.get('team') || '').trim();
+        const rsn = String(form.get('rsn') || '').trim().slice(0, 32) || null;
+        const quantity = Number(form.get('quantity')) || 1;
+        const isCollectionLog = form.get('isCollectionLog') === 'true' ? 1 : 0;
+        const image = form.get('image');
+
+        if (!boss || !item || !team) return json({ error: 'boss, item, and team are required' }, 400);
+        if (!rsn) return json({ error: 'RSN is required' }, 400);
+        if (quantity <= 0 || quantity > 100) return json({ error: 'quantity must be between 1 and 100' }, 400);
+        if (!image || typeof image === 'string') return json({ error: 'An evidence screenshot is required' }, 400);
+        if (image.size > 8 * 1024 * 1024) return json({ error: 'Image must be under 8MB' }, 400);
+        if (!image.type || !image.type.startsWith('image/')) return json({ error: 'File must be an image' }, 400);
+
+        const now = Date.now();
+        const ext = (image.type.split('/')[1] || 'png').replace(/[^a-z0-9]/gi, '');
+        const imageKey = `submissions/${now}-${crypto.randomUUID()}.${ext}`;
+        await env.SUBMISSIONS_BUCKET.put(imageKey, image.stream(), {
+          httpMetadata: { contentType: image.type },
+        });
+
+        const result = await env.DB.prepare(
+          `INSERT INTO pending_submissions (boss_name, item_name, team, rsn, quantity, is_collection_log, image_key, status, submitted_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', ?) RETURNING id`
+        ).bind(boss, item, team, rsn, quantity, isCollectionLog, imageKey, now).first();
+
+        return json({ ok: true, id: result.id }, 201);
+      }
+
+      // Serves an evidence image out of R2. Public so both the review page
+      // and (once approved) anyone checking history can view it.
+      let imgMatch = path.match(/^\/api\/submission-image\/(.+)$/);
+      if (imgMatch && method === 'GET') {
+        const obj = await env.SUBMISSIONS_BUCKET.get(decodeURIComponent(imgMatch[1]));
+        if (!obj) return new Response('Not found', { status: 404 });
+        return new Response(obj.body, {
+          headers: { 'Content-Type': obj.httpMetadata?.contentType || 'image/png', 'Cache-Control': 'public, max-age=31536000' },
+        });
+      }
+
+      // Wiki image cache/proxy. Fetches the real OSRS Wiki image the FIRST
+      // time any visitor requests it, stores a permanent copy in R2, and
+      // serves every request after that straight from R2 — so the wiki only
+      // ever sees one request per unique image, total, ever, instead of one
+      // per pageview.
+      if (path === '/api/img' && method === 'GET') {
+        const src = url.searchParams.get('src');
+        if (!src) return new Response('Missing src', { status: 400 });
+        if (!src.startsWith('https://oldschool.runescape.wiki/')) return new Response('Invalid src', { status: 400 });
+
+        const cacheKey = 'wiki-cache/' + src.replace('https://oldschool.runescape.wiki/images/', '');
+
+        let obj = await env.SUBMISSIONS_BUCKET.get(cacheKey);
+        if (!obj) {
+          const wikiResp = await fetch(src, { headers: { 'User-Agent': 'MillionsClanBossHunt/1.0' } });
+          if (!wikiResp.ok) return new Response('Not found', { status: 404 });
+          const contentType = wikiResp.headers.get('Content-Type') || 'image/png';
+          const bytes = await wikiResp.arrayBuffer();
+          await env.SUBMISSIONS_BUCKET.put(cacheKey, bytes, { httpMetadata: { contentType } });
+          return new Response(bytes, {
+            headers: { 'Content-Type': contentType, 'Cache-Control': 'public, max-age=31536000, immutable' },
+          });
+        }
+        return new Response(obj.body, {
+          headers: { 'Content-Type': obj.httpMetadata?.contentType || 'image/png', 'Cache-Control': 'public, max-age=31536000, immutable' },
+        });
+      }
+
       // ---------------------------------------------------------- ADMIN
       if (path.startsWith('/api/admin/')) {
         if (!authed(request, env)) return json({ error: 'Unauthorized' }, 401);
@@ -238,6 +312,58 @@ export default {
             'SELECT id, action, details, logged_at FROM audit_log ORDER BY logged_at DESC LIMIT 500'
           ).all();
           return json({ entries: rows.results });
+        }
+
+        // GET /api/admin/pending-submissions
+        if (path === '/api/admin/pending-submissions' && method === 'GET') {
+          const rows = await env.DB.prepare(
+            `SELECT id, boss_name, item_name, team, rsn, quantity, is_collection_log, image_key, status, submitted_at
+             FROM pending_submissions WHERE status = 'pending' ORDER BY submitted_at ASC`
+          ).all();
+          return json({
+            submissions: rows.results.map(r => ({
+              id: r.id, boss: r.boss_name, item: r.item_name, team: r.team, rsn: r.rsn,
+              quantity: r.quantity, isCollectionLog: !!r.is_collection_log,
+              imageUrl: '/api/submission-image/' + encodeURIComponent(r.image_key),
+              submittedAt: r.submitted_at,
+            })),
+          });
+        }
+
+        // POST /api/admin/pending-submissions/:id/approve
+        let approveMatch = path.match(/^\/api\/admin\/pending-submissions\/(\d+)\/approve$/);
+        if (approveMatch && method === 'POST') {
+          const id = Number(approveMatch[1]);
+          const sub = await env.DB.prepare('SELECT * FROM pending_submissions WHERE id = ?').bind(id).first();
+          if (!sub) return json({ error: 'Not found' }, 404);
+          if (sub.status !== 'pending') return json({ error: 'Already reviewed' }, 400);
+
+          const now = Date.now();
+          await env.DB.prepare(
+            'INSERT INTO drops (boss_name, item_name, team, rsn, quantity, is_collection_log, logged_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+          ).bind(sub.boss_name, sub.item_name, sub.team, sub.rsn, sub.quantity, sub.is_collection_log, now).run();
+          await env.DB.prepare(
+            `UPDATE pending_submissions SET status = 'approved', reviewed_at = ? WHERE id = ?`
+          ).bind(now, id).run();
+
+          await logAudit(env, 'submission_approved', `Approved: ${sub.rsn || sub.team} — ${sub.item_name} (${sub.boss_name})`);
+          return json({ ok: true });
+        }
+
+        // POST /api/admin/pending-submissions/:id/reject
+        let rejectMatch = path.match(/^\/api\/admin\/pending-submissions\/(\d+)\/reject$/);
+        if (rejectMatch && method === 'POST') {
+          const id = Number(rejectMatch[1]);
+          const sub = await env.DB.prepare('SELECT * FROM pending_submissions WHERE id = ?').bind(id).first();
+          if (!sub) return json({ error: 'Not found' }, 404);
+          if (sub.status !== 'pending') return json({ error: 'Already reviewed' }, 400);
+
+          await env.DB.prepare(
+            `UPDATE pending_submissions SET status = 'rejected', reviewed_at = ? WHERE id = ?`
+          ).bind(Date.now(), id).run();
+
+          await logAudit(env, 'submission_rejected', `Rejected: ${sub.rsn || sub.team} — ${sub.item_name} (${sub.boss_name})`);
+          return json({ ok: true });
         }
 
         // Probe used by the admin login screen to validate the password

@@ -11,3 +11,7 @@ binding = "ASSETS"
 binding = "DB"
 database_name = "millions-boss-hunt"
 database_id = "31e21528-4517-4bee-b164-dc6a34bc3f90"
+
+[[r2_buckets]]
+binding = "SUBMISSIONS_BUCKET"
+bucket_name = "millions-boss-hunt-submissions"
