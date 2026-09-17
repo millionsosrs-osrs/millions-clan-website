@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Millions — Boss Hunt · Review Submissions</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&family=Barlow+Condensed:wght@400;600&family=IM+Fell+English:ital@1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#06070a; --ink:#0b0d12; --panel:#11141a;
+  --gold:#c9a227; --gold-hi:#eed595; --gold-lo:#5c4810;
+  --parch:#c4bca8; --dim:#7a7365; --line:#201c14;
+  --good:#4caf50; --bad:#a63f2c;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:radial-gradient(100% 30% at 50% 0%, rgba(201,162,39,.08), rgba(201,162,39,0) 60%),
+    linear-gradient(#080a0e, var(--void) 45%, #040507 100%);
+  background-repeat:no-repeat;
+  color:var(--parch); font-family:'Barlow Condensed',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased; min-height:100vh;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 24px 64px}
+.mast{padding:32px 0 0;text-align:center}
+.mast .clan{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-spacing:.4em;text-indent:.4em;color:var(--gold)}
+.mast .ev{font-family:'Cinzel',serif;font-weight:900;font-size:26px;line-height:1;margin-top:8px;text-transform:uppercase;letter-spacing:.05em;
+  background:linear-gradient(178deg,#fdf2d6 6%,var(--gold-hi) 40%,var(--gold) 64%,#7d6214 98%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mastrule{margin-top:16px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-lo) 12%,var(--gold) 50%,var(--gold-lo) 88%,transparent)}
+nav.top{display:flex;justify-content:center;gap:20px;margin-top:10px}
+nav.top a{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);text-decoration:none}
+nav.top a:hover{color:var(--gold-hi)}
+
+h2.sec{font-family:'Cinzel',serif;font-weight:900;font-size:20px;text-transform:uppercase;letter-spacing:.12em;color:#ddd1b1;margin:36px 0 4px}
+.sec-rule{height:1px;background:linear-gradient(90deg,var(--gold),rgba(0,0,0,0) 55%);margin-bottom:18px}
+.card{background:linear-gradient(#11141a,#0a0c10);border:1px solid #1f1b13;border-top:1px solid #302719;padding:22px 20px;margin-bottom:16px}
+label{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#6b6558;margin-bottom:6px;font-weight:600}
+input,button{font-family:'Barlow Condensed',system-ui,sans-serif;font-size:16px}
+input{width:100%;background:#0a0c10;border:1px solid #2a2418;color:#e2d8bd;padding:10px 11px;outline:none}
+input:focus{border-color:var(--gold)}
+button{background:linear-gradient(#1a1610,#0f0d09);border:1px solid var(--gold-lo);color:var(--gold-hi);
+  padding:11px 22px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:'Cinzel',serif;font-size:13px}
+button:hover{border-color:var(--gold);color:#fff6d8}
+button:disabled{opacity:.45;cursor:not-allowed}
+button.reject{border-color:var(--bad);color:#c0705f}
+button.reject:hover{border-color:#d08070;color:#e0a090}
+
+.msg{margin-top:14px;padding:10px 13px;font-size:15px;border-left:2px solid}
+.msg.ok{border-color:var(--good);color:#8fbf92;background:rgba(76,175,80,.07)}
+.msg.err{border-color:var(--bad);color:#c0705f;background:rgba(166,63,44,.08)}
+.empty{padding:24px 0;text-align:center;color:#5c5648;font-family:'IM Fell English',serif;font-style:italic;font-size:16px}
+
+.sub-card{display:grid;grid-template-columns:220px 1fr;gap:18px;background:linear-gradient(#12151b,#0a0c10);border:1px solid var(--line);border-top:2px solid var(--gold-lo);padding:16px;margin-bottom:12px}
+.sub-card img{width:100%;border:1px solid var(--line);cursor:zoom-in;display:block}
+.sub-card .details{font-size:15px;color:var(--parch)}
+.sub-card .details .rsn{font-family:'Cinzel',serif;color:var(--gold-hi);font-size:17px}
+.sub-card .details .meta{color:var(--dim);font-size:13px;margin-top:4px}
+.sub-card .actions{margin-top:14px;display:flex;gap:10px}
+.sub-card .when{font-size:12px;color:#6b6558;margin-top:6px}
+@media (max-width:600px){ .sub-card{grid-template-columns:1fr} }
+
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:100;align-items:center;justify-content:center;padding:24px}
+.lightbox.open{display:flex}
+.lightbox img{max-width:100%;max-height:100%}
+
+footer{margin-top:44px;text-align:center}
+footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-spacing:.4em;text-indent:.4em;color:var(--gold)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="clan">MILLIONS</div>
+    <div class="ev">Review Submissions</div>
+  </header>
+  <div class="mastrule"></div>
+  <nav class="top">
+    <a href="/boss-hunt-2026">Public Board</a>
+    <a href="/boss-hunt-admin-2026">Admin</a>
+  </nav>
+
+  <section id="gate">
+    <h2 class="sec">Sign In</h2>
+    <div class="sec-rule"></div>
+    <div class="card">
+      <div class="field" style="margin-bottom:14px">
+        <label for="pw">Admin password</label>
+        <input type="password" id="pw" autocomplete="current-password">
+      </div>
+      <button id="signin">Sign In</button>
+      <div id="gateMsg"></div>
+    </div>
+  </section>
+
+  <section id="panel" hidden>
+    <h2 class="sec">Pending Submissions</h2>
+    <div class="sec-rule"></div>
+    <div id="subList"><div class="empty">Loading…</div></div>
+    <button class="reject" id="signout" style="margin-top:10px">Sign out</button>
+  </section>
+
+  <footer>
+    <div class="mark">MILLIONS</div>
+  </footer>
+</div>
+
+<div class="lightbox" id="lightbox"><img id="lightboxImg" alt=""></div>
+
+<script>
+const $ = id => document.getElementById(id);
+let pw = sessionStorage.getItem('bh_pw') || '';
+
+function say(el, text, ok){ el.innerHTML = `<div class="msg ${ok?'ok':'err'}">${text}</div>`; }
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function ago(ts){
+  const s = Math.floor((Date.now()-ts)/1000);
+  if (s<60) return s+'s ago';
+  if (s<3600) return Math.floor(s/60)+'m ago';
+  if (s<86400) return Math.floor(s/3600)+'h ago';
+  return Math.floor(s/86400)+'d ago';
+}
+
+async function api(path, opts={}){
+  const headers = Object.assign({'Authorization': 'Bearer ' + pw}, opts.headers||{});
+  const r = await fetch(path, Object.assign({}, opts, {headers}));
+  if (r.status === 401){ sessionStorage.removeItem('bh_pw'); location.reload(); throw new Error('Unauthorized'); }
+  return r;
+}
+
+async function tryAuth(candidate){
+  const r = await fetch('/api/admin/probe', {
+    method: 'POST', headers: {'Content-Type':'application/json', 'Authorization':'Bearer ' + candidate}, body: '{}',
+  });
+  return r.status !== 401;
+}
+
+async function unlock(){
+  $('gate').hidden = true;
+  $('panel').hidden = false;
+  await loadSubmissions();
+}
+
+$('signin').onclick = async () => {
+  const cand = $('pw').value.trim();
+  if (!cand) return say($('gateMsg'), 'Enter the password.', false);
+  $('signin').disabled = true;
+  try{
+    if (await tryAuth(cand)){ pw = cand; sessionStorage.setItem('bh_pw', pw); unlock(); }
+    else say($('gateMsg'), 'Wrong password.', false);
+  } catch(e){ say($('gateMsg'), 'Could not reach the server.', false); }
+  $('signin').disabled = false;
+};
+$('pw').addEventListener('keydown', e => { if (e.key === 'Enter') $('signin').click(); });
+$('signout').onclick = () => { sessionStorage.removeItem('bh_pw'); location.reload(); };
+
+async function loadSubmissions(){
+  try{
+    const r = await api('/api/admin/pending-submissions');
+    const { submissions } = await r.json();
+    if (!submissions.length){ $('subList').innerHTML = '<div class="empty">Nothing pending review.</div>'; return; }
+    $('subList').innerHTML = submissions.map(s => `
+      <div class="sub-card" data-id="${s.id}">
+        <img src="${s.imageUrl}" alt="Evidence" data-zoom="${s.imageUrl}">
+        <div>
+          <div class="details">
+            <div class="rsn">${esc(s.rsn || 'Unknown RSN')}</div>
+            <div>${esc(s.quantity)}× ${esc(s.item)}${s.isCollectionLog ? ' <span style="color:var(--gold-hi);font-size:12px">(CLog)</span>' : ''}</div>
+            <div class="meta">${esc(s.boss)} — ${esc(s.team)}</div>
+            <div class="when">${ago(s.submittedAt)}</div>
+          </div>
+          <div class="actions">
+            <button data-approve="${s.id}">Approve</button>
+            <button class="reject" data-reject="${s.id}">Reject</button>
+          </div>
+          <div class="msg-slot"></div>
+        </div>
+      </div>
+    `).join('');
+
+    $('subList').querySelectorAll('[data-zoom]').forEach(img => {
+      img.onclick = () => { $('lightboxImg').src = img.dataset.zoom; $('lightbox').classList.add('open'); };
+    });
+    $('subList').querySelectorAll('[data-approve]').forEach(btn => {
+      btn.onclick = async () => {
+        btn.disabled = true;
+        try{
+          const r = await api(`/api/admin/pending-submissions/${btn.dataset.approve}/approve`, {method:'POST'});
+          if (!r.ok) throw new Error((await r.json()).error || 'Failed');
+          await loadSubmissions();
+        } catch(e){ alert('Failed: ' + e.message); btn.disabled = false; }
+      };
+    });
+    $('subList').querySelectorAll('[data-reject]').forEach(btn => {
+      btn.onclick = async () => {
+        if (!confirm('Reject this submission? It will not be counted.')) return;
+        btn.disabled = true;
+        try{
+          const r = await api(`/api/admin/pending-submissions/${btn.dataset.reject}/reject`, {method:'POST'});
+          if (!r.ok) throw new Error((await r.json()).error || 'Failed');
+          await loadSubmissions();
+        } catch(e){ alert('Failed: ' + e.message); btn.disabled = false; }
+      };
+    });
+  } catch(e){
+    $('subList').innerHTML = '<div class="empty">Could not load submissions.</div>';
+  }
+}
+
+$('lightbox').onclick = () => $('lightbox').classList.remove('open');
+
+// Auto-refresh the queue periodically so new submissions show up without a manual reload
+setInterval(() => { if (!document.hidden && !$('panel').hidden) loadSubmissions(); }, 15000);
+
+if (pw) tryAuth(pw).then(ok => ok ? unlock() : sessionStorage.removeItem('bh_pw'));
+</script>
+</body>
+</html>
