@@ -1,0 +1,142 @@
+[
+  {
+    "type": "Major",
+    "number": 1,
+    "description": "Raids - Obtain any raids armour piece or offhand"
+  },
+  {
+    "type": "Minor",
+    "number": 1,
+    "description": "Zulrah - Obtain 3 uniques"
+  },
+  {
+    "type": "Major",
+    "number": 2,
+    "description": "DT2 - Obtain 1 SRA or Virtus piece"
+  },
+  {
+    "type": "Minor",
+    "number": 2,
+    "description": "The Hueycoatl - Obtain tome of earth or dragon hunter wand"
+  },
+  {
+    "type": "Major",
+    "number": 3,
+    "description": "Nex - Obtain any unique (excl. pet, shards)"
+  },
+  {
+    "type": "Minor",
+    "number": 3,
+    "description": "The Corrupted Gauntlet - Obtain 2 armour seeds or 1 enhanced weapon seed"
+  },
+  {
+    "type": "Major",
+    "number": 4,
+    "description": "GWD - Obtain 1 hilt"
+  },
+  {
+    "type": "Minor",
+    "number": 4,
+    "description": "Wilderness - Obtain any wilderness ring"
+  },
+  {
+    "type": "Major",
+    "number": 5,
+    "description": "Tombs of Amascut - Obtain a Lightbearer or Osmumten's Fang"
+  },
+  {
+    "type": "Minor",
+    "number": 5,
+    "description": "Moons of Peril - Complete one Moons set"
+  },
+  {
+    "type": "Major",
+    "number": 6,
+    "description": "Slayer - Obtain 3 slayer boss uniques (excl. pets, teleports, jars)"
+  },
+  {
+    "type": "Minor",
+    "number": 6,
+    "description": "Guardians of the Rift - Obtain any dye or lantern"
+  },
+  {
+    "type": "Major",
+    "number": 7,
+    "description": "Doom of Mokhaiotl - Obtain any unique (excl. demon tears, teleport, pet)"
+  },
+  {
+    "type": "Minor",
+    "number": 7,
+    "description": "The Royal Titans - Complete 2 twinflame staffs"
+  },
+  {
+    "type": "Major",
+    "number": 8,
+    "description": "Yama - Obtain any unique without using contracts (excl. teleport, shards, contracts, pet)"
+  },
+  {
+    "type": "Minor",
+    "number": 8,
+    "description": "DKs - Obtain all 4 DKs rings (Warrior, Berserker, Archer, and Seers)"
+  },
+  {
+    "type": "Major",
+    "number": 9,
+    "description": "Theatre of Blood - Obtain an avernic defender hilt, rapier, or sanguinesti staff"
+  },
+  {
+    "type": "Minor",
+    "number": 9,
+    "description": "Sarachnis - Obtain 2 cudgels or 1 jar"
+  },
+  {
+    "type": "Major",
+    "number": 10,
+    "description": "DT2 - Obtain 3 ring rolls/ingots"
+  },
+  {
+    "type": "Minor",
+    "number": 10,
+    "description": "Zalcano - Obtain a unique (shard or crystal tool seed) or Smolcano"
+  },
+  {
+    "type": "Major",
+    "number": 11,
+    "description": "Fortis Colosseum - Obtain 2 different uniques (excl. shards, pet, quiver)"
+  },
+  {
+    "type": "Minor",
+    "number": 11,
+    "description": "Vorkath - Obtain any unique (excl. head), jar, or pet"
+  },
+  {
+    "type": "Major",
+    "number": 12,
+    "description": "Freestyle - Obtain 1 each of magic, range, and melee weapons from three separate bosses (component pieces such as magic fang count as a full weapon)"
+  },
+  {
+    "type": "Minor",
+    "number": 12,
+    "description": "Freestyle - Obtain 1 each of head, torso, and leg slot items from three separate bosses (component pieces such as Hueycoatl hide may act as wild cards)"
+  },
+  {
+    "type": "Major",
+    "number": 13,
+    "description": "Chambers of Xeric - Obtain a unique (excl. prayer scrolls, pet, kits, dust)"
+  },
+  {
+    "type": "Minor",
+    "number": 13,
+    "description": "Tempoross - Obtain tome or big harpoonfish"
+  },
+  {
+    "type": "Major",
+    "number": 14,
+    "description": "Phantom Muspah - Obtain 2 venator shards"
+  },
+  {
+    "type": "Minor",
+    "number": 14,
+    "description": "Wilderness - Obtain 3 different odium or malediction shards (no duplicates)"
+  }
+]
