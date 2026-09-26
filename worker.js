@@ -390,10 +390,12 @@ export default {
           if (fields.quantity !== undefined && (!Number.isFinite(fields.quantity) || fields.quantity <= 0 || fields.quantity > 100))
             return json({ error: 'quantity must be between 1 and 100' }, 400);
 
-          // Try the pending queue first.
+          // Try the pending queue first - but only actually treat it as
+          // "still pending" if it genuinely is; an approved/rejected/deleted
+          // row stays in this table forever (that's how edit-by-ID works
+          // after approval), so checking existence alone isn't enough here.
           const pending = await env.DB.prepare('SELECT * FROM pending_submissions WHERE id = ?').bind(id).first();
-          if (pending) {
-            if (pending.status !== 'pending') return json({ error: 'Already reviewed — this submission is no longer pending' }, 400);
+          if (pending && pending.status === 'pending') {
             const updates = [];
             const binds = [];
             if (fields.boss !== undefined) { updates.push('boss_name = ?'); binds.push(fields.boss); }
@@ -444,8 +446,7 @@ export default {
           const id = Number(deleteMatch[1]);
 
           const pending = await env.DB.prepare('SELECT * FROM pending_submissions WHERE id = ?').bind(id).first();
-          if (pending) {
-            if (pending.status !== 'pending') return json({ error: 'Already reviewed — nothing pending to delete' }, 400);
+          if (pending && pending.status === 'pending') {
             await env.DB.prepare(`UPDATE pending_submissions SET status = 'deleted', reviewed_at = ? WHERE id = ?`)
               .bind(Date.now(), id).run();
             await logAudit(env, 'submission_deleted', `Deleted pending submission #${id}: ${pending.rsn || pending.team} — ${pending.item_name} (${pending.boss_name})`);
