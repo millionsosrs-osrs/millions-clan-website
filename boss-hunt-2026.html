@@ -144,14 +144,8 @@ const TEAMS = ["Team A", "Team B", "Team C"];
 const TEAM_COLORS = { "Team A": "var(--team-1)", "Team B": "var(--team-2)", "Team C": "var(--team-3)" };
 
 let CONFIG = null;
-let BOUNTIES = null;
 async function loadSharedData(){
-  const [c, b] = await Promise.all([
-    fetch('/boss-hunt-config-2026.json').then(r => r.json()),
-    fetch('/boss-hunt-bounties-2026.json').then(r => r.json()),
-  ]);
-  CONFIG = c;
-  BOUNTIES = b;
+  CONFIG = await (await fetch('/boss-hunt-config-2026.json')).json();
 }
 let BOSS_MAP = {};
 let activeType = null;
