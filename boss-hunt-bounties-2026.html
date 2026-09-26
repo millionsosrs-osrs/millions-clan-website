@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Millions — Boss Hunt · Bounties</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&family=Barlow+Condensed:wght@400;600&family=IM+Fell+English:ital@1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#06070a; --ink:#0b0d12; --panel:#11141a;
+  --gold:#c9a227; --gold-hi:#eed595; --gold-lo:#5c4810;
+  --parch:#c4bca8; --dim:#7a7365; --line:#201c14;
+  --team-1:#c9a227; --team-2:#7190b6; --team-3:#a63f2c;
+  --good:#4caf50; --bad:#a63f2c;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:radial-gradient(100% 30% at 50% 0%, rgba(201,162,39,.08), rgba(201,162,39,0) 60%),
+    linear-gradient(#080a0e, var(--void) 45%, #040507 100%);
+  background-repeat:no-repeat;
+  color:var(--parch); font-family:'Barlow Condensed',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased; min-height:100vh;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px 64px}
+.mast{padding:38px 0 0;text-align:center}
+.mast .clan{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-spacing:.4em;text-indent:.4em;color:var(--gold)}
+.mast .ev{font-family:'Cinzel',serif;font-weight:900;font-size:28px;line-height:1;margin-top:8px;text-transform:uppercase;letter-spacing:.05em;
+  background:linear-gradient(178deg,#fdf2d6 6%,var(--gold-hi) 40%,var(--gold) 64%,#7d6214 98%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mastrule{margin-top:16px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-lo) 12%,var(--gold) 50%,var(--gold-lo) 88%,transparent)}
+.live{display:flex;justify-content:center;align-items:center;gap:8px;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-top:14px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--good);animation:pulse 2.4s ease-in-out infinite}
+.dot.stale{background:var(--bad);animation:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.top-nav{text-align:center;margin-top:10px}
+.top-nav a{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-lo);text-decoration:none;border-bottom:1px solid var(--gold-lo)}
+.top-nav a:hover{color:var(--gold-hi);border-color:var(--gold-hi)}
+
+h2.sec{font-family:'Cinzel',serif;font-weight:900;font-size:22px;text-transform:uppercase;letter-spacing:.13em;color:#ddd1b1;margin:40px 0 4px}
+.sec-rule{height:1px;background:linear-gradient(90deg,var(--gold),rgba(0,0,0,0) 55%);margin-bottom:22px}
+
+.bounty-combo{background:linear-gradient(#12151b,#0a0c10);border:1px solid var(--line);border-top:2px solid var(--gold-lo);padding:14px 16px}
+.bounty-combo .bnum{font-family:'Cinzel',serif;font-weight:900;font-size:13px;letter-spacing:.1em;color:var(--gold-hi);text-transform:uppercase;margin-bottom:8px}
+.bounty-combo .btype-row{margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.bounty-combo .btype-row:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.bounty-combo .btype-label{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.bounty-combo .bdesc{font-size:15px;color:var(--parch);margin-top:3px;line-height:1.4}
+.bounty-combo .bstatus{margin-top:6px;font-size:14px;color:var(--dim)}
+.bounty-combo .bstatus .claimed{color:var(--gold-hi);display:block}
+.bounty-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.badge-hidden{display:inline-block;font-family:'Cinzel',serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#514c40;border:1px solid var(--line);padding:2px 8px;margin-top:8px}
+.empty{padding:40px 0;text-align:center;color:#5c5648;font-family:'IM Fell English',serif;font-style:italic;font-size:17px}
+
+footer{margin-top:50px;text-align:center}
+footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:16px;letter-spacing:.42em;text-indent:.42em;color:var(--gold)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="clan">MILLIONS</div>
+    <div class="ev">Bounties</div>
+  </header>
+  <div class="mastrule"></div>
+  <div class="live"><span class="dot" id="dot"></span><span id="liveTxt">Live</span></div>
+  <nav class="top-nav"><a href="/boss-hunt-2026">← Back to Standings</a></nav>
+
+  <div id="bounties"></div>
+
+  <footer>
+    <div class="mark">MILLIONS</div>
+  </footer>
+</div>
+
+<script>
+let CONFIG = null;
+async function loadSharedData(){
+  CONFIG = await (await fetch('/boss-hunt-config-2026.json')).json();
+}
+
+const $ = id => document.getElementById(id);
+
+let STATE = { bountyCompletions: [], bountyReveals: [], bounties: [] };
+
+function render() {
+  const table = CONFIG.assumptions.bountyPoints;
+  const numbers = [...new Set(STATE.bounties.map(b => b.number))].sort((a,b) => a-b);
+  if (!numbers.length) {
+    $('bounties').innerHTML = '<div class="empty">No bounties yet.</div>';
+    return;
+  }
+  $('bounties').innerHTML = '<div class="bounty-grid">' + numbers.map(num => {
+    const pair = STATE.bounties.filter(b => b.number === num);
+    const rows = pair.map(b => {
+      if (b.description === undefined) {
+        return `<div class="btype-row">
+          <div class="btype-label">${b.type}</div>
+          <div class="badge-hidden">Not yet revealed</div>
+        </div>`;
+      }
+      const completions = STATE.bountyCompletions.filter(c => c.bountyNumber === b.number && c.bountyType === b.type);
+      const statusLines = completions.length
+        ? completions.map(c => `<span class="claimed">${c.team} — ${c.placement} (+${table[b.type][c.placement] ?? 0})</span>`).join('')
+        : '<span>Unclaimed</span>';
+      return `<div class="btype-row">
+        <div class="btype-label">${b.type}</div>
+        <div class="bdesc">${b.description}</div>
+        <div class="bstatus">${statusLines}</div>
+      </div>`;
+    }).join('');
+    return `<div class="bounty-combo"><div class="bnum">Bounty #${num}</div>${rows}</div>`;
+  }).join('') + '</div>';
+}
+
+// ---- Polling ----
+const POLL_MS = 20000;
+let lastStateJSON = null;
+async function poll() {
+  try {
+    const r = await fetch('/api/state', { cache: 'no-store' });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const newState = await r.json();
+    const newStateJSON = JSON.stringify(newState);
+    if (newStateJSON !== lastStateJSON) {
+      const scrollY = window.scrollY;
+      STATE = newState;
+      lastStateJSON = newStateJSON;
+      render();
+      window.scrollTo(0, scrollY);
+    }
+    $('dot').classList.remove('stale');
+    $('liveTxt').textContent = 'Live';
+  } catch (e) {
+    $('dot').classList.add('stale');
+    $('liveTxt').textContent = 'Reconnecting';
+  }
+}
+async function init(){
+  await loadSharedData();
+  await poll();
+  setInterval(() => { if (!document.hidden) poll(); }, POLL_MS);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) poll(); });
+}
+init();
+</script>
+</body>
+</html>

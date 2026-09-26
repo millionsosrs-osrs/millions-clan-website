@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Millions — Boss Hunt · Bounties &amp; Recent Drops</title>
+<title>Millions — Boss Hunt · Recent Activity</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&family=Barlow+Condensed:wght@400;600&family=IM+Fell+English:ital@1&display=swap" rel="stylesheet">
@@ -40,17 +40,6 @@ body{
 h2.sec{font-family:'Cinzel',serif;font-weight:900;font-size:22px;text-transform:uppercase;letter-spacing:.13em;color:#ddd1b1;margin:40px 0 4px}
 .sec-rule{height:1px;background:linear-gradient(90deg,var(--gold),rgba(0,0,0,0) 55%);margin-bottom:22px}
 
-.bounty-combo{background:linear-gradient(#12151b,#0a0c10);border:1px solid var(--line);border-top:2px solid var(--gold-lo);padding:14px 16px}
-.bounty-combo .bnum{font-family:'Cinzel',serif;font-weight:900;font-size:13px;letter-spacing:.1em;color:var(--gold-hi);text-transform:uppercase;margin-bottom:8px}
-.bounty-combo .btype-row{margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--line)}
-.bounty-combo .btype-row:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.bounty-combo .btype-label{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
-.bounty-combo .bdesc{font-size:15px;color:var(--parch);margin-top:3px;line-height:1.4}
-.bounty-combo .bstatus{margin-top:6px;font-size:14px;color:var(--dim)}
-.bounty-combo .bstatus .claimed{color:var(--gold-hi);display:block}
-.bounty-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
-.badge-hidden{display:inline-block;font-family:'Cinzel',serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#514c40;border:1px solid var(--line);padding:2px 8px;margin-top:8px}
-
 table.log{width:100%;border-collapse:collapse;font-size:16px}
 table.log th{font-family:'Cinzel',serif;font-weight:600;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8b8371;text-align:left;padding:0 10px 10px;border-bottom:1px solid var(--line)}
 table.log td{padding:9px 10px;border-bottom:1px solid #14110c;color:#cbc1a8;vertical-align:middle}
@@ -72,15 +61,11 @@ footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:16px;letter-sp
 
   <header class="mast">
     <div class="clan">MILLIONS</div>
-    <div class="ev">Bounties &amp; Recent Drops</div>
+    <div class="ev">Recent Activity</div>
   </header>
   <div class="mastrule"></div>
   <div class="live"><span class="dot" id="dot"></span><span id="liveTxt">Live</span></div>
-  <nav class="top-nav"><a href="/boss-hunt-2026">← Back to Standings</a></nav>
-
-  <h2 class="sec">Bounties</h2>
-  <div class="sec-rule"></div>
-  <div class="bounty-grid" id="bounties"></div>
+  <nav class="top-nav"><a href="/boss-hunt-2026">← Back to Standings</a> &nbsp;·&nbsp; <a href="/boss-hunt-bounties-2026">Bounties →</a></nav>
 
   <h2 class="sec">Recent Drops</h2>
   <div class="sec-rule"></div>
@@ -99,14 +84,8 @@ const $ = id => document.getElementById(id);
 const fmtNum = n => Math.round(n).toLocaleString();
 
 let CONFIG = null;
-let BOUNTIES = null;
 async function loadSharedData(){
-  const [c, b] = await Promise.all([
-    fetch('/boss-hunt-config-2026.json').then(r => r.json()),
-    fetch('/boss-hunt-bounties-2026.json').then(r => r.json()),
-  ]);
-  CONFIG = c;
-  BOUNTIES = b;
+  CONFIG = await (await fetch('/boss-hunt-config-2026.json')).json();
 }
 
 const BOSS_MAP = {};
@@ -116,7 +95,7 @@ function findItem(bossName, itemName) {
   return b.displayItems.find(d => d.kind === 'item' && d.name === itemName) || null;
 }
 
-let STATE = { kph: {}, manualAdjustments: {}, drops: [], bountyCompletions: [], bountyReveals: [] };
+let STATE = { kph: {}, manualAdjustments: {}, drops: [] };
 
 function effectiveKPH(bossName) {
   if (STATE.kph[bossName] != null) return STATE.kph[bossName];
@@ -144,34 +123,22 @@ function ago(ts) {
 }
 
 function render() {
-  // ---- Bounties (major + minor combined per number) ----
-  const table = CONFIG.assumptions.bountyPoints;
-  const numbers = [...new Set(BOUNTIES.map(b => b.number))].sort((a,b) => a-b);
-  $('bounties').innerHTML = numbers.map(num => {
-    const pair = BOUNTIES.filter(b => b.number === num);
-    const rows = pair.map(b => {
-      const reveal = STATE.bountyReveals.find(r => r.bountyNumber === b.number && r.bountyType === b.type);
-      const revealed = reveal && reveal.revealed;
-      if (!revealed) {
-        return `<div class="btype-row">
-          <div class="btype-label">${b.type}</div>
-          <div class="badge-hidden">Not yet revealed</div>
-        </div>`;
-      }
-      const completions = STATE.bountyCompletions.filter(c => c.bountyNumber === b.number && c.bountyType === b.type);
-      const statusLines = completions.length
-        ? completions.map(c => `<span class="claimed">${c.team} — ${c.placement} (+${table[b.type][c.placement] ?? 0})</span>`).join('')
-        : '<span>Unclaimed</span>';
-      return `<div class="btype-row">
-        <div class="btype-label">${b.type}</div>
-        <div class="bdesc">${b.description}</div>
-        <div class="bstatus">${statusLines}</div>
-      </div>`;
-    }).join('');
-    return `<div class="bounty-combo"><div class="bnum">Bounty #${num}</div>${rows}</div>`;
-  }).join('');
-
   // ---- Recent drops log ----
+  // Copy numbers (for the graduated dupe discount) need to be computed in
+  // chronological order across ALL teams' drops for a given boss+item+team,
+  // then looked up by id when rendering in the newest-first display order.
+  const copyNumberById = {};
+  const dupeCounts = {};
+  for (const d of [...STATE.drops].sort((a, b) => a.loggedAt - b.loggedAt)) {
+    const key = d.team + '||' + d.boss + '||' + d.item;
+    dupeCounts[key] = (dupeCounts[key] || 0) + 1;
+    copyNumberById[d.id] = dupeCounts[key];
+  }
+  function dupeDiscountMultiplier(copyNumber) {
+    const tiers = [1.0, 0.9, 0.8, 0.7, 0.6];
+    return tiers[Math.min(copyNumber - 1, tiers.length - 1)];
+  }
+
   const allDrops = [...STATE.drops].sort((a, b) => b.loggedAt - a.loggedAt).slice(0, 150);
   if (!allDrops.length) {
     $('logWrap').innerHTML = '<div class="empty">No drops logged yet.</div>';
@@ -179,11 +146,11 @@ function render() {
     $('logWrap').innerHTML = '<table class="log"><tbody>' + allDrops.map(d => {
       const item = findItem(d.boss, d.item);
       const pv = item ? itemPointValue(d.boss, item) : null;
-      const pts = pv != null ? pv * d.quantity * (d.isCollectionLog ? (1+CONFIG.assumptions.collectionLogBonus) : 1) : null;
+      const pts = pv != null ? pv * d.quantity * dupeDiscountMultiplier(copyNumberById[d.id]) : null;
       return `<tr>
         <td class="when hide-sm">${ago(d.loggedAt)}</td>
         <td><span class="pill" style="--tc:${TEAM_COLORS[d.team]}">${d.team}</span></td>
-        <td>${d.rsn ? `<span class="rsn">${d.rsn}</span> — ` : ''}${d.item}${d.isCollectionLog ? ' <span class="tag">CLog</span>' : ''}</td>
+        <td>${d.rsn ? `<span class="rsn">${d.rsn}</span> — ` : ''}${d.item}</td>
         <td class="hide-sm">${d.boss}</td>
         <td class="pts">${pts != null ? '+' + fmtNum(pts) : '—'}</td>
       </tr>`;

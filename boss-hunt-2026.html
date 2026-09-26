@@ -117,7 +117,7 @@ footer .note{margin-top:9px;font-size:12px;letter-spacing:.14em;color:#4f4a3d;te
   </header>
   <div class="mastrule"></div>
   <div class="live"><span class="dot" id="dot"></span><span id="liveTxt">Live</span></div>
-  <nav class="top-nav"><a href="/boss-hunt-activity-2026">Bounties &amp; Recent Drops →</a> &nbsp;·&nbsp; <a href="/boss-hunt-submit-2026">Submit a Drop →</a></nav>
+  <nav class="top-nav"><a href="/boss-hunt-bounties-2026">Bounties →</a> &nbsp;·&nbsp; <a href="/boss-hunt-activity-2026">Recent Activity →</a></nav>
 
   <div class="prizepool">
     <div class="amt" id="prizePoolAmt">—</div>
@@ -192,22 +192,30 @@ function itemPointValue(bossName, item) {
 }
 
 // ---- Per-team computation ----
+// Graduated dupe discount: each additional copy of the same item a team
+// gets is worth less than the last, flooring at the 5th copy onward.
+const DUPE_DISCOUNT_TIERS = [1.0, 0.9, 0.8, 0.7, 0.6];
+function dupeDiscountMultiplier(copyNumber) {
+  return DUPE_DISCOUNT_TIERS[Math.min(copyNumber - 1, DUPE_DISCOUNT_TIERS.length - 1)];
+}
+
 function computeTeam(team) {
-  const teamDrops = STATE.drops.filter(d => d.team === team);
+  const teamDrops = [...STATE.drops.filter(d => d.team === team)].sort((a, b) => a.loggedAt - b.loggedAt);
   const obtained = new Set();          // "boss||item" keys, presence only
+  const dupeCounts = {};                // "boss||item" -> how many of this team's copies seen so far
   let dropPoints = 0, geValue = 0, uniqueDropCount = 0, pendingKPH = false;
 
   for (const d of teamDrops) {
     const item = findItem(d.boss, d.item);
     if (!item) continue;
-    obtained.add(d.boss + '||' + d.item);
+    const key = d.boss + '||' + d.item;
+    obtained.add(key);
     uniqueDropCount++;
     const pv = itemPointValue(d.boss, item);
     if (pv == null) { pendingKPH = true; }
     else {
-      let val = pv * d.quantity;
-      if (d.isCollectionLog) val += pv * d.quantity * CONFIG.assumptions.collectionLogBonus;
-      dropPoints += val;
+      dupeCounts[key] = (dupeCounts[key] || 0) + 1;
+      dropPoints += pv * d.quantity * dupeDiscountMultiplier(dupeCounts[key]);
     }
     if (item.geValue) geValue += item.geValue * d.quantity;
   }
@@ -325,9 +333,7 @@ function render() {
           const matching = STATE.drops.filter(d => d.team === team && d.boss === b.boss && d.item === di.name);
           if (!matching.length) return `<td class="num">—</td>`;
           const total = matching.reduce((sum, d) => sum + d.quantity, 0);
-          const anyClog = matching.some(d => d.isCollectionLog);
-          const clog = anyClog ? '<span class="clog-mark" title="Collection log">📜</span>' : '';
-          return `<td class="num">${total}${clog}</td>`;
+          return `<td class="num">${total}</td>`;
         }).join('');
         return `<tr><td><div class="item-name-cell"><img class="item-img" src="${di.img}" onerror="this.style.display='none'" alt="">${di.name}</div></td><td class="num">${pv != null ? fmtNum(pv) : '—'}</td>${cells}</tr>`;
       }
@@ -369,6 +375,7 @@ function render() {
 
   const bossesByType = {};
   CONFIG.bosses.forEach(b => { (bossesByType[b.bossType || 'Wilderness'] = bossesByType[b.bossType || 'Wilderness'] || []).push(b); });
+  if (bossesByType['General']) bossesByType['General'].sort((a, b) => a.boss.localeCompare(b.boss));
 
   const activeTypes = TYPE_ORDER.filter(t => bossesByType[t]);
   if (!activeType || !activeTypes.includes(activeType)) activeType = activeTypes[0];
