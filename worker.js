@@ -13,6 +13,8 @@
  *   POST   /api/admin/bounty-reveal { bountyNumber, bountyType, revealed }
  *   POST   /api/admin/prize-pool    { amount }
  *   POST   /api/admin/manual-adjustment { boss, item, adjustment }
+ *   POST   /api/admin/submission/:id/edit { boss?, item?, team?, rsn?, quantity? } — edits a submission whether pending or already-approved
+ *   POST   /api/admin/submission/:id/delete — removes a submission entirely, whether pending or already-approved
  *   GET    /api/admin/audit-log
  *
  * Everything else falls through to static assets automatically.
@@ -340,8 +342,8 @@ export default {
 
           const now = Date.now();
           await env.DB.prepare(
-            'INSERT INTO drops (boss_name, item_name, team, rsn, quantity, is_collection_log, logged_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
-          ).bind(sub.boss_name, sub.item_name, sub.team, sub.rsn, sub.quantity, sub.is_collection_log, now).run();
+            'INSERT INTO drops (boss_name, item_name, team, rsn, quantity, is_collection_log, submission_id, logged_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+          ).bind(sub.boss_name, sub.item_name, sub.team, sub.rsn, sub.quantity, sub.is_collection_log, id, now).run();
           await env.DB.prepare(
             `UPDATE pending_submissions SET status = 'approved', reviewed_at = ? WHERE id = ?`
           ).bind(now, id).run();
@@ -364,6 +366,98 @@ export default {
 
           await logAudit(env, 'submission_rejected', `Rejected: ${sub.rsn || sub.team} — ${sub.item_name} (${sub.boss_name})`);
           return json({ ok: true });
+        }
+
+        // POST /api/admin/submission/:id/edit
+        // Corrects a submission's boss/item/team/rsn/quantity by its original
+        // submission ID, whether it's still pending review OR already approved
+        // (a live row in `drops`, found via drops.submission_id). This is what
+        // lets an admin fix a mistake even after approval, without needing to
+        // know or care which table the record currently lives in.
+        let editMatch = path.match(/^\/api\/admin\/submission\/(\d+)\/edit$/);
+        if (editMatch && method === 'POST') {
+          const id = Number(editMatch[1]);
+          const body = await request.json();
+
+          // Only touch fields the caller actually sent; leave the rest alone.
+          const fields = {};
+          if (body.boss !== undefined) fields.boss = String(body.boss).trim();
+          if (body.item !== undefined) fields.item = String(body.item).trim();
+          if (body.team !== undefined) fields.team = String(body.team).trim();
+          if (body.rsn !== undefined) fields.rsn = String(body.rsn).trim() || null;
+          if (body.quantity !== undefined) fields.quantity = Number(body.quantity);
+          if (Object.keys(fields).length === 0) return json({ error: 'No fields to update' }, 400);
+          if (fields.quantity !== undefined && (!Number.isFinite(fields.quantity) || fields.quantity <= 0 || fields.quantity > 100))
+            return json({ error: 'quantity must be between 1 and 100' }, 400);
+
+          // Try the pending queue first.
+          const pending = await env.DB.prepare('SELECT * FROM pending_submissions WHERE id = ?').bind(id).first();
+          if (pending) {
+            if (pending.status !== 'pending') return json({ error: 'Already reviewed — this submission is no longer pending' }, 400);
+            const updates = [];
+            const binds = [];
+            if (fields.boss !== undefined) { updates.push('boss_name = ?'); binds.push(fields.boss); }
+            if (fields.item !== undefined) { updates.push('item_name = ?'); binds.push(fields.item); }
+            if (fields.team !== undefined) { updates.push('team = ?'); binds.push(fields.team); }
+            if (fields.rsn !== undefined) { updates.push('rsn = ?'); binds.push(fields.rsn); }
+            if (fields.quantity !== undefined) { updates.push('quantity = ?'); binds.push(fields.quantity); }
+            binds.push(id);
+            await env.DB.prepare(`UPDATE pending_submissions SET ${updates.join(', ')} WHERE id = ?`).bind(...binds).run();
+            const updated = await env.DB.prepare('SELECT * FROM pending_submissions WHERE id = ?').bind(id).first();
+            await logAudit(env, 'submission_edited', `Edited pending submission #${id}: now ${updated.rsn || updated.team} — ${updated.item_name} (${updated.boss_name})`);
+            return json({ ok: true, state: 'pending', submission: {
+              id: updated.id, boss: updated.boss_name, item: updated.item_name, team: updated.team,
+              rsn: updated.rsn, quantity: updated.quantity, isCollectionLog: !!updated.is_collection_log,
+            }});
+          }
+
+          // Not pending — look for the already-approved drop it turned into.
+          const drop = await env.DB.prepare('SELECT * FROM drops WHERE submission_id = ? AND undone = 0').bind(id).first();
+          if (!drop) return json({ error: 'No pending or approved submission found with that ID' }, 404);
+
+          const updates = [];
+          const binds = [];
+          if (fields.boss !== undefined) { updates.push('boss_name = ?'); binds.push(fields.boss); }
+          if (fields.item !== undefined) { updates.push('item_name = ?'); binds.push(fields.item); }
+          if (fields.team !== undefined) { updates.push('team = ?'); binds.push(fields.team); }
+          if (fields.rsn !== undefined) { updates.push('rsn = ?'); binds.push(fields.rsn); }
+          if (fields.quantity !== undefined) { updates.push('quantity = ?'); binds.push(fields.quantity); }
+          binds.push(drop.id);
+          await env.DB.prepare(`UPDATE drops SET ${updates.join(', ')} WHERE id = ?`).bind(...binds).run();
+          const updatedDrop = await env.DB.prepare('SELECT * FROM drops WHERE id = ?').bind(drop.id).first();
+          await logAudit(env, 'submission_edited', `Edited approved drop from submission #${id}: now ${updatedDrop.rsn || updatedDrop.team} — ${updatedDrop.item_name} (${updatedDrop.boss_name})`);
+          return json({ ok: true, state: 'approved', submission: {
+            id, boss: updatedDrop.boss_name, item: updatedDrop.item_name, team: updatedDrop.team,
+            rsn: updatedDrop.rsn, quantity: updatedDrop.quantity, isCollectionLog: !!updatedDrop.is_collection_log,
+          }});
+        }
+
+        // POST /api/admin/submission/:id/delete
+        // Removes a submission entirely by its original ID, whether it's
+        // still pending (marks it 'deleted' - distinct from a reviewer
+        // Deny, for a clearer audit trail) or already approved and live on
+        // the scoreboard (soft-deletes the drop via the same undone flag
+        // the admin panel's own drop-undo already uses, so scoring picks
+        // this up automatically since /api/state already filters undone=0).
+        let deleteMatch = path.match(/^\/api\/admin\/submission\/(\d+)\/delete$/);
+        if (deleteMatch && method === 'POST') {
+          const id = Number(deleteMatch[1]);
+
+          const pending = await env.DB.prepare('SELECT * FROM pending_submissions WHERE id = ?').bind(id).first();
+          if (pending) {
+            if (pending.status !== 'pending') return json({ error: 'Already reviewed — nothing pending to delete' }, 400);
+            await env.DB.prepare(`UPDATE pending_submissions SET status = 'deleted', reviewed_at = ? WHERE id = ?`)
+              .bind(Date.now(), id).run();
+            await logAudit(env, 'submission_deleted', `Deleted pending submission #${id}: ${pending.rsn || pending.team} — ${pending.item_name} (${pending.boss_name})`);
+            return json({ ok: true, state: 'pending' });
+          }
+
+          const drop = await env.DB.prepare('SELECT * FROM drops WHERE submission_id = ? AND undone = 0').bind(id).first();
+          if (!drop) return json({ error: 'No pending or approved submission found with that ID' }, 404);
+
+          await env.DB.prepare('UPDATE drops SET undone = 1, undone_at = ? WHERE id = ?').bind(Date.now(), drop.id).run();
+          await logAudit(env, 'submission_deleted', `Deleted approved drop from submission #${id}: ${drop.rsn || drop.team} — ${drop.item_name} (${drop.boss_name})`);
+          return json({ ok: true, state: 'approved' });
         }
 
         // Probe used by the admin login screen to validate the password
