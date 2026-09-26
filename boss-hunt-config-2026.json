@@ -1664,30 +1664,30 @@
         },
         {
           "kind": "item",
-          "name": "Eclipse moon helm",
+          "name": "Eclipse Moon helm",
           "type": "normal",
           "dropRate": 0.0048335123532179,
           "manualAdjustment": 1.0,
           "geValue": 843538.5,
-          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FEclipse_moon_helm.png"
+          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FEclipse_Moon_helm.png"
         },
         {
           "kind": "item",
-          "name": "Eclipse moon chestplate",
+          "name": "Eclipse Moon chestplate",
           "type": "normal",
           "dropRate": 0.0048335123532179,
           "manualAdjustment": 1.0,
           "geValue": 1994228.5,
-          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FEclipse_moon_chestplate.png"
+          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FEclipse_Moon_chestplate.png"
         },
         {
           "kind": "item",
-          "name": "Eclipse moon tassets",
+          "name": "Eclipse Moon tassets",
           "type": "normal",
           "dropRate": 0.0048335123532179,
           "manualAdjustment": 1.0,
           "geValue": 1986554.5,
-          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FEclipse_moon_tassets.png"
+          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FEclipse_Moon_tassets.png"
         },
         {
           "kind": "sub_group",
@@ -1696,9 +1696,9 @@
           "requiredCount": 4,
           "memberItems": [
             "Eclipse atlatl",
-            "Eclipse moon helm",
-            "Eclipse moon chestplate",
-            "Eclipse moon tassets"
+            "Eclipse Moon helm",
+            "Eclipse Moon chestplate",
+            "Eclipse Moon tassets"
           ]
         },
         {
@@ -1712,30 +1712,30 @@
         },
         {
           "kind": "item",
-          "name": "Blood moon helm",
+          "name": "Blood Moon helm",
           "type": "normal",
           "dropRate": 0.0048335123532179,
           "manualAdjustment": 1.0,
           "geValue": 934295,
-          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlood_moon_helm.png"
+          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlood_Moon_helm.png"
         },
         {
           "kind": "item",
-          "name": "Blood moon chestplate",
+          "name": "Blood Moon chestplate",
           "type": "normal",
           "dropRate": 0.0048335123532179,
           "manualAdjustment": 1.0,
           "geValue": 4870854.5,
-          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlood_moon_chestplate.png"
+          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlood_Moon_chestplate.png"
         },
         {
           "kind": "item",
-          "name": "Blood moon tassets",
+          "name": "Blood Moon tassets",
           "type": "normal",
           "dropRate": 0.0048335123532179,
           "manualAdjustment": 1.0,
           "geValue": 11373015.5,
-          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlood_moon_tassets.png"
+          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlood_Moon_tassets.png"
         },
         {
           "kind": "sub_group",
@@ -1743,49 +1743,49 @@
           "groupLabel": "Blood moon uniques",
           "requiredCount": 4,
           "memberItems": [
-            "Eclipse moon helm",
-            "Eclipse moon chestplate",
-            "Eclipse moon tassets",
-            "Blood moon helm",
-            "Blood moon chestplate",
-            "Blood moon tassets"
+            "Eclipse Moon helm",
+            "Eclipse Moon chestplate",
+            "Eclipse Moon tassets",
+            "Blood Moon helm",
+            "Blood Moon chestplate",
+            "Blood Moon tassets"
           ]
         },
         {
           "kind": "item",
-          "name": "Blue moon spear",
+          "name": "Blue Moon spear",
           "type": "normal",
           "dropRate": 0.0048335123532179,
           "manualAdjustment": 1.0,
           "geValue": 345954.5,
-          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlue_moon_spear.png"
+          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlue_Moon_spear.png"
         },
         {
           "kind": "item",
-          "name": "Blue moon helm",
+          "name": "Blue Moon helm",
           "type": "normal",
           "dropRate": 0.0048335123532179,
           "manualAdjustment": 1.0,
           "geValue": 832668,
-          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlue_moon_helm.png"
+          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlue_Moon_helm.png"
         },
         {
           "kind": "item",
-          "name": "Blue moon chestplate",
+          "name": "Blue Moon chestplate",
           "type": "normal",
           "dropRate": 0.0048335123532179,
           "manualAdjustment": 1.0,
           "geValue": 1684948.5,
-          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlue_moon_chestplate.png"
+          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlue_Moon_chestplate.png"
         },
         {
           "kind": "item",
-          "name": "Blue moon tassets",
+          "name": "Blue Moon tassets",
           "type": "normal",
           "dropRate": 0.0048335123532179,
           "manualAdjustment": 1.0,
           "geValue": 5800037.5,
-          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlue_moon_tassets.png"
+          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlue_Moon_tassets.png"
         },
         {
           "kind": "sub_group",
@@ -1793,16 +1793,16 @@
           "groupLabel": "Blue moon uniques",
           "requiredCount": 4,
           "memberItems": [
-            "Eclipse moon helm",
-            "Eclipse moon chestplate",
-            "Eclipse moon tassets",
-            "Blood moon helm",
-            "Blood moon chestplate",
-            "Blood moon tassets",
-            "Blue moon spear",
-            "Blue moon helm",
-            "Blue moon chestplate",
-            "Blue moon tassets"
+            "Eclipse Moon helm",
+            "Eclipse Moon chestplate",
+            "Eclipse Moon tassets",
+            "Blood Moon helm",
+            "Blood Moon chestplate",
+            "Blood Moon tassets",
+            "Blue Moon spear",
+            "Blue Moon helm",
+            "Blue Moon chestplate",
+            "Blue Moon tassets"
           ]
         }
       ],
@@ -3215,12 +3215,12 @@
         },
         {
           "kind": "item",
-          "name": "Pet Chaos Elemental",
+          "name": "Pet chaos elemental",
           "type": "normal",
           "dropRate": 0.0008571428571428571,
           "manualAdjustment": 1.0,
           "geValue": 0,
-          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPet_Chaos_Elemental.png"
+          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPet_chaos_elemental.png"
         }
       ],
       "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FOdium%252FMalediction.png"
