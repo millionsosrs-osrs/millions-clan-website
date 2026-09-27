@@ -49,6 +49,7 @@ h2.sec{font-family:'Cinzel',serif;font-weight:900;font-size:22px;text-transform:
 .team{margin-bottom:22px}
 .team .top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:7px}
 .team .nm{font-family:'Cinzel',serif;font-weight:900;font-size:21px;letter-spacing:.06em;color:var(--tc)}
+.team-icon{width:28px;height:28px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:9px;border:1px solid var(--tc)}
 .team .rank{font-size:13px;letter-spacing:.2em;color:#514c40;text-transform:uppercase;margin-left:10px}
 .team .val{font-family:'Cinzel',serif;font-weight:900;font-size:24px;color:#e2d8bd}
 .team .val span{font-size:14px;color:var(--dim);letter-spacing:.14em;margin-left:8px}
@@ -140,8 +141,12 @@ footer .note{margin-top:9px;font-size:12px;letter-spacing:.14em;color:#4f4a3d;te
 </div>
 
 <script>
-const TEAMS = ["Team A", "Team B", "Team C"];
-const TEAM_COLORS = { "Team A": "var(--team-1)", "Team B": "var(--team-2)", "Team C": "var(--team-3)" };
+const TEAMS = ["Millions", "Zero"];
+const TEAM_COLORS = { "Millions": "var(--team-1)", "Zero": "var(--team-2)" };
+const TEAM_ICONS = {
+  "Millions": "https://i.imgur.com/xiMo1VF.gif",
+  "Zero": "https://i.imgur.com/KOsQfrx.gif",
+};
 
 let CONFIG = null;
 async function loadSharedData(){
@@ -303,7 +308,7 @@ function render() {
   $('standings').innerHTML = results.map((r, i) => `
     <div class="team" style="--tc:${TEAM_COLORS[r.team]}">
       <div class="top">
-        <div><span class="nm">${r.team}</span><span class="rank">${i===0?'Leading':'#' + (i+1)}</span></div>
+        <div><img class="team-icon" src="${TEAM_ICONS[r.team]}" alt=""><span class="nm">${r.team}</span><span class="rank">${i===0?'Leading':'#' + (i+1)}</span></div>
         <div class="val">${fmtNum(r.totalPoints)}<span>PTS</span></div>
       </div>
       <div class="track"><div class="fill" style="width:${(r.totalPoints/maxPoints*100).toFixed(1)}%"></div></div>

@@ -131,9 +131,6 @@ footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-sp
           <input type="text" id="dropRsn" autocomplete="off" placeholder="Zezima">
         </div>
       </div>
-      <div class="field">
-        <label class="chk"><input type="checkbox" id="dropClog"> Counts toward a collection log slot (+20% points)</label>
-      </div>
       <button id="dropSubmit">Log Drop</button>
       <div id="dropMsg"></div>
     </div>
@@ -170,7 +167,7 @@ footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-sp
 </div>
 
 <script>
-const TEAMS = ["Team A", "Team B", "Team C"];
+const TEAMS = ["Millions", "Zero"];
 
 const $ = id => document.getElementById(id);
 let pw = sessionStorage.getItem('bh_pw') || '';
@@ -180,7 +177,7 @@ let BOUNTIES = null;
 async function loadSharedData(){
   const [c, b] = await Promise.all([
     fetch('/boss-hunt-config-2026.json').then(r => r.json()),
-    fetch('/boss-hunt-bounties-2026.json').then(r => r.json()),
+    api('/api/admin/bounties').then(r => r.json()).then(d => d.bounties),
   ]);
   CONFIG = c;
   BOUNTIES = b;
@@ -273,18 +270,16 @@ $('dropSubmit').onclick = async () => {
   const item = $('dropItem').value;
   const team = $('dropTeam').value;
   const rsn = $('dropRsn').value.trim();
-  const isCollectionLog = $('dropClog').checked;
 
   $('dropSubmit').disabled = true;
   try{
     const r = await api('/api/admin/drop', {
       method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ boss, item, team, rsn, quantity: 1, isCollectionLog }),
+      body: JSON.stringify({ boss, item, team, rsn, quantity: 1, isCollectionLog: false }),
     });
     if (!r.ok) throw new Error((await r.json()).error || 'Failed');
     say($('dropMsg'), `Logged: ${rsn ? rsn + ' — ' : ''}${item} (${boss}, ${team})`, true);
     $('dropRsn').value = '';
-    $('dropClog').checked = false;
     await Promise.all([loadState(), loadAuditLog()]);
   } catch(e){
     say($('dropMsg'), 'Failed: ' + e.message, false);
@@ -319,7 +314,7 @@ function renderRecentDrops(){
       <td>${ago(d.loggedAt)}</td>
       <td>${esc(d.team)}</td>
       <td>${d.rsn ? esc(d.rsn) : '—'}</td>
-      <td>${esc(d.item)}${d.isCollectionLog ? ' <span style="color:var(--gold-hi);font-size:12px">(CLog)</span>' : ''}</td>
+      <td>${esc(d.item)}</td>
       <td>${esc(d.boss)}</td>
       <td style="text-align:right"><button class="ghost small" data-undo-drop="${d.id}">Undo</button></td>
     </tr>`).join('') + '</tbody></table>';
