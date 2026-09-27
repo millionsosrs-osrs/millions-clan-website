@@ -229,18 +229,21 @@ function computeTeam(team) {
       if (di.kind !== 'all_uniques' && di.kind !== 'sub_group') continue;
       const bonusName = di.kind === 'all_uniques' ? 'All Uniques Bonus' : di.name;
       const achieved = di.memberItems.every(name => obtained.has(b.boss + '||' + name));
-      let value = null;
-      if (achieved) {
-        value = 0;
-        for (const name of di.memberItems) {
-          const it = findItem(b.boss, name);
-          const pv = it ? itemPointValue(b.boss, it) : null;
-          if (pv == null) { value = null; break; }
-          value += pv;
-        }
-        if (value != null) { value *= CONFIG.assumptions.uniqueBonusMultiplier; bonusPoints += value; }
+
+      // Potential value: what this bonus is worth, computed regardless of
+      // whether it's been achieved yet, so teams can see the payoff up front.
+      let potentialValue = 0;
+      for (const name of di.memberItems) {
+        const it = findItem(b.boss, name);
+        const pv = it ? itemPointValue(b.boss, it) : null;
+        if (pv == null) { potentialValue = null; break; }
+        potentialValue += pv;
       }
-      bonusStatus.push({ boss: b.boss, name: bonusName, achieved, value });
+      if (potentialValue != null) potentialValue *= CONFIG.assumptions.uniqueBonusMultiplier;
+
+      const value = achieved ? potentialValue : null;
+      if (value != null) bonusPoints += value;
+      bonusStatus.push({ boss: b.boss, name: bonusName, achieved, value, potentialValue });
     }
   }
 
@@ -269,19 +272,20 @@ function computeTeam(team) {
     // Value: use valueItems if the config provides a specific set to sum
     // (needed for DT2's mix-and-match Virtus bonus, which values off a
     // fixed reference boss rather than whichever pieces were actually
-    // obtained), otherwise sum all memberItems.
+    // obtained), otherwise sum all memberItems. Computed regardless of
+    // achieved so the potential payoff can be shown up front.
     const valueSource = mb.valueItems || mb.memberItems;
-    if (achieved) {
-      value = 0;
-      for (const m of valueSource) {
-        const it = findItem(m.boss, m.item);
-        const pv = it ? itemPointValue(m.boss, it) : null;
-        if (pv == null) { value = null; break; }
-        value += pv;
-      }
-      if (value != null) { value *= CONFIG.assumptions.uniqueBonusMultiplier; bonusPoints += value; }
+    let potentialValue = 0;
+    for (const m of valueSource) {
+      const it = findItem(m.boss, m.item);
+      const pv = it ? itemPointValue(m.boss, it) : null;
+      if (pv == null) { potentialValue = null; break; }
+      potentialValue += pv;
     }
-    metaStatus.push({ id: mb.id, name: mb.name, achieved, value, hasValue: true });
+    if (potentialValue != null) potentialValue *= CONFIG.assumptions.uniqueBonusMultiplier;
+    value = achieved ? potentialValue : null;
+    if (value != null) bonusPoints += value;
+    metaStatus.push({ id: mb.id, name: mb.name, achieved, value, potentialValue, hasValue: true });
   }
 
   // Bounty points
@@ -347,7 +351,9 @@ function render() {
             ? `<span class="achieved">${team} ✓${status.value != null ? ' +' + fmtNum(status.value) : ''}</span>`
             : `<span class="pending">${team}: —</span>`;
         }).join(' &nbsp; ');
-        return `<tr><td colspan="${2+TEAMS.length}"><div class="bonus-row">${bonusName}: ${perTeam}</div></td></tr>`;
+        const anyStatus = results[0].bonusStatus.find(s => s.boss === b.boss && s.name === bonusName);
+        const potentialTxt = anyStatus && anyStatus.potentialValue != null ? ` (${fmtNum(anyStatus.potentialValue)} pts)` : '';
+        return `<tr><td colspan="${2+TEAMS.length}"><div class="bonus-row">${bonusName}${potentialTxt}: ${perTeam}</div></td></tr>`;
       }
       return '';
     }).join('');
@@ -365,13 +371,15 @@ function render() {
   }
 
   function renderMetaCard(mb) {
+    const anyStatus = results[0].metaStatus.find(m => m.id === mb.id);
+    const potentialTxt = anyStatus && anyStatus.potentialValue != null ? ` (${fmtNum(anyStatus.potentialValue)} pts)` : '';
     const lines = results.map(r => {
       const ms = r.metaStatus.find(m => m.id === mb.id);
       const cls = ms.achieved ? 'achieved' : 'pending';
       const valTxt = ms.achieved ? (ms.value != null ? `+${fmtNum(ms.value)} pts` : 'pending KPH') : '';
       return `<div class="${cls}">${r.team}: ${ms.achieved ? '✓ Complete' : 'In progress'} ${valTxt}</div>`;
     }).join('');
-    return `<div class="meta-card"><div class="mtitle">${mb.name}</div><div class="mstatus">${lines}</div></div>`;
+    return `<div class="meta-card"><div class="mtitle">${mb.name}${potentialTxt}</div><div class="mstatus">${lines}</div></div>`;
   }
 
   const bossesByType = {};

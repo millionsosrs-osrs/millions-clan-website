@@ -50,6 +50,8 @@ table.log tr:last-child td{border-bottom:none}
 td.pts{font-family:'Cinzel',serif;font-weight:900;color:var(--gold-hi);text-align:right;white-space:nowrap}
 td.when{color:#8b8371;font-size:14px;white-space:nowrap}
 .rsn{color:var(--gold-hi);font-weight:600}
+.ev-link{color:var(--gold-lo);text-decoration:none;margin-left:6px;font-size:13px}
+.ev-link:hover{color:var(--gold-hi)}
 .tag{font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:1px 6px;border-radius:2px;margin-left:6px;background:#1a1408;border:1px solid #5c4810;color:#c9a227}
 .empty{padding:40px 0;text-align:center;color:#5c5648;font-family:'IM Fell English',serif;font-style:italic;font-size:17px}
 
@@ -152,7 +154,7 @@ function render() {
       return `<tr>
         <td class="when hide-sm">${ago(d.loggedAt)}</td>
         <td><span class="pill" style="--tc:${TEAM_COLORS[d.team]}">${d.team}</span></td>
-        <td>${d.rsn ? `<span class="rsn">${d.rsn}</span> — ` : ''}${d.item}</td>
+        <td>${d.rsn ? `<span class="rsn">${d.rsn}</span> — ` : ''}${d.item}${d.evidenceUrl ? ` <a class="ev-link" href="${d.evidenceUrl}" target="_blank" rel="noopener">[evidence]</a>` : ''}</td>
         <td class="hide-sm">${d.boss}</td>
         <td class="pts">${pts != null ? '+' + fmtNum(pts) : '—'}</td>
       </tr>`;

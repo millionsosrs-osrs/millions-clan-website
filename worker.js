@@ -5,17 +5,23 @@
  *   GET  /api/state                 -> { kph, drops, bountyCompletions, bountyReveals }
  *
  * Admin (Authorization: Bearer <ADMIN_PASSWORD>):
- *   POST   /api/admin/drop          { boss, item, team, quantity }
- *   POST   /api/admin/drop/:id/undo
  *   POST   /api/admin/bounty        { bountyNumber, bountyType, team, placement }
  *   POST   /api/admin/bounty/:id/undo
  *   POST   /api/admin/kph           { boss, kph }
  *   POST   /api/admin/bounty-reveal { bountyNumber, bountyType, revealed }
  *   POST   /api/admin/prize-pool    { amount }
  *   POST   /api/admin/manual-adjustment { boss, item, adjustment }
+ *   GET    /api/admin/audit-log
+ *
+ * Bot-only admin routes (Authorization: Bearer <ADMIN_PASSWORD>) — these back
+ * the Discord bot's /submit-drop, approve/deny buttons, /edit-submission and
+ * /delete-submission commands. There is deliberately no website UI for any of
+ * these: drop review only happens in Discord, so who approved/edited/deleted
+ * what is always visible on the embed messages there.
+ *   POST   /api/admin/pending-submissions/:id/approve
+ *   POST   /api/admin/pending-submissions/:id/reject
  *   POST   /api/admin/submission/:id/edit { boss?, item?, team?, rsn?, quantity? } — edits a submission whether pending or already-approved
  *   POST   /api/admin/submission/:id/delete — removes a submission entirely, whether pending or already-approved
- *   GET    /api/admin/audit-log
  *
  * Everything else falls through to static assets automatically.
  *
@@ -69,7 +75,11 @@ export default {
       if (path === '/api/state' && method === 'GET') {
         const [kphRows, dropRows, bountyRows, revealRows, settingsRows, adjustRows] = await Promise.all([
           env.DB.prepare('SELECT boss_name, actual_kph FROM boss_kph').all(),
-          env.DB.prepare('SELECT id, boss_name, item_name, team, rsn, quantity, is_collection_log, logged_at FROM drops WHERE undone = 0 ORDER BY logged_at ASC').all(),
+          env.DB.prepare(
+            `SELECT d.id, d.boss_name, d.item_name, d.team, d.rsn, d.quantity, d.is_collection_log, d.logged_at, ps.image_key
+             FROM drops d LEFT JOIN pending_submissions ps ON ps.id = d.submission_id
+             WHERE d.undone = 0 ORDER BY d.logged_at ASC`
+          ).all(),
           env.DB.prepare('SELECT id, bounty_number, bounty_type, team, placement, logged_at FROM bounty_completions WHERE undone = 0 ORDER BY logged_at ASC').all(),
           env.DB.prepare('SELECT bounty_number, bounty_type, revealed, revealed_at FROM bounty_reveals').all(),
           env.DB.prepare('SELECT key, value FROM event_settings').all(),
@@ -91,6 +101,7 @@ export default {
             id: r.id, boss: r.boss_name, item: r.item_name,
             team: r.team, rsn: r.rsn, quantity: r.quantity, isCollectionLog: !!r.is_collection_log,
             loggedAt: r.logged_at,
+            evidenceUrl: r.image_key ? '/api/submission-image/' + encodeURIComponent(r.image_key) : null,
           })),
           bountyCompletions: bountyRows.results.map(r => ({
             id: r.id, bountyNumber: r.bounty_number, bountyType: r.bounty_type,
@@ -190,39 +201,6 @@ export default {
       if (path.startsWith('/api/admin/')) {
         if (!authed(request, env)) return json({ error: 'Unauthorized' }, 401);
 
-        // POST /api/admin/drop
-        if (path === '/api/admin/drop' && method === 'POST') {
-          const body = await request.json();
-          const boss = String(body.boss || '').trim();
-          const item = String(body.item || '').trim();
-          const team = String(body.team || '').trim();
-          const rsn = String(body.rsn || '').trim().slice(0, 32) || null;
-          const quantity = Number(body.quantity) || 1;
-          const isCollectionLog = body.isCollectionLog ? 1 : 0;
-          if (!boss || !item || !team) return json({ error: 'boss, item, and team are required' }, 400);
-          if (quantity <= 0 || quantity > 100) return json({ error: 'quantity must be between 1 and 100' }, 400);
-
-          const now = Date.now();
-          const result = await env.DB.prepare(
-            'INSERT INTO drops (boss_name, item_name, team, rsn, quantity, is_collection_log, logged_at) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id'
-          ).bind(boss, item, team, rsn, quantity, isCollectionLog, now).first();
-
-          await logAudit(env, 'drop_added', `Logged: ${rsn ? rsn + ' (' + team + ')' : team} — ${item} (${boss})`);
-          return json({ ok: true, id: result.id }, 201);
-        }
-
-        // POST /api/admin/drop/:id/undo
-        let m = path.match(/^\/api\/admin\/drop\/(\d+)\/undo$/);
-        if (m && method === 'POST') {
-          const id = Number(m[1]);
-          const row = await env.DB.prepare('SELECT * FROM drops WHERE id = ?').bind(id).first();
-          if (!row) return json({ error: 'Not found' }, 404);
-          await env.DB.prepare('UPDATE drops SET undone = 1, undone_at = ? WHERE id = ?')
-            .bind(Date.now(), id).run();
-          await logAudit(env, 'drop_undone', `Undid: ${row.team} — ${row.item_name} (${row.boss_name})`);
-          return json({ ok: true });
-        }
-
         // POST /api/admin/bounty
         if (path === '/api/admin/bounty' && method === 'POST') {
           const body = await request.json();
@@ -243,7 +221,7 @@ export default {
         }
 
         // POST /api/admin/bounty/:id/undo
-        m = path.match(/^\/api\/admin\/bounty\/(\d+)\/undo$/);
+        let m = path.match(/^\/api\/admin\/bounty\/(\d+)\/undo$/);
         if (m && method === 'POST') {
           const id = Number(m[1]);
           const row = await env.DB.prepare('SELECT * FROM bounty_completions WHERE id = ?').bind(id).first();
@@ -330,22 +308,6 @@ export default {
             'SELECT id, action, details, logged_at FROM audit_log ORDER BY logged_at DESC LIMIT 500'
           ).all();
           return json({ entries: rows.results });
-        }
-
-        // GET /api/admin/pending-submissions
-        if (path === '/api/admin/pending-submissions' && method === 'GET') {
-          const rows = await env.DB.prepare(
-            `SELECT id, boss_name, item_name, team, rsn, quantity, is_collection_log, image_key, status, submitted_at
-             FROM pending_submissions WHERE status = 'pending' ORDER BY submitted_at ASC`
-          ).all();
-          return json({
-            submissions: rows.results.map(r => ({
-              id: r.id, boss: r.boss_name, item: r.item_name, team: r.team, rsn: r.rsn,
-              quantity: r.quantity, isCollectionLog: !!r.is_collection_log,
-              imageUrl: '/api/submission-image/' + encodeURIComponent(r.image_key),
-              submittedAt: r.submitted_at,
-            })),
-          });
         }
 
         // POST /api/admin/pending-submissions/:id/approve

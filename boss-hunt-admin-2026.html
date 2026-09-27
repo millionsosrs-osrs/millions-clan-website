@@ -89,7 +89,7 @@ footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-sp
     <div class="ev">Boss Hunt — Admin</div>
   </header>
   <div class="mastrule"></div>
-  <nav class="top"><a href="/boss-hunt-2026">← Public Board</a><a href="/boss-hunt-review-2026">Review Submissions</a><a href="/boss-hunt-settings-2026">Settings (KPH &amp; Adjustments)</a></nav>
+  <nav class="top"><a href="/boss-hunt-2026">← Public Board</a><a href="/boss-hunt-settings-2026">Settings (KPH &amp; Adjustments)</a></nav>
 
   <!-- ── Sign in ───────────────────────────────────────────── -->
   <section id="gate">
@@ -108,35 +108,9 @@ footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-sp
   <!-- ── Main panel ────────────────────────────────────────── -->
   <section id="panel" hidden>
 
-    <h2 class="sec">Log a Drop</h2>
-    <div class="sec-rule"></div>
-    <div class="card">
-      <div class="grid2">
-        <div class="field">
-          <label for="dropBoss">Boss</label>
-          <select id="dropBoss"></select>
-        </div>
-        <div class="field">
-          <label for="dropItem">Item</label>
-          <select id="dropItem"></select>
-        </div>
-      </div>
-      <div class="grid2">
-        <div class="field">
-          <label for="dropTeam">Team</label>
-          <select id="dropTeam"></select>
-        </div>
-        <div class="field">
-          <label for="dropRsn">Player (RSN)</label>
-          <input type="text" id="dropRsn" autocomplete="off" placeholder="Zezima">
-        </div>
-      </div>
-      <button id="dropSubmit">Log Drop</button>
-      <div id="dropMsg"></div>
-    </div>
-
     <h2 class="sec">Recent Drops</h2>
     <div class="sec-rule"></div>
+    <div class="hint" style="margin:-4px 0 12px">Read-only — drops are added, edited, and removed from Discord. Use <code>/edit-submission</code> or <code>/delete-submission</code> there to fix a mistake.</div>
     <div class="card" id="recentDropsCard"><div class="empty">Loading…</div></div>
 
     <h2 class="sec">Bounties</h2>
@@ -214,7 +188,6 @@ async function unlock(){
   $('gate').hidden = true;
   $('panel').hidden = false;
   await loadSharedData();
-  populateDropForm();
   renderBountyAdmin();
   await Promise.all([loadState(), loadAuditLog()]);
 }
@@ -238,54 +211,6 @@ $('signin').onclick = async () => {
 };
 $('pw').addEventListener('keydown', e => { if (e.key === 'Enter') $('signin').click(); });
 $('signout').onclick = () => { sessionStorage.removeItem('bh_pw'); location.reload(); };
-
-// ── Drop logging form ────────────────────────────────────
-function populateDropForm(){
-  TEAMS.forEach(t => $('dropTeam').add(new Option(t, t)));
-
-  const TYPE_ORDER = ['Slayer','God Wars','Desert Treasure','General','Dagannoth','Wilderness','Raids','Skilling'];
-  const byType = {};
-  CONFIG.bosses.forEach(b => { const t = b.bossType || 'Wilderness'; (byType[t] = byType[t] || []).push(b); });
-  if (byType['General']) byType['General'].sort((a, b) => a.boss.localeCompare(b.boss));
-  TYPE_ORDER.filter(t => byType[t] && byType[t].length).forEach(type => {
-    const group = document.createElement('optgroup');
-    group.label = type;
-    byType[type].forEach(b => group.appendChild(new Option(b.boss, b.boss)));
-    $('dropBoss').appendChild(group);
-  });
-
-  fillItemsForBoss();
-  $('dropBoss').addEventListener('change', fillItemsForBoss);
-}
-function fillItemsForBoss(){
-  const boss = CONFIG.bosses.find(b => b.boss === $('dropBoss').value) || CONFIG.bosses[0];
-  $('dropItem').innerHTML = '';
-  boss.displayItems.filter(d => d.kind === 'item').forEach(it => {
-    $('dropItem').add(new Option(it.name, it.name));
-  });
-}
-
-$('dropSubmit').onclick = async () => {
-  const boss = $('dropBoss').value;
-  const item = $('dropItem').value;
-  const team = $('dropTeam').value;
-  const rsn = $('dropRsn').value.trim();
-
-  $('dropSubmit').disabled = true;
-  try{
-    const r = await api('/api/admin/drop', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ boss, item, team, rsn, quantity: 1, isCollectionLog: false }),
-    });
-    if (!r.ok) throw new Error((await r.json()).error || 'Failed');
-    say($('dropMsg'), `Logged: ${rsn ? rsn + ' — ' : ''}${item} (${boss}, ${team})`, true);
-    $('dropRsn').value = '';
-    await Promise.all([loadState(), loadAuditLog()]);
-  } catch(e){
-    say($('dropMsg'), 'Failed: ' + e.message, false);
-  }
-  $('dropSubmit').disabled = false;
-};
 
 // ── Load public state (recent drops, prize pool) ─────────
 let STATE = { kph: {}, prizePool: 0, drops: [], bountyCompletions: [], bountyReveals: [] };
@@ -316,16 +241,8 @@ function renderRecentDrops(){
       <td>${d.rsn ? esc(d.rsn) : '—'}</td>
       <td>${esc(d.item)}</td>
       <td>${esc(d.boss)}</td>
-      <td style="text-align:right"><button class="ghost small" data-undo-drop="${d.id}">Undo</button></td>
+      <td style="text-align:right">${d.evidenceUrl ? `<a href="${d.evidenceUrl}" target="_blank" rel="noopener" style="font-size:12px;color:var(--gold-lo)">evidence</a>` : ''}</td>
     </tr>`).join('') + '</tbody></table>';
-
-  $('recentDropsCard').querySelectorAll('[data-undo-drop]').forEach(btn => {
-    btn.onclick = async () => {
-      if (!confirm('Undo this drop? This cannot be un-undone.')) return;
-      const r = await api(`/api/admin/drop/${btn.dataset.undoDrop}/undo`, {method:'POST'});
-      if (r.ok){ await Promise.all([loadState(), loadAuditLog()]); } else alert('Undo failed.');
-    };
-  });
 }
 
 // ── Prize pool ────────────────────────────────────────────
