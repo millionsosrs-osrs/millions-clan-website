@@ -98,6 +98,10 @@ footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-sp
   <section id="panel" hidden>
     <h2 class="sec">Pending Submissions</h2>
     <div class="sec-rule"></div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+      <button id="refreshBtn" type="button">↻ Refresh</button>
+      <span id="lastUpdated" style="font-size:12px;letter-spacing:.08em;color:var(--dim);text-transform:uppercase"></span>
+    </div>
     <div id="subList"><div class="empty">Loading…</div></div>
     <button class="reject" id="signout" style="margin-top:10px">Sign out</button>
   </section>
@@ -137,10 +141,21 @@ async function tryAuth(candidate){
   return r.status !== 401;
 }
 
+function formatUpdatedAt(d) {
+  return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+}
+
+async function refresh(){
+  $('refreshBtn').disabled = true;
+  await loadSubmissions();
+  $('lastUpdated').textContent = 'Updated ' + formatUpdatedAt(new Date());
+  $('refreshBtn').disabled = false;
+}
+
 async function unlock(){
   $('gate').hidden = true;
   $('panel').hidden = false;
-  await loadSubmissions();
+  await refresh();
 }
 
 $('signin').onclick = async () => {
@@ -189,7 +204,7 @@ async function loadSubmissions(){
         try{
           const r = await api(`/api/admin/pending-submissions/${btn.dataset.approve}/approve`, {method:'POST'});
           if (!r.ok) throw new Error((await r.json()).error || 'Failed');
-          await loadSubmissions();
+          await refresh();
         } catch(e){ alert('Failed: ' + e.message); btn.disabled = false; }
       };
     });
@@ -200,7 +215,7 @@ async function loadSubmissions(){
         try{
           const r = await api(`/api/admin/pending-submissions/${btn.dataset.reject}/reject`, {method:'POST'});
           if (!r.ok) throw new Error((await r.json()).error || 'Failed');
-          await loadSubmissions();
+          await refresh();
         } catch(e){ alert('Failed: ' + e.message); btn.disabled = false; }
       };
     });
@@ -211,8 +226,7 @@ async function loadSubmissions(){
 
 $('lightbox').onclick = () => $('lightbox').classList.remove('open');
 
-// Auto-refresh the queue periodically so new submissions show up without a manual reload
-setInterval(() => { if (!document.hidden && !$('panel').hidden) loadSubmissions(); }, 15000);
+$('refreshBtn').onclick = refresh;
 
 if (pw) tryAuth(pw).then(ok => ok ? unlock() : sessionStorage.removeItem('bh_pw'));
 </script>

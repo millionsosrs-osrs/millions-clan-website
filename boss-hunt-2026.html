@@ -31,13 +31,15 @@ body{
   background:linear-gradient(178deg,#fdf2d6 6%,var(--gold-hi) 40%,var(--gold) 64%,#7d6214 98%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .mast .sub{margin-top:6px;font-size:14px;color:var(--dim);letter-spacing:.1em}
 .mastrule{margin-top:16px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-lo) 12%,var(--gold) 50%,var(--gold-lo) 88%,transparent)}
-.live{display:flex;justify-content:center;align-items:center;gap:8px;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-top:14px}
+.refresh-bar{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}
+.refresh-btn{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-lo);background:var(--panel);cursor:pointer;border:1px solid var(--gold-lo);padding:6px 16px;border-radius:3px;transition:all .15s}
+.refresh-btn:hover{color:var(--gold-hi);border-color:var(--gold-hi)}
+.refresh-btn:disabled{opacity:.5;cursor:default}
+#lastUpdated{font-size:12px;letter-spacing:.08em;color:var(--dim);text-transform:uppercase}
+#lastUpdated.stale{color:var(--bad)}
 .top-nav{text-align:center;margin-top:10px}
 .top-nav a{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-lo);text-decoration:none;border-bottom:1px solid var(--gold-lo)}
 .top-nav a:hover{color:var(--gold-hi);border-color:var(--gold-hi)}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--good);animation:pulse 2.4s ease-in-out infinite}
-.dot.stale{background:var(--bad);animation:none}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
 
 h2.sec{font-family:'Cinzel',serif;font-weight:900;font-size:22px;text-transform:uppercase;letter-spacing:.13em;color:#ddd1b1;margin:40px 0 4px}
 .sec-rule{height:1px;background:linear-gradient(90deg,var(--gold),rgba(0,0,0,0) 55%);margin-bottom:22px}
@@ -117,7 +119,7 @@ footer .note{margin-top:9px;font-size:12px;letter-spacing:.14em;color:#4f4a3d;te
     <div class="sub">Live Scoreboard</div>
   </header>
   <div class="mastrule"></div>
-  <div class="live"><span class="dot" id="dot"></span><span id="liveTxt">Live</span></div>
+  <div class="refresh-bar"><button class="refresh-btn" id="refreshBtn">↻ Refresh</button><span id="lastUpdated">Loading…</span></div>
   <nav class="top-nav"><a href="/boss-hunt-bounties-2026">Bounties →</a> &nbsp;·&nbsp; <a href="/boss-hunt-activity-2026">Recent Activity →</a></nav>
 
   <div class="prizepool">
@@ -136,7 +138,7 @@ footer .note{margin-top:9px;font-size:12px;letter-spacing:.14em;color:#4f4a3d;te
 
   <footer>
     <div class="mark">MILLIONS</div>
-    <div class="note">Updates automatically</div>
+    <div class="note">Click Refresh above for the latest standings</div>
   </footer>
 </div>
 
@@ -401,11 +403,18 @@ function switchTab(type){
 
 function slugify(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
 
-// ---- Polling ----
-const POLL_MS = 20000;
+// ---- Manual refresh ----
+// No background polling: the page loads once and only re-fetches when the
+// viewer clicks Refresh. Keeps this a plain static page for everyone rather
+// than something quietly polling an API in the background.
 let lastStateJSON = null;
 
+function formatUpdatedAt(d) {
+  return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+}
+
 async function poll() {
+  $('refreshBtn').disabled = true;
   try {
     const r = await fetch('/api/state', { cache: 'no-store' });
     if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -413,9 +422,9 @@ async function poll() {
     const newStateJSON = JSON.stringify(newState);
 
     // Skip the re-render entirely if nothing actually changed — this is
-    // what was causing the page to "jump": every poll rebuilt the whole
-    // DOM (all ~340 images re-requested), which shifts scroll position as
-    // things load/fail at different times, even when no data changed.
+    // what was causing the page to "jump": rebuilding the whole DOM (all
+    // ~340 images re-requested) shifts scroll position as things load/fail
+    // at different times, even when no data changed.
     if (newStateJSON !== lastStateJSON) {
       const scrollY = window.scrollY;
       STATE = newState;
@@ -424,19 +433,19 @@ async function poll() {
       window.scrollTo(0, scrollY);
     }
 
-    $('dot').classList.remove('stale');
-    $('liveTxt').textContent = 'Live';
+    $('lastUpdated').classList.remove('stale');
+    $('lastUpdated').textContent = 'Updated ' + formatUpdatedAt(new Date());
   } catch (e) {
-    $('dot').classList.add('stale');
-    $('liveTxt').textContent = 'Reconnecting';
+    $('lastUpdated').classList.add('stale');
+    $('lastUpdated').textContent = 'Refresh failed — try again';
   }
+  $('refreshBtn').disabled = false;
 }
 async function init(){
   await loadSharedData();
   CONFIG.bosses.forEach(b => BOSS_MAP[b.boss] = b);
   await poll();
-  setInterval(() => { if (!document.hidden) poll(); }, POLL_MS);
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) poll(); });
+  $('refreshBtn').onclick = poll;
 }
 init();
 </script>
