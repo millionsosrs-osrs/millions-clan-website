@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Millions — Boss Hunt · Settings</title>
+<title>Millions vs Zero - Boss Hunt · Settings</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,6 +26,8 @@ body{
 .wrap{max-width:900px;margin:0 auto;padding:0 24px 64px}
 .mast{padding:32px 0 0;text-align:center}
 .mast .clan{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-spacing:.4em;text-indent:.4em;color:var(--gold)}
+.vs{color:var(--dim)}
+.zero{color:#7190b6}
 .mast .ev{font-family:'Cinzel',serif;font-weight:900;font-size:26px;line-height:1;margin-top:8px;text-transform:uppercase;letter-spacing:.05em;
   background:linear-gradient(178deg,#fdf2d6 6%,var(--gold-hi) 40%,var(--gold) 64%,#7d6214 98%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .mastrule{margin-top:16px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-lo) 12%,var(--gold) 50%,var(--gold-lo) 88%,transparent)}
@@ -62,8 +64,8 @@ footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-sp
 <div class="wrap">
 
   <header class="mast">
-    <div class="clan">MILLIONS</div>
-    <div class="ev">Boss Hunt — Settings</div>
+    <div class="clan">MILLIONS <span class="vs">VS</span> <span class="zero">ZERO</span></div>
+    <div class="ev">Boss Hunt - Settings</div>
   </header>
   <div class="mastrule"></div>
   <nav class="top">
@@ -91,7 +93,7 @@ footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-sp
     <h2 class="sec">Boss KPH</h2>
     <div class="sec-rule"></div>
     <div class="card">
-      <div class="hint">Point values recalculate live on the public board as soon as you save. Leave a boss blank until you're ready — it'll show as "pending KPH" on the board.</div>
+      <div class="hint">Point values recalculate live on the public board as soon as you save. Leave a boss blank until you're ready - it'll show as "pending KPH" on the board.</div>
       <div class="filter-row"><input type="text" id="kphFilter" placeholder="Search bosses…"></div>
       <table class="list" id="kphTable"><thead><tr><th>Boss</th><th>KPH</th></tr></thead><tbody></tbody></table>
       <button id="kphSaveAll" style="margin-top:14px">Save All</button>
@@ -101,7 +103,7 @@ footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-sp
     <h2 class="sec">Manual Point Adjustments</h2>
     <div class="sec-rule"></div>
     <div class="card">
-      <div class="hint">Matches the "Manual Adjustment" column in your spreadsheet — 0.75 for jars/pets, 1.0 for everything else by default. Override any specific item here if needed.</div>
+      <div class="hint">Matches the "Manual Adjustment" column in your spreadsheet - 0.75 for jars/pets, 1.0 for everything else by default. Override any specific item here if needed.</div>
       <div class="filter-row"><input type="text" id="adjFilter" placeholder="Search items or bosses…"></div>
       <table class="list" id="adjTable"><thead><tr><th>Item</th><th>Boss</th><th>Adjustment</th></tr></thead><tbody></tbody></table>
       <button id="adjSaveAll" style="margin-top:14px">Save All</button>
@@ -111,7 +113,7 @@ footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-sp
   </section>
 
   <footer>
-    <div class="mark">MILLIONS</div>
+    <div class="mark">MILLIONS <span class="vs">VS</span> <span class="zero">ZERO</span></div>
   </footer>
 </div>
 
@@ -187,7 +189,7 @@ function renderKphTable(){
       const current = STATE.kph[b.boss];
       return `<tr data-boss="${b.boss}">
         <td>${b.boss}</td>
-        <td><input type="number" step="0.1" min="0.1" class="kph-input" value="${current ?? ''}" placeholder="—"></td>
+        <td><input type="number" step="0.1" min="0.1" class="kph-input" value="${current ?? ''}" placeholder="-"></td>
       </tr>`;
     }).join('');
     return `<tr class="type-header-row"><td colspan="2">${type}</td></tr>${rows}`;

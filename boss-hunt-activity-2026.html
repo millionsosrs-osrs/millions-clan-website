@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Millions — Boss Hunt · Recent Activity</title>
+<title>Millions vs Zero - Boss Hunt · Recent Activity</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&family=Barlow+Condensed:wght@400;600&family=IM+Fell+English:ital@1&display=swap" rel="stylesheet">
@@ -26,6 +26,8 @@ body{
 .wrap{max-width:1080px;margin:0 auto;padding:0 24px 64px}
 .mast{padding:38px 0 0;text-align:center}
 .mast .clan{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-spacing:.4em;text-indent:.4em;color:var(--gold)}
+.vs{color:var(--dim)}
+.zero{color:#7190b6}
 .mast .ev{font-family:'Cinzel',serif;font-weight:900;font-size:28px;line-height:1;margin-top:8px;text-transform:uppercase;letter-spacing:.05em;
   background:linear-gradient(178deg,#fdf2d6 6%,var(--gold-hi) 40%,var(--gold) 64%,#7d6214 98%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .mastrule{margin-top:16px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-lo) 12%,var(--gold) 50%,var(--gold-lo) 88%,transparent)}
@@ -64,7 +66,7 @@ footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:16px;letter-sp
 <div class="wrap">
 
   <header class="mast">
-    <div class="clan">MILLIONS</div>
+    <div class="clan">MILLIONS <span class="vs">VS</span> <span class="zero">ZERO</span></div>
     <div class="ev">Recent Activity</div>
   </header>
   <div class="mastrule"></div>
@@ -76,7 +78,7 @@ footer .mark{font-family:'Cinzel',serif;font-weight:900;font-size:16px;letter-sp
   <div id="logWrap"></div>
 
   <footer>
-    <div class="mark">MILLIONS</div>
+    <div class="mark">MILLIONS <span class="vs">VS</span> <span class="zero">ZERO</span></div>
   </footer>
 </div>
 
@@ -154,9 +156,9 @@ function render() {
       return `<tr>
         <td class="when hide-sm">${ago(d.loggedAt)}</td>
         <td><span class="pill" style="--tc:${TEAM_COLORS[d.team]}">${d.team}</span></td>
-        <td>${d.rsn ? `<span class="rsn">${d.rsn}</span> — ` : ''}${d.item}${d.evidenceUrl ? ` <a class="ev-link" href="${d.evidenceUrl}" target="_blank" rel="noopener">[evidence]</a>` : ''}</td>
+        <td>${d.rsn ? `<span class="rsn">${d.rsn}</span> - ` : ''}${d.item}${d.evidenceUrl ? ` <a class="ev-link" href="${d.evidenceUrl}" target="_blank" rel="noopener">[evidence]</a>` : ''}</td>
         <td class="hide-sm">${d.boss}</td>
-        <td class="pts">${pts != null ? '+' + fmtNum(pts) : '—'}</td>
+        <td class="pts">${pts != null ? '+' + fmtNum(pts) : '-'}</td>
       </tr>`;
     }).join('') + '</tbody></table>';
   }
@@ -187,7 +189,7 @@ async function poll() {
     $('lastUpdated').textContent = 'Updated ' + formatUpdatedAt(new Date());
   } catch (e) {
     $('lastUpdated').classList.add('stale');
-    $('lastUpdated').textContent = 'Refresh failed — try again';
+    $('lastUpdated').textContent = 'Refresh failed - try again';
   }
   $('refreshBtn').disabled = false;
 }

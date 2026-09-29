@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Millions — Boss Hunt · Live Scoreboard</title>
-<meta name="description" content="Live scoreboard for the Millions clan Boss Hunt event.">
+<title>Millions vs Zero - Boss Hunt · Live Scoreboard</title>
+<meta name="description" content="Live scoreboard for the Millions vs Zero Boss Hunt event.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&family=Barlow+Condensed:wght@400;600&family=IM+Fell+English:ital@1&display=swap" rel="stylesheet">
@@ -27,6 +27,8 @@ body{
 .wrap{max-width:1080px;margin:0 auto;padding:0 24px 64px}
 .mast{padding:38px 0 0;text-align:center}
 .mast .clan{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-spacing:.4em;text-indent:.4em;color:var(--gold)}
+.vs{color:var(--dim)}
+.zero{color:#7190b6}
 .mast .ev{font-family:'Cinzel',serif;font-weight:900;font-size:30px;line-height:1;margin-top:8px;text-transform:uppercase;letter-spacing:.05em;
   background:linear-gradient(178deg,#fdf2d6 6%,var(--gold-hi) 40%,var(--gold) 64%,#7d6214 98%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .mast .sub{margin-top:6px;font-size:14px;color:var(--dim);letter-spacing:.1em}
@@ -114,7 +116,7 @@ footer .note{margin-top:9px;font-size:12px;letter-spacing:.14em;color:#4f4a3d;te
 <div class="wrap">
 
   <header class="mast">
-    <div class="clan">MILLIONS</div>
+    <div class="clan">MILLIONS <span class="vs">VS</span> <span class="zero">ZERO</span></div>
     <div class="ev">Boss Hunt</div>
     <div class="sub">Live Scoreboard</div>
   </header>
@@ -123,7 +125,7 @@ footer .note{margin-top:9px;font-size:12px;letter-spacing:.14em;color:#4f4a3d;te
   <nav class="top-nav"><a href="/boss-hunt-bounties-2026">Bounties →</a> &nbsp;·&nbsp; <a href="/boss-hunt-activity-2026">Recent Activity →</a></nav>
 
   <div class="prizepool">
-    <div class="amt" id="prizePoolAmt">—</div>
+    <div class="amt" id="prizePoolAmt">-</div>
     <div class="lbl">Current Prize Pool</div>
   </div>
 
@@ -137,7 +139,7 @@ footer .note{margin-top:9px;font-size:12px;letter-spacing:.14em;color:#4f4a3d;te
   <div id="bossList"></div>
 
   <footer>
-    <div class="mark">MILLIONS</div>
+    <div class="mark">MILLIONS <span class="vs">VS</span> <span class="zero">ZERO</span></div>
     <div class="note">Click Refresh above for the latest standings</div>
   </footer>
 </div>
@@ -336,11 +338,11 @@ function render() {
         const pv = itemPointValue(b.boss, di);
         const cells = TEAMS.map(team => {
           const matching = STATE.drops.filter(d => d.team === team && d.boss === b.boss && d.item === di.name);
-          if (!matching.length) return `<td class="num">—</td>`;
+          if (!matching.length) return `<td class="num">-</td>`;
           const total = matching.reduce((sum, d) => sum + d.quantity, 0);
           return `<td class="num">${total}</td>`;
         }).join('');
-        return `<tr><td><div class="item-name-cell"><img class="item-img" src="${di.img}" onerror="this.style.display='none'" alt="">${di.name}</div></td><td class="num">${pv != null ? fmtNum(pv) : '—'}</td>${cells}</tr>`;
+        return `<tr><td><div class="item-name-cell"><img class="item-img" src="${di.img}" onerror="this.style.display='none'" alt="">${di.name}</div></td><td class="num">${pv != null ? fmtNum(pv) : '-'}</td>${cells}</tr>`;
       }
       if (di.kind === 'all_uniques' || di.kind === 'sub_group') {
         const bonusName = di.kind === 'all_uniques' ? 'All Uniques Bonus' : di.name;
@@ -349,7 +351,7 @@ function render() {
           const status = r.bonusStatus.find(s => s.boss === b.boss && s.name === bonusName);
           return status.achieved
             ? `<span class="achieved">${team} ✓${status.value != null ? ' +' + fmtNum(status.value) : ''}</span>`
-            : `<span class="pending">${team}: —</span>`;
+            : `<span class="pending">${team}: -</span>`;
         }).join(' &nbsp; ');
         const anyStatus = results[0].bonusStatus.find(s => s.boss === b.boss && s.name === bonusName);
         const potentialTxt = anyStatus && anyStatus.potentialValue != null ? ` (${fmtNum(anyStatus.potentialValue)} pts)` : '';
@@ -429,7 +431,7 @@ async function poll() {
     const newState = await r.json();
     const newStateJSON = JSON.stringify(newState);
 
-    // Skip the re-render entirely if nothing actually changed — this is
+    // Skip the re-render entirely if nothing actually changed - this is
     // what was causing the page to "jump": rebuilding the whole DOM (all
     // ~340 images re-requested) shifts scroll position as things load/fail
     // at different times, even when no data changed.
@@ -445,7 +447,7 @@ async function poll() {
     $('lastUpdated').textContent = 'Updated ' + formatUpdatedAt(new Date());
   } catch (e) {
     $('lastUpdated').classList.add('stale');
-    $('lastUpdated').textContent = 'Refresh failed — try again';
+    $('lastUpdated').textContent = 'Refresh failed - try again';
   }
   $('refreshBtn').disabled = false;
 }

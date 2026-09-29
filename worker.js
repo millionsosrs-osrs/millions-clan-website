@@ -1,5 +1,5 @@
 /**
- * Millions Boss Hunt — API Worker
+ * Millions Boss Hunt - API Worker
  *
  * Public (no auth):
  *   GET  /api/state                 -> { kph, drops, bountyCompletions, bountyReveals }
@@ -13,15 +13,15 @@
  *   POST   /api/admin/manual-adjustment { boss, item, adjustment }
  *   GET    /api/admin/audit-log
  *
- * Bot-only admin routes (Authorization: Bearer <ADMIN_PASSWORD>) — these back
+ * Bot-only admin routes (Authorization: Bearer <ADMIN_PASSWORD>) - these back
  * the Discord bot's /submit-drop, approve/deny buttons, /edit-submission and
  * /delete-submission commands. There is deliberately no website UI for any of
  * these: drop review only happens in Discord, so who approved/edited/deleted
  * what is always visible on the embed messages there.
  *   POST   /api/admin/pending-submissions/:id/approve
  *   POST   /api/admin/pending-submissions/:id/reject
- *   POST   /api/admin/submission/:id/edit { boss?, item?, team?, rsn?, quantity? } — edits a submission whether pending or already-approved
- *   POST   /api/admin/submission/:id/delete — removes a submission entirely, whether pending or already-approved
+ *   POST   /api/admin/submission/:id/edit { boss?, item?, team?, rsn?, quantity? } - edits a submission whether pending or already-approved
+ *   POST   /api/admin/submission/:id/delete - removes a submission entirely, whether pending or already-approved
  *
  * Everything else falls through to static assets automatically.
  *
@@ -124,7 +124,7 @@ export default {
       }
 
       // ------------------------------------------------- PUBLIC SUBMISSION
-      // Anyone can submit a drop with evidence — no password needed, since
+      // Anyone can submit a drop with evidence - no password needed, since
       // nothing here touches the live scoreboard until an admin approves it.
       if (path === '/api/submit-drop' && method === 'POST') {
         const form = await request.formData();
@@ -171,7 +171,7 @@ export default {
 
       // Wiki image cache/proxy. Fetches the real OSRS Wiki image the FIRST
       // time any visitor requests it, stores a permanent copy in R2, and
-      // serves every request after that straight from R2 — so the wiki only
+      // serves every request after that straight from R2 - so the wiki only
       // ever sees one request per unique image, total, ever, instead of one
       // per pageview.
       if (path === '/api/img' && method === 'GET') {
@@ -216,7 +216,7 @@ export default {
             'INSERT INTO bounty_completions (bounty_number, bounty_type, team, placement, logged_at) VALUES (?, ?, ?, ?, ?) RETURNING id'
           ).bind(bountyNumber, bountyType, team, placement, now).first();
 
-          await logAudit(env, 'bounty_marked', `Bounty #${bountyNumber} (${bountyType}): ${team} — ${placement}`);
+          await logAudit(env, 'bounty_marked', `Bounty #${bountyNumber} (${bountyType}): ${team} - ${placement}`);
           return json({ ok: true, id: result.id }, 201);
         }
 
@@ -228,7 +228,7 @@ export default {
           if (!row) return json({ error: 'Not found' }, 404);
           await env.DB.prepare('UPDATE bounty_completions SET undone = 1, undone_at = ? WHERE id = ?')
             .bind(Date.now(), id).run();
-          await logAudit(env, 'bounty_undone', `Undid bounty #${row.bounty_number} (${row.bounty_type}): ${row.team} — ${row.placement}`);
+          await logAudit(env, 'bounty_undone', `Undid bounty #${row.bounty_number} (${row.bounty_type}): ${row.team} - ${row.placement}`);
           return json({ ok: true });
         }
 
@@ -326,7 +326,7 @@ export default {
             `UPDATE pending_submissions SET status = 'approved', reviewed_at = ? WHERE id = ?`
           ).bind(now, id).run();
 
-          await logAudit(env, 'submission_approved', `Approved: ${sub.rsn || sub.team} — ${sub.item_name} (${sub.boss_name})`);
+          await logAudit(env, 'submission_approved', `Approved: ${sub.rsn || sub.team} - ${sub.item_name} (${sub.boss_name})`);
           return json({ ok: true });
         }
 
@@ -342,7 +342,7 @@ export default {
             `UPDATE pending_submissions SET status = 'rejected', reviewed_at = ? WHERE id = ?`
           ).bind(Date.now(), id).run();
 
-          await logAudit(env, 'submission_rejected', `Rejected: ${sub.rsn || sub.team} — ${sub.item_name} (${sub.boss_name})`);
+          await logAudit(env, 'submission_rejected', `Rejected: ${sub.rsn || sub.team} - ${sub.item_name} (${sub.boss_name})`);
           return json({ ok: true });
         }
 
@@ -384,14 +384,14 @@ export default {
             binds.push(id);
             await env.DB.prepare(`UPDATE pending_submissions SET ${updates.join(', ')} WHERE id = ?`).bind(...binds).run();
             const updated = await env.DB.prepare('SELECT * FROM pending_submissions WHERE id = ?').bind(id).first();
-            await logAudit(env, 'submission_edited', `Edited pending submission #${id}: now ${updated.rsn || updated.team} — ${updated.item_name} (${updated.boss_name})`);
+            await logAudit(env, 'submission_edited', `Edited pending submission #${id}: now ${updated.rsn || updated.team} - ${updated.item_name} (${updated.boss_name})`);
             return json({ ok: true, state: 'pending', submission: {
               id: updated.id, boss: updated.boss_name, item: updated.item_name, team: updated.team,
               rsn: updated.rsn, quantity: updated.quantity, isCollectionLog: !!updated.is_collection_log,
             }});
           }
 
-          // Not pending — look for the already-approved drop it turned into.
+          // Not pending - look for the already-approved drop it turned into.
           const drop = await env.DB.prepare('SELECT * FROM drops WHERE submission_id = ? AND undone = 0').bind(id).first();
           if (!drop) return json({ error: 'No pending or approved submission found with that ID' }, 404);
 
@@ -405,7 +405,7 @@ export default {
           binds.push(drop.id);
           await env.DB.prepare(`UPDATE drops SET ${updates.join(', ')} WHERE id = ?`).bind(...binds).run();
           const updatedDrop = await env.DB.prepare('SELECT * FROM drops WHERE id = ?').bind(drop.id).first();
-          await logAudit(env, 'submission_edited', `Edited approved drop from submission #${id}: now ${updatedDrop.rsn || updatedDrop.team} — ${updatedDrop.item_name} (${updatedDrop.boss_name})`);
+          await logAudit(env, 'submission_edited', `Edited approved drop from submission #${id}: now ${updatedDrop.rsn || updatedDrop.team} - ${updatedDrop.item_name} (${updatedDrop.boss_name})`);
           return json({ ok: true, state: 'approved', submission: {
             id, boss: updatedDrop.boss_name, item: updatedDrop.item_name, team: updatedDrop.team,
             rsn: updatedDrop.rsn, quantity: updatedDrop.quantity, isCollectionLog: !!updatedDrop.is_collection_log,
@@ -427,7 +427,7 @@ export default {
           if (pending && pending.status === 'pending') {
             await env.DB.prepare(`UPDATE pending_submissions SET status = 'deleted', reviewed_at = ? WHERE id = ?`)
               .bind(Date.now(), id).run();
-            await logAudit(env, 'submission_deleted', `Deleted pending submission #${id}: ${pending.rsn || pending.team} — ${pending.item_name} (${pending.boss_name})`);
+            await logAudit(env, 'submission_deleted', `Deleted pending submission #${id}: ${pending.rsn || pending.team} - ${pending.item_name} (${pending.boss_name})`);
             return json({ ok: true, state: 'pending' });
           }
 
@@ -435,7 +435,7 @@ export default {
           if (!drop) return json({ error: 'No pending or approved submission found with that ID' }, 404);
 
           await env.DB.prepare('UPDATE drops SET undone = 1, undone_at = ? WHERE id = ?').bind(Date.now(), drop.id).run();
-          await logAudit(env, 'submission_deleted', `Deleted approved drop from submission #${id}: ${drop.rsn || drop.team} — ${drop.item_name} (${drop.boss_name})`);
+          await logAudit(env, 'submission_deleted', `Deleted approved drop from submission #${id}: ${drop.rsn || drop.team} - ${drop.item_name} (${drop.boss_name})`);
           return json({ ok: true, state: 'approved' });
         }
 
