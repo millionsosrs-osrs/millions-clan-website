@@ -249,7 +249,7 @@ function renderAdjTable(){
       return `<tr data-boss="${r.boss}" data-item="${r.item}">
         <td>${r.item}</td>
         <td class="sub">${r.label}</td>
-        <td><input type="number" step="0.05" min="0" max="10" class="adj-input" value="${current}"></td>
+        <td><input type="number" step="0.05" min="0" max="10" class="adj-input" value="${current ?? ''}" placeholder="1.0"></td>
       </tr>`;
     }).join('');
     return `<tr class="type-header-row"><td colspan="3">${type}</td></tr>${rows}`;
@@ -261,11 +261,13 @@ $('adjSaveAll').onclick = async () => {
   const tbody = $('adjTable').querySelector('tbody');
   const rows = [...tbody.querySelectorAll('tr[data-boss]')];
   $('adjSaveAll').disabled = true;
-  let okCount = 0, failCount = 0;
+  let okCount = 0, failCount = 0, skipCount = 0;
   try{
     await Promise.all(rows.map(async row => {
       const boss = row.dataset.boss, item = row.dataset.item;
-      const adjustment = parseFloat(row.querySelector('.adj-input').value);
+      const val = row.querySelector('.adj-input').value;
+      if (val === '') { skipCount++; return; } // leave blank ones untouched (defaults to 1.0)
+      const adjustment = parseFloat(val);
       if (!Number.isFinite(adjustment) || adjustment < 0) { failCount++; return; }
       const r = await api('/api/admin/manual-adjustment', {
         method:'POST', headers:{'Content-Type':'application/json'},

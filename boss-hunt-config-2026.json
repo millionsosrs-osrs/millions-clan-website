@@ -9,7 +9,6 @@
           "name": "Belle's folly (tarnished)",
           "type": "normal",
           "dropRate": 0.003636363636,
-          "manualAdjustment": 1.0,
           "geValue": 876566.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBelle%2527s_folly_%28tarnished%29.png"
         },
@@ -18,7 +17,6 @@
           "name": "Jar of Feathers",
           "type": "jar",
           "dropRate": 0.0005,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FJar_of_Feathers.png"
         },
@@ -27,7 +25,6 @@
           "name": "Gull",
           "type": "pet",
           "dropRate": 0.0003333333333,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FGull.png"
         }
@@ -43,7 +40,6 @@
           "name": "Granite maul",
           "type": "normal",
           "dropRate": 0.008,
-          "manualAdjustment": 1.0,
           "geValue": 188263,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FGranite_maul.png"
         },
@@ -52,7 +48,6 @@
           "name": "Granite gloves",
           "type": "normal",
           "dropRate": 0.004,
-          "manualAdjustment": 1.0,
           "geValue": 93183.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FGranite_gloves.png"
         },
@@ -61,7 +56,6 @@
           "name": "Granite ring",
           "type": "normal",
           "dropRate": 0.004,
-          "manualAdjustment": 1.0,
           "geValue": 31149.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FGranite_ring.png"
         },
@@ -70,7 +64,6 @@
           "name": "Granite hammer",
           "type": "normal",
           "dropRate": 0.002666666667,
-          "manualAdjustment": 1.0,
           "geValue": 4445108,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FGranite_hammer.png"
         },
@@ -79,7 +72,6 @@
           "name": "Black tourmaline core",
           "type": "normal",
           "dropRate": 0.002,
-          "manualAdjustment": 1.0,
           "geValue": 2185651,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlack_tourmaline_core.png"
         },
@@ -99,7 +91,6 @@
           "name": "Jar of Stone",
           "type": "jar",
           "dropRate": 0.0002,
-          "manualAdjustment": 0.4,
           "geValue": 1223549.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FJar_of_Stone.png"
         },
@@ -108,7 +99,6 @@
           "name": "Noon",
           "type": "pet",
           "dropRate": 0.0003333333333,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FNoon.png"
         }
@@ -124,7 +114,6 @@
           "name": "Bludgeon claw",
           "type": "normal",
           "dropRate": 0.004854368932,
-          "manualAdjustment": 1.0,
           "geValue": 6760930.333,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBludgeon_claw.png"
         },
@@ -133,7 +122,6 @@
           "name": "Bludgeon spine",
           "type": "normal",
           "dropRate": 0.004854368932,
-          "manualAdjustment": 1.0,
           "geValue": 6760930.333,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBludgeon_spine.png"
         },
@@ -142,7 +130,6 @@
           "name": "Bludgeon axon",
           "type": "normal",
           "dropRate": 0.004854368932,
-          "manualAdjustment": 1.0,
           "geValue": 6760930.333,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBludgeon_axon.png"
         },
@@ -151,7 +138,6 @@
           "name": "Abyssal dagger",
           "type": "normal",
           "dropRate": 0.002032520325,
-          "manualAdjustment": 1.0,
           "geValue": 2213779.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAbyssal_dagger.png"
         },
@@ -160,7 +146,6 @@
           "name": "Abyssal whip",
           "type": "normal",
           "dropRate": 0.0009380863039,
-          "manualAdjustment": 1.0,
           "geValue": 1342094.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAbyssal_whip.png"
         },
@@ -180,7 +165,6 @@
           "name": "Jar of Miasma",
           "type": "jar",
           "dropRate": 0.001016260163,
-          "manualAdjustment": 0.75,
           "geValue": 28412.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FJar_of_Miasma.png"
         },
@@ -189,7 +173,6 @@
           "name": "Abyssal orphan",
           "type": "pet",
           "dropRate": 0.000390625,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAbyssal_orphan.png"
         }
@@ -205,7 +188,6 @@
           "name": "Trident of the Seas",
           "type": "normal",
           "dropRate": 0.001953125,
-          "manualAdjustment": 1.0,
           "geValue": 661259,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTrident_of_the_Seas.png"
         },
@@ -214,7 +196,6 @@
           "name": "Kraken tentacle",
           "type": "normal",
           "dropRate": 0.0025,
-          "manualAdjustment": 1.0,
           "geValue": 357892,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FKraken_tentacle.png"
         },
@@ -231,7 +212,6 @@
           "name": "Jar of Dirt",
           "type": "jar",
           "dropRate": 0.001,
-          "manualAdjustment": 0.75,
           "geValue": 31153,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FJar_of_Dirt.png"
         },
@@ -240,7 +220,6 @@
           "name": "Pet Kraken",
           "type": "pet",
           "dropRate": 0.0003333333333,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPet_Kraken.png"
         }
@@ -256,7 +235,6 @@
           "name": "Primordial crystal",
           "type": "normal",
           "dropRate": 0.001923076923,
-          "manualAdjustment": 1.0,
           "geValue": 22616604,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPrimordial_crystal.png"
         },
@@ -265,7 +243,6 @@
           "name": "Pegasian crystal",
           "type": "normal",
           "dropRate": 0.001923076923,
-          "manualAdjustment": 1.0,
           "geValue": 160544.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPegasian_crystal.png"
         },
@@ -274,7 +251,6 @@
           "name": "Eternal crystal",
           "type": "normal",
           "dropRate": 0.001923076923,
-          "manualAdjustment": 1.0,
           "geValue": 4553973,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FEternal_crystal.png"
         },
@@ -283,7 +259,6 @@
           "name": "Smouldering stone",
           "type": "normal",
           "dropRate": 0.001923076923,
-          "manualAdjustment": 1.0,
           "geValue": 2150589.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSmouldering_stone.png"
         },
@@ -302,7 +277,6 @@
           "name": "Jar of Souls",
           "type": "jar",
           "dropRate": 0.0005,
-          "manualAdjustment": 0.75,
           "geValue": 36499.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FJar_of_Souls.png"
         },
@@ -311,7 +285,6 @@
           "name": "Hellpuppy",
           "type": "pet",
           "dropRate": 0.0003333333333,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FHellpuppy.png"
         }
@@ -327,7 +300,6 @@
           "name": "Noxious pommel",
           "type": "normal",
           "dropRate": 0.005,
-          "manualAdjustment": 1.0,
           "geValue": 16875280.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FNoxious_pommel.png"
         },
@@ -336,7 +308,6 @@
           "name": "Noxious point",
           "type": "normal",
           "dropRate": 0.005,
-          "manualAdjustment": 1.0,
           "geValue": 16875280.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FNoxious_point.png"
         },
@@ -345,7 +316,6 @@
           "name": "Noxious blade",
           "type": "normal",
           "dropRate": 0.005,
-          "manualAdjustment": 1.0,
           "geValue": 16875280.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FNoxious_blade.png"
         },
@@ -354,7 +324,6 @@
           "name": "Araxyte fang",
           "type": "normal",
           "dropRate": 0.001666666667,
-          "manualAdjustment": 1.0,
           "geValue": 38713602.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAraxyte_fang.png"
         },
@@ -373,7 +342,6 @@
           "name": "Jar of Venom",
           "type": "jar",
           "dropRate": 0.0006666666667,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FJar_of_Venom.png"
         },
@@ -382,7 +350,6 @@
           "name": "Nid",
           "type": "pet",
           "dropRate": 0.0003333333333,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FNid.png"
         }
@@ -398,7 +365,6 @@
           "name": "Occult necklace",
           "type": "normal",
           "dropRate": 0.002857142857142857,
-          "manualAdjustment": 1.0,
           "geValue": 745974,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FOccult_necklace.png"
         },
@@ -407,7 +373,6 @@
           "name": "Smoke battlestaff",
           "type": "normal",
           "dropRate": 0.0019531249998092654,
-          "manualAdjustment": 1.0,
           "geValue": 2880667,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSmoke_battlestaff.png"
         },
@@ -424,7 +389,6 @@
           "name": "Dragon chainbody",
           "type": "normal",
           "dropRate": 0.0005000000000833333,
-          "manualAdjustment": 1.0,
           "geValue": 365530,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDragon_chainbody.png"
         },
@@ -433,7 +397,6 @@
           "name": "Jar of Smoke",
           "type": "jar",
           "dropRate": 0.0003750000000625,
-          "manualAdjustment": 0.75,
           "geValue": 75663,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FJar_of_Smoke.png"
         },
@@ -442,7 +405,6 @@
           "name": "Pet Smoke Devil",
           "type": "pet",
           "dropRate": 0.0002941176470203768,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPet_Smoke_Devil.png"
         }
@@ -458,7 +420,6 @@
           "name": "Hydra's eye",
           "type": "normal",
           "dropRate": 0.005524861878,
-          "manualAdjustment": 1.0,
           "geValue": 1369544.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FHydra%2527s_eye.png"
         },
@@ -467,7 +428,6 @@
           "name": "Hydra's fang",
           "type": "normal",
           "dropRate": 0.005524861878,
-          "manualAdjustment": 1.0,
           "geValue": 1369544.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FHydra%2527s_fang.png"
         },
@@ -476,7 +436,6 @@
           "name": "Hydra's heart",
           "type": "normal",
           "dropRate": 0.005524861878,
-          "manualAdjustment": 1.0,
           "geValue": 1369544.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FHydra%2527s_heart.png"
         },
@@ -485,7 +444,6 @@
           "name": "Hydra tail",
           "type": "normal",
           "dropRate": 0.001949317739,
-          "manualAdjustment": 1.0,
           "geValue": 111879,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FHydra_tail.png"
         },
@@ -494,7 +452,6 @@
           "name": "Hydra leather",
           "type": "normal",
           "dropRate": 0.001945525292,
-          "manualAdjustment": 1.0,
           "geValue": 13687869,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FHydra_leather.png"
         },
@@ -503,7 +460,6 @@
           "name": "Hydra's claw",
           "type": "normal",
           "dropRate": 0.000999000999,
-          "manualAdjustment": 1.0,
           "geValue": 65358333,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FHydra%2527s_claw.png"
         },
@@ -524,7 +480,6 @@
           "name": "Jar of Chemicals",
           "type": "jar",
           "dropRate": 0.0005,
-          "manualAdjustment": 0.75,
           "geValue": 57575,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FJar_of_Chemicals.png"
         },
@@ -533,7 +488,6 @@
           "name": "Ikkle Hydra",
           "type": "pet",
           "dropRate": 0.0003333333333,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FIkkle_Hydra_%2528serpentine%2529.png"
         },
@@ -554,7 +508,6 @@
           "name": "Saradomin sword",
           "type": "normal",
           "dropRate": 0.007874015748,
-          "manualAdjustment": 1.0,
           "geValue": 267845.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSaradomin_sword.png"
         },
@@ -563,7 +516,6 @@
           "name": "Saradomin's light",
           "type": "normal",
           "dropRate": 0.003937007874,
-          "manualAdjustment": 1.0,
           "geValue": 89500.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSaradomin%2527s_light.png"
         },
@@ -572,7 +524,6 @@
           "name": "Armadyl crossbow",
           "type": "normal",
           "dropRate": 0.001968503937,
-          "manualAdjustment": 1.0,
           "geValue": 30757206.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FArmadyl_crossbow.png"
         },
@@ -581,7 +532,6 @@
           "name": "Saradomin hilt",
           "type": "normal",
           "dropRate": 0.001968503937,
-          "manualAdjustment": 1.0,
           "geValue": 27206226.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSaradomin_hilt.png"
         },
@@ -600,7 +550,6 @@
           "name": "Pet Zilyana",
           "type": "pet",
           "dropRate": 0.0002,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPet_Zilyana.png"
         }
@@ -616,7 +565,6 @@
           "name": "Bandos chestplate",
           "type": "normal",
           "dropRate": 0.002624671916,
-          "manualAdjustment": 1.0,
           "geValue": 25217900,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBandos_chestplate.png"
         },
@@ -625,7 +573,6 @@
           "name": "Bandos tassets",
           "type": "normal",
           "dropRate": 0.002624671916,
-          "manualAdjustment": 1.0,
           "geValue": 16964205,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBandos_tassets.png"
         },
@@ -634,7 +581,6 @@
           "name": "Bandos boots",
           "type": "normal",
           "dropRate": 0.002624671916,
-          "manualAdjustment": 1.0,
           "geValue": 523846.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBandos_boots.png"
         },
@@ -643,7 +589,6 @@
           "name": "Bandos hilt",
           "type": "normal",
           "dropRate": 0.001968503937,
-          "manualAdjustment": 1.0,
           "geValue": 17937434.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBandos_hilt.png"
         },
@@ -662,7 +607,6 @@
           "name": "Pet General Graardor",
           "type": "pet",
           "dropRate": 0.0002,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPet_General_Graardor.png"
         }
@@ -678,7 +622,6 @@
           "name": "Armadyl helmet",
           "type": "normal",
           "dropRate": 0.002624671916,
-          "manualAdjustment": 1.0,
           "geValue": 8100219.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FArmadyl_helmet.png"
         },
@@ -687,7 +630,6 @@
           "name": "Armadyl chestplate",
           "type": "normal",
           "dropRate": 0.002624671916,
-          "manualAdjustment": 1.0,
           "geValue": 32601021.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FArmadyl_chestplate.png"
         },
@@ -696,7 +638,6 @@
           "name": "Armadyl chainskirt",
           "type": "normal",
           "dropRate": 0.002624671916,
-          "manualAdjustment": 1.0,
           "geValue": 24307768.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FArmadyl_chainskirt.png"
         },
@@ -705,7 +646,6 @@
           "name": "Armadyl hilt",
           "type": "normal",
           "dropRate": 0.001968503937,
-          "manualAdjustment": 1.0,
           "geValue": 8138834.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FArmadyl_hilt.png"
         },
@@ -724,7 +664,6 @@
           "name": "Pet Kree'arra",
           "type": "pet",
           "dropRate": 0.0002,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPet_Kree%2527arra.png"
         }
@@ -740,7 +679,6 @@
           "name": "Steam battlestaff",
           "type": "normal",
           "dropRate": 0.007874015748,
-          "manualAdjustment": 1.0,
           "geValue": 68993,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSteam_battlestaff.png"
         },
@@ -749,7 +687,6 @@
           "name": "Zamorakian spear",
           "type": "normal",
           "dropRate": 0.007874015748,
-          "manualAdjustment": 1.0,
           "geValue": 1574500,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FZamorakian_spear.png"
         },
@@ -758,7 +695,6 @@
           "name": "Staff of the Dead",
           "type": "normal",
           "dropRate": 0.001968503937,
-          "manualAdjustment": 1.0,
           "geValue": 8304724,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FStaff_of_the_Dead.png"
         },
@@ -767,7 +703,6 @@
           "name": "Zamorak hilt",
           "type": "normal",
           "dropRate": 0.001968503937,
-          "manualAdjustment": 1.0,
           "geValue": 17775000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FZamorak_hilt.png"
         },
@@ -786,7 +721,6 @@
           "name": "Pet K'ril Tsutsaroth",
           "type": "pet",
           "dropRate": 0.0002,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPet_K%2527ril_Tsutsaroth.png"
         },
@@ -807,7 +741,6 @@
           "name": "Chromium ingot (DS)",
           "type": "normal",
           "dropRate": 0.004166666667,
-          "manualAdjustment": 1.0,
           "geValue": 58459.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FChromium_ingot.png"
         },
@@ -816,7 +749,6 @@
           "name": "Magus vestige",
           "type": "normal",
           "dropRate": 0.004166666667,
-          "manualAdjustment": 1.0,
           "geValue": 11371379.17,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FMagus_vestige.png"
         },
@@ -825,7 +757,6 @@
           "name": "Eye of the Duke",
           "type": "normal",
           "dropRate": 0.001388888889,
-          "manualAdjustment": 1.0,
           "geValue": 71125000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FEye_of_the_Duke.png",
           "contributesTo": "dt2_full_sra"
@@ -844,7 +775,6 @@
           "name": "Virtus mask (DS)",
           "type": "normal",
           "dropRate": 0.000462962963,
-          "manualAdjustment": 1.0,
           "geValue": 8756367.5,
           "contributesTo": "dt2_full_virtus",
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVirtus_mask.png"
@@ -854,7 +784,6 @@
           "name": "Virtus robe top (DS)",
           "type": "normal",
           "dropRate": 0.000462962963,
-          "manualAdjustment": 1.0,
           "geValue": 51555318,
           "contributesTo": "dt2_full_virtus",
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVirtus_robe_top.png"
@@ -864,7 +793,6 @@
           "name": "Virtus robe bottom (DS)",
           "type": "normal",
           "dropRate": 0.000462962963,
-          "manualAdjustment": 1.0,
           "geValue": 38537557,
           "contributesTo": "dt2_full_virtus",
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVirtus_robe_bottom.png"
@@ -874,7 +802,6 @@
           "name": "Baron",
           "type": "pet",
           "dropRate": 0.0004,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBaron.png"
         }
@@ -890,7 +817,6 @@
           "name": "Chromium ingot (L)",
           "type": "normal",
           "dropRate": 0.00390625,
-          "manualAdjustment": 1.0,
           "geValue": 58459.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FChromium_ingot.png"
         },
@@ -899,7 +825,6 @@
           "name": "Venator vestige",
           "type": "normal",
           "dropRate": 0.00390625,
-          "manualAdjustment": 1.0,
           "geValue": 16075819.67,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVenator_vestige.png"
         },
@@ -908,7 +833,6 @@
           "name": "Leviathan's lure",
           "type": "normal",
           "dropRate": 0.001302083333,
-          "manualAdjustment": 1.0,
           "geValue": 71125000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FLeviathan%2527s_lure.png",
           "contributesTo": "dt2_full_sra"
@@ -927,7 +851,6 @@
           "name": "Virtus mask (L)",
           "type": "normal",
           "dropRate": 0.0004340277778,
-          "manualAdjustment": 1.0,
           "geValue": 8756367.5,
           "contributesTo": "dt2_full_virtus",
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVirtus_mask.png"
@@ -937,7 +860,6 @@
           "name": "Virtus robe top (L)",
           "type": "normal",
           "dropRate": 0.0004340277778,
-          "manualAdjustment": 1.0,
           "geValue": 51555318,
           "contributesTo": "dt2_full_virtus",
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVirtus_robe_top.png"
@@ -947,7 +869,6 @@
           "name": "Virtus robe bottom (L)",
           "type": "normal",
           "dropRate": 0.0004340277778,
-          "manualAdjustment": 1.0,
           "geValue": 38537557,
           "contributesTo": "dt2_full_virtus",
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVirtus_robe_bottom.png"
@@ -957,7 +878,6 @@
           "name": "Lil'viathan",
           "type": "pet",
           "dropRate": 0.0004,
-          "manualAdjustment": 0.85,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FLil%2527viathan.png"
         }
@@ -973,7 +893,6 @@
           "name": "Chromium ingot (V)",
           "type": "normal",
           "dropRate": 0.002757099531,
-          "manualAdjustment": 1.0,
           "geValue": 58459.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FChromium_ingot.png"
         },
@@ -982,7 +901,6 @@
           "name": "Ultor vestige",
           "type": "normal",
           "dropRate": 0.002757352941,
-          "manualAdjustment": 1.0,
           "geValue": 43089841.83,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FUltor_vestige.png"
         },
@@ -991,7 +909,6 @@
           "name": "Executioner's axe head",
           "type": "normal",
           "dropRate": 0.0009191176471,
-          "manualAdjustment": 1.0,
           "geValue": 71125000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FExecutioner%2527s_axe_head.png",
           "contributesTo": "dt2_full_sra"
@@ -1010,7 +927,6 @@
           "name": "Virtus mask (V)",
           "type": "normal",
           "dropRate": 0.000306372549,
-          "manualAdjustment": 1.0,
           "geValue": 8756367.5,
           "contributesTo": "dt2_full_virtus",
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVirtus_mask.png"
@@ -1020,7 +936,6 @@
           "name": "Virtus robe top (V)",
           "type": "normal",
           "dropRate": 0.000306372549,
-          "manualAdjustment": 1.0,
           "geValue": 51555318,
           "contributesTo": "dt2_full_virtus",
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVirtus_robe_top.png"
@@ -1030,7 +945,6 @@
           "name": "Virtus robe bottom (V)",
           "type": "normal",
           "dropRate": 0.000306372549,
-          "manualAdjustment": 1.0,
           "geValue": 38537557,
           "contributesTo": "dt2_full_virtus",
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVirtus_robe_bottom.png"
@@ -1040,7 +954,6 @@
           "name": "Butch",
           "type": "pet",
           "dropRate": 0.0003333333333,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FButch.png"
         }
@@ -1056,7 +969,6 @@
           "name": "Chromium ingot (W)",
           "type": "normal",
           "dropRate": 0.005858230814,
-          "manualAdjustment": 1.0,
           "geValue": 58459.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FChromium_ingot.png"
         },
@@ -1065,7 +977,6 @@
           "name": "Bellator vestige",
           "type": "normal",
           "dropRate": 0.005859375,
-          "manualAdjustment": 1.0,
           "geValue": 10411056.33,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBellator_vestige.png"
         },
@@ -1074,7 +985,6 @@
           "name": "Siren's staff",
           "type": "normal",
           "dropRate": 0.001953125,
-          "manualAdjustment": 1.0,
           "geValue": 71125000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSiren%2527s_staff.png",
           "contributesTo": "dt2_full_sra"
@@ -1093,7 +1003,6 @@
           "name": "Virtus mask (W)",
           "type": "normal",
           "dropRate": 0.0006510416667,
-          "manualAdjustment": 1.0,
           "geValue": 8756367.5,
           "contributesTo": "dt2_full_virtus",
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVirtus_mask.png"
@@ -1103,7 +1012,6 @@
           "name": "Virtus robe top (W)",
           "type": "normal",
           "dropRate": 0.0006510416667,
-          "manualAdjustment": 1.0,
           "geValue": 51555318,
           "contributesTo": "dt2_full_virtus",
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVirtus_robe_top.png"
@@ -1113,7 +1021,6 @@
           "name": "Virtus robe bottom (W)",
           "type": "normal",
           "dropRate": 0.0006510416667,
-          "manualAdjustment": 1.0,
           "geValue": 38537557,
           "contributesTo": "dt2_full_virtus",
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVirtus_robe_bottom.png"
@@ -1123,7 +1030,6 @@
           "name": "Wisp",
           "type": "pet",
           "dropRate": 0.0005,
-          "manualAdjustment": 0.85,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FWisp.png"
         },
@@ -1149,7 +1055,6 @@
           "name": "Ahrim's hood",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 391763,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAhrim%2527s_hood.png"
         },
@@ -1158,7 +1063,6 @@
           "name": "Ahrim's robetop",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 2232111,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAhrim%2527s_robetop.png"
         },
@@ -1167,7 +1071,6 @@
           "name": "Ahrim's robeskirt",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 1708886,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAhrim%2527s_robeskirt.png"
         },
@@ -1176,7 +1079,6 @@
           "name": "Ahrim's staff",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 243341.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAhrim%2527s_staff.png"
         },
@@ -1197,7 +1099,6 @@
           "name": "Dharok's helm",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 328004,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDharok%2527s_helm.png"
         },
@@ -1206,7 +1107,6 @@
           "name": "Dharok's platebody",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 927504.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDharok%2527s_platebody.png"
         },
@@ -1215,7 +1115,6 @@
           "name": "Dharok's platelegs",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 849561.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDharok%2527s_platelegs.png"
         },
@@ -1224,7 +1123,6 @@
           "name": "Dharok's greataxe",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 1806208,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDharok%2527s_greataxe.png"
         },
@@ -1245,7 +1143,6 @@
           "name": "Guthan's helm",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 130882,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FGuthan%2527s_helm.png"
         },
@@ -1254,7 +1151,6 @@
           "name": "Guthan's platebody",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 206484,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FGuthan%2527s_platebody.png"
         },
@@ -1263,7 +1159,6 @@
           "name": "Guthan's chainskirt",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 227500.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FGuthan%2527s_chainskirt.png"
         },
@@ -1272,7 +1167,6 @@
           "name": "Guthan's warspear",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 95501,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FGuthan%2527s_warspear.png"
         },
@@ -1293,7 +1187,6 @@
           "name": "Karil's coif",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 66865,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FKaril%2527s_coif.png"
         },
@@ -1302,7 +1195,6 @@
           "name": "Karil's leathertop",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 1280000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FKaril%2527s_leathertop.png"
         },
@@ -1311,7 +1203,6 @@
           "name": "Karil's leatherskirt",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 617022.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FKaril%2527s_leatherskirt.png"
         },
@@ -1320,7 +1211,6 @@
           "name": "Karil's crossbow",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 105301,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FKaril%2527s_crossbow.png"
         },
@@ -1341,7 +1231,6 @@
           "name": "Torag's helm",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 143757,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTorag%2527s_helm.png"
         },
@@ -1350,7 +1239,6 @@
           "name": "Torag's platebody",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 288715.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTorag%2527s_platebody.png"
         },
@@ -1359,7 +1247,6 @@
           "name": "Torag's platelegs",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 289068,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTorag%2527s_platelegs.png"
         },
@@ -1368,7 +1255,6 @@
           "name": "Torag's hammers",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 98561.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTorag%2527s_hammers.png"
         },
@@ -1389,7 +1275,6 @@
           "name": "Verac's helm",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 113500,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVerac%2527s_helm.png"
         },
@@ -1398,7 +1283,6 @@
           "name": "Verac's brassard",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 173919,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVerac%2527s_brassard.png"
         },
@@ -1407,7 +1291,6 @@
           "name": "Verac's plateskirt",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 298512,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVerac%2527s_plateskirt.png"
         },
@@ -1416,7 +1299,6 @@
           "name": "Verac's flail",
           "type": "normal",
           "dropRate": 0.04441483455474128,
-          "manualAdjustment": 1.0,
           "geValue": 96525.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVerac%2527s_flail.png"
         },
@@ -1444,7 +1326,6 @@
           "name": "Spectral sigil",
           "type": "normal",
           "dropRate": 0.0001831501832,
-          "manualAdjustment": 1.0,
           "geValue": 27544443.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSpectral_sigil.png"
         },
@@ -1453,7 +1334,6 @@
           "name": "Arcane sigil",
           "type": "normal",
           "dropRate": 0.0001831501832,
-          "manualAdjustment": 1.0,
           "geValue": 97077999.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FArcane_sigil.png"
         },
@@ -1462,7 +1342,6 @@
           "name": "Elysian sigil",
           "type": "normal",
           "dropRate": 6.105006105e-05,
-          "manualAdjustment": 1.0,
           "geValue": 542393994.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FElysian_sigil.png"
         },
@@ -1480,7 +1359,6 @@
           "name": "Jar of Spirits",
           "type": "jar",
           "dropRate": 0.00025,
-          "manualAdjustment": 0.75,
           "geValue": 54961,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FJar_of_Spirits.png"
         },
@@ -1489,7 +1367,6 @@
           "name": "Pet dark core",
           "type": "pet",
           "dropRate": 5e-05,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPet_dark_core.png"
         }
@@ -1505,7 +1382,6 @@
           "name": "Berserker ring",
           "type": "normal",
           "dropRate": 0.0078125,
-          "manualAdjustment": 1.0,
           "geValue": 3033988,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBerserker_ring.png"
         },
@@ -1514,7 +1390,6 @@
           "name": "Warrior ring",
           "type": "normal",
           "dropRate": 0.0078125,
-          "manualAdjustment": 1.0,
           "geValue": 54612,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FWarrior_ring.png"
         },
@@ -1523,7 +1398,6 @@
           "name": "Seers ring",
           "type": "normal",
           "dropRate": 0.0078125,
-          "manualAdjustment": 1.0,
           "geValue": 1018387.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSeers_ring.png"
         },
@@ -1532,7 +1406,6 @@
           "name": "Archers ring",
           "type": "normal",
           "dropRate": 0.0078125,
-          "manualAdjustment": 1.0,
           "geValue": 2978191.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FArchers_ring.png"
         },
@@ -1551,7 +1424,6 @@
           "name": "Pet Dagannoth Prime",
           "type": "normal",
           "dropRate": 0.0002666666666666667,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPet_Dagannoth_Prime.png"
         },
@@ -1560,7 +1432,6 @@
           "name": "Pet Dagannoth Rex",
           "type": "normal",
           "dropRate": 0.0002666666666666667,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPet_Dagannoth_Rex.png"
         },
@@ -1569,7 +1440,6 @@
           "name": "Pet Dagannoth Supreme",
           "type": "normal",
           "dropRate": 0.0002666666666666667,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPet_Dagannoth_Supreme.png"
         }
@@ -1585,7 +1455,6 @@
           "name": "Avernic treads",
           "type": "normal",
           "dropRate": 0.00625,
-          "manualAdjustment": 1.0,
           "geValue": 232630130,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAvernic_treads.png"
         },
@@ -1594,7 +1463,6 @@
           "name": "Eye of Ayak",
           "type": "normal",
           "dropRate": 0.006756756757,
-          "manualAdjustment": 1.0,
           "geValue": 65181176,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FEye_of_Ayak.png"
         },
@@ -1603,7 +1471,6 @@
           "name": "Mokhaiotl cloth",
           "type": "normal",
           "dropRate": 0.007142857143,
-          "manualAdjustment": 1.0,
           "geValue": 79050998,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FMokhaiotl_cloth.png"
         },
@@ -1621,7 +1488,6 @@
           "name": "Dom",
           "type": "pet",
           "dropRate": 0.004329004329,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDom.png"
         }
@@ -1636,8 +1502,7 @@
           "kind": "item",
           "name": "Eclipse atlatl",
           "type": "normal",
-          "dropRate": 0.0048335123532179,
-          "manualAdjustment": 1.0,
+          "dropRate": 0.05263157894736842,
           "geValue": 2203925.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FEclipse_atlatl.png"
         },
@@ -1645,8 +1510,7 @@
           "kind": "item",
           "name": "Eclipse Moon helm",
           "type": "normal",
-          "dropRate": 0.0048335123532179,
-          "manualAdjustment": 1.0,
+          "dropRate": 0.05263157894736842,
           "geValue": 843538.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FEclipse_Moon_helm.png"
         },
@@ -1654,8 +1518,7 @@
           "kind": "item",
           "name": "Eclipse Moon chestplate",
           "type": "normal",
-          "dropRate": 0.0048335123532179,
-          "manualAdjustment": 1.0,
+          "dropRate": 0.05263157894736842,
           "geValue": 1994228.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FEclipse_Moon_chestplate.png"
         },
@@ -1663,8 +1526,7 @@
           "kind": "item",
           "name": "Eclipse Moon tassets",
           "type": "normal",
-          "dropRate": 0.0048335123532179,
-          "manualAdjustment": 1.0,
+          "dropRate": 0.05263157894736842,
           "geValue": 1986554.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FEclipse_Moon_tassets.png"
         },
@@ -1684,8 +1546,7 @@
           "kind": "item",
           "name": "Dual macuahuitl",
           "type": "normal",
-          "dropRate": 0.0048335123532179,
-          "manualAdjustment": 1.0,
+          "dropRate": 0.05263157894736842,
           "geValue": 6807139.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDual_macuahuitl.png"
         },
@@ -1693,8 +1554,7 @@
           "kind": "item",
           "name": "Blood Moon helm",
           "type": "normal",
-          "dropRate": 0.0048335123532179,
-          "manualAdjustment": 1.0,
+          "dropRate": 0.05263157894736842,
           "geValue": 934295,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlood_Moon_helm.png"
         },
@@ -1702,8 +1562,7 @@
           "kind": "item",
           "name": "Blood Moon chestplate",
           "type": "normal",
-          "dropRate": 0.0048335123532179,
-          "manualAdjustment": 1.0,
+          "dropRate": 0.05263157894736842,
           "geValue": 4870854.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlood_Moon_chestplate.png"
         },
@@ -1711,8 +1570,7 @@
           "kind": "item",
           "name": "Blood Moon tassets",
           "type": "normal",
-          "dropRate": 0.0048335123532179,
-          "manualAdjustment": 1.0,
+          "dropRate": 0.05263157894736842,
           "geValue": 11373015.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlood_Moon_tassets.png"
         },
@@ -1732,8 +1590,7 @@
           "kind": "item",
           "name": "Blue Moon spear",
           "type": "normal",
-          "dropRate": 0.0048335123532179,
-          "manualAdjustment": 1.0,
+          "dropRate": 0.05263157894736842,
           "geValue": 345954.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlue_Moon_spear.png"
         },
@@ -1741,8 +1598,7 @@
           "kind": "item",
           "name": "Blue Moon helm",
           "type": "normal",
-          "dropRate": 0.0048335123532179,
-          "manualAdjustment": 1.0,
+          "dropRate": 0.05263157894736842,
           "geValue": 832668,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlue_Moon_helm.png"
         },
@@ -1750,8 +1606,7 @@
           "kind": "item",
           "name": "Blue Moon chestplate",
           "type": "normal",
-          "dropRate": 0.0048335123532179,
-          "manualAdjustment": 1.0,
+          "dropRate": 0.05263157894736842,
           "geValue": 1684948.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlue_Moon_chestplate.png"
         },
@@ -1759,8 +1614,7 @@
           "kind": "item",
           "name": "Blue Moon tassets",
           "type": "normal",
-          "dropRate": 0.0048335123532179,
-          "manualAdjustment": 1.0,
+          "dropRate": 0.05263157894736842,
           "geValue": 5800037.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBlue_Moon_tassets.png"
         },
@@ -1788,7 +1642,6 @@
           "name": "Zaryte vambraces",
           "type": "normal",
           "dropRate": 0.001162790698,
-          "manualAdjustment": 1.0,
           "geValue": 89906747.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FZaryte_vambraces.png"
         },
@@ -1797,7 +1650,6 @@
           "name": "Nihil horn",
           "type": "normal",
           "dropRate": 0.0007751937984,
-          "manualAdjustment": 1.0,
           "geValue": 330375500,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FNihil_horn.png"
         },
@@ -1806,7 +1658,6 @@
           "name": "Torva full helm (damaged)",
           "type": "normal",
           "dropRate": 0.0007751937984,
-          "manualAdjustment": 1.0,
           "geValue": 225074061,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTorva_full_helm_%28damaged%29.png"
         },
@@ -1815,7 +1666,6 @@
           "name": "Torva platebody (damaged)",
           "type": "normal",
           "dropRate": 0.0007751937984,
-          "manualAdjustment": 1.0,
           "geValue": 196585984.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTorva_platebody_%28damaged%29.png"
         },
@@ -1824,7 +1674,6 @@
           "name": "Torva platelegs (damaged)",
           "type": "normal",
           "dropRate": 0.0007751937984,
-          "manualAdjustment": 1.0,
           "geValue": 142105612.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTorva_platelegs_%28damaged%29.png"
         },
@@ -1833,7 +1682,6 @@
           "name": "Ancient hilt",
           "type": "normal",
           "dropRate": 0.0003875968992,
-          "manualAdjustment": 1.0,
           "geValue": 37325216,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAncient_hilt.png"
         },
@@ -1854,7 +1702,6 @@
           "name": "Nexling",
           "type": "pet",
           "dropRate": 0.0004,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FNexling.png"
         }
@@ -1870,7 +1717,6 @@
           "name": "Nightmare staff",
           "type": "normal",
           "dropRate": 0.001918604651,
-          "manualAdjustment": 1.0,
           "geValue": 46599045.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FNightmare_staff.png"
         },
@@ -1879,7 +1725,6 @@
           "name": "Inquisitor's great helm",
           "type": "normal",
           "dropRate": 0.001375,
-          "manualAdjustment": 1.0,
           "geValue": 31164811,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FInquisitor%2527s_great_helm.png"
         },
@@ -1888,7 +1733,6 @@
           "name": "Inquisitor's hauberk",
           "type": "normal",
           "dropRate": 0.001375,
-          "manualAdjustment": 1.0,
           "geValue": 82383940.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FInquisitor%2527s_hauberk.png"
         },
@@ -1897,7 +1741,6 @@
           "name": "Inquisitor's plateskirt",
           "type": "normal",
           "dropRate": 0.001375,
-          "manualAdjustment": 1.0,
           "geValue": 81762500,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FInquisitor%2527s_plateskirt.png"
         },
@@ -1906,7 +1749,6 @@
           "name": "Inquisitor's mace",
           "type": "normal",
           "dropRate": 0.0007692307692,
-          "manualAdjustment": 1.0,
           "geValue": 237700000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FInquisitor%2527s_mace.png"
         },
@@ -1915,7 +1757,6 @@
           "name": "Eldritch orb",
           "type": "normal",
           "dropRate": 0.0006010928962,
-          "manualAdjustment": 1.0,
           "geValue": 192553065.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FEldritch_orb.png"
         },
@@ -1924,7 +1765,6 @@
           "name": "Harmonised orb",
           "type": "normal",
           "dropRate": 0.0006010928962,
-          "manualAdjustment": 1.0,
           "geValue": 184500000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FHarmonised_orb.png"
         },
@@ -1933,7 +1773,6 @@
           "name": "Volatile orb",
           "type": "normal",
           "dropRate": 0.0006010928962,
-          "manualAdjustment": 1.0,
           "geValue": 41246516.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVolatile_orb.png"
         },
@@ -1956,7 +1795,6 @@
           "name": "Parasitic egg",
           "type": "normal",
           "dropRate": 0.005,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FParasitic_egg.png"
         },
@@ -1965,7 +1803,6 @@
           "name": "Jar of Dreams",
           "type": "jar",
           "dropRate": 0.0005263157895,
-          "manualAdjustment": 0.75,
           "geValue": 4000500,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FJar_of_Dreams.png"
         },
@@ -1974,7 +1811,6 @@
           "name": "Little Nightmare",
           "type": "pet",
           "dropRate": 0.0004166666667,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FLittle_Nightmare.png"
         }
@@ -1990,7 +1826,6 @@
           "name": "Venator shard",
           "type": "normal",
           "dropRate": 0.01,
-          "manualAdjustment": 1.5,
           "geValue": 14663444,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVenator_shard.png"
         },
@@ -1999,7 +1834,6 @@
           "name": "Ancient icon",
           "type": "normal",
           "dropRate": 0.02,
-          "manualAdjustment": 1.5,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAncient_icon.png"
         },
@@ -2016,7 +1850,6 @@
           "name": "Muphin",
           "type": "pet",
           "dropRate": 0.0004,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FMuphin_%2528ranged%2529.png"
         }
@@ -2032,7 +1865,6 @@
           "name": "Sarachnis cudgel",
           "type": "normal",
           "dropRate": 0.002604166667,
-          "manualAdjustment": 1.0,
           "geValue": 516000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSarachnis_cudgel.png"
         },
@@ -2041,7 +1873,6 @@
           "name": "Jar of Eyes",
           "type": "jar",
           "dropRate": 0.0005,
-          "manualAdjustment": 0.75,
           "geValue": 118500,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FJar_of_Eyes.png"
         },
@@ -2050,7 +1881,6 @@
           "name": "Sraracha",
           "type": "pet",
           "dropRate": 0.0003333333333,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSraracha.png"
         }
@@ -2066,7 +1896,6 @@
           "name": "Echo crystal",
           "type": "normal",
           "dropRate": 0.057418465781891276,
-          "manualAdjustment": 1.0,
           "geValue": 2838565,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FEcho_crystal.png"
         },
@@ -2075,7 +1904,6 @@
           "name": "Sunfire fanatic helm",
           "type": "normal",
           "dropRate": 0.03348737525952715,
-          "manualAdjustment": 1.0,
           "geValue": 1400759,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSunfire_fanatic_helm.png"
         },
@@ -2084,7 +1912,6 @@
           "name": "Sunfire fanatic cuirass",
           "type": "normal",
           "dropRate": 0.03348737525952715,
-          "manualAdjustment": 1.0,
           "geValue": 3204230,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSunfire_fanatic_cuirass.png"
         },
@@ -2093,7 +1920,6 @@
           "name": "Sunfire fanatic chausses",
           "type": "normal",
           "dropRate": 0.03348737525952715,
-          "manualAdjustment": 1.0,
           "geValue": 3764713.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSunfire_fanatic_chausses.png"
         },
@@ -2102,7 +1928,6 @@
           "name": "Tonalztics of Ralos",
           "type": "normal",
           "dropRate": 0.008543065593657627,
-          "manualAdjustment": 1.0,
           "geValue": 47148752,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTonalztics_of_Ralos.png"
         },
@@ -2122,7 +1947,6 @@
           "name": "Smol Heredit",
           "type": "normal",
           "dropRate": 0.006666666666333332,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSmol_Heredit.png"
         }
@@ -2138,7 +1962,6 @@
           "name": "Crystal weapon seed",
           "type": "normal",
           "dropRate": 0.02,
-          "manualAdjustment": 1.0,
           "geValue": 387545,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FCrystal_weapon_seed.png"
         },
@@ -2147,7 +1970,6 @@
           "name": "Crystal armour seed",
           "type": "normal",
           "dropRate": 0.02,
-          "manualAdjustment": 1.0,
           "geValue": 7592519.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FCrystal_armour_seed.png"
         },
@@ -2156,7 +1978,6 @@
           "name": "Enhanced crystal weapon seed",
           "type": "normal",
           "dropRate": 0.0025,
-          "manualAdjustment": 1.0,
           "geValue": 159135900.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FEnhanced_crystal_weapon_seed.png"
         },
@@ -2174,7 +1995,6 @@
           "name": "Youngllef",
           "type": "pet",
           "dropRate": 0.00125,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FYoungllef.png"
         }
@@ -2190,7 +2010,6 @@
           "name": "Hueycoatl hide",
           "type": "normal",
           "dropRate": 0.01163873371,
-          "manualAdjustment": 1.0,
           "geValue": 531250,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FHueycoatl_hide.png"
         },
@@ -2199,7 +2018,6 @@
           "name": "Tome of Earth",
           "type": "normal",
           "dropRate": 0.003703703704,
-          "manualAdjustment": 1.0,
           "geValue": 579893.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTome_of_Earth.png"
         },
@@ -2208,7 +2026,6 @@
           "name": "Dragon hunter wand",
           "type": "normal",
           "dropRate": 0.003174603175,
-          "manualAdjustment": 1.0,
           "geValue": 17736348.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDragon_hunter_wand.png"
         },
@@ -2226,7 +2043,6 @@
           "name": "Huberte",
           "type": "pet",
           "dropRate": 0.0008333333333,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FHuberte.png"
         }
@@ -2242,7 +2058,6 @@
           "name": "Fire element staff crown",
           "type": "normal",
           "dropRate": 0.006666666667,
-          "manualAdjustment": 1.0,
           "geValue": 2292328,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FFire_element_staff_crown.png"
         },
@@ -2251,7 +2066,6 @@
           "name": "Ice element staff crown",
           "type": "normal",
           "dropRate": 0.006666666667,
-          "manualAdjustment": 1.0,
           "geValue": 3767881,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FIce_element_staff_crown.png"
         },
@@ -2268,7 +2082,6 @@
           "name": "Bran",
           "type": "pet",
           "dropRate": 0.0001666666667,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBran.png"
         }
@@ -2284,7 +2097,6 @@
           "name": "Dragonbone necklace",
           "type": "normal",
           "dropRate": 0.001,
-          "manualAdjustment": 0.8,
           "geValue": 97841.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDragonbone_necklace.png"
         },
@@ -2293,7 +2105,6 @@
           "name": "Draconic visage",
           "type": "normal",
           "dropRate": 0.0002,
-          "manualAdjustment": 0.8,
           "geValue": 3778319,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDraconic_visage.png"
         },
@@ -2302,7 +2113,6 @@
           "name": "Skeletal visage",
           "type": "normal",
           "dropRate": 0.0002,
-          "manualAdjustment": 0.8,
           "geValue": 15753661.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSkeletal_visage.png"
         },
@@ -2320,7 +2130,6 @@
           "name": "Jar of Decay",
           "type": "jar",
           "dropRate": 0.0003333333333,
-          "manualAdjustment": 0.75,
           "geValue": 48948,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FJar_of_Decay.png"
         },
@@ -2329,7 +2138,6 @@
           "name": "Vorki",
           "type": "pet",
           "dropRate": 0.0003333333333,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVorki.png"
         }
@@ -2345,7 +2153,6 @@
           "name": "Soulflame horn",
           "type": "normal",
           "dropRate": 0.001666666667,
-          "manualAdjustment": 1.0,
           "geValue": 4586486,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSoulflame_horn.png"
         },
@@ -2354,7 +2161,6 @@
           "name": "Oathplate helm",
           "type": "normal",
           "dropRate": 0.0008333333333,
-          "manualAdjustment": 1.0,
           "geValue": 96400001.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FOathplate_helm.png"
         },
@@ -2363,7 +2169,6 @@
           "name": "Oathplate chest",
           "type": "normal",
           "dropRate": 0.0008333333333,
-          "manualAdjustment": 1.0,
           "geValue": 101414640,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FOathplate_chest.png"
         },
@@ -2372,7 +2177,6 @@
           "name": "Oathplate legs",
           "type": "normal",
           "dropRate": 0.0008333333333,
-          "manualAdjustment": 1.0,
           "geValue": 100068406,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FOathplate_legs.png"
         },
@@ -2391,7 +2195,6 @@
           "name": "Yami",
           "type": "pet",
           "dropRate": 0.0002,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FYami.png"
         }
@@ -2407,7 +2210,6 @@
           "name": "Tanzanite fang",
           "type": "normal",
           "dropRate": 0.001953125,
-          "manualAdjustment": 1.0,
           "geValue": 9925000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTanzanite_fang.png"
         },
@@ -2416,7 +2218,6 @@
           "name": "Magic fang",
           "type": "normal",
           "dropRate": 0.001953125,
-          "manualAdjustment": 1.0,
           "geValue": 3631140,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FMagic_fang.png"
         },
@@ -2425,7 +2226,6 @@
           "name": "Serpentine visage",
           "type": "normal",
           "dropRate": 0.001953125,
-          "manualAdjustment": 1.0,
           "geValue": 3649795,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSerpentine_visage.png"
         },
@@ -2434,7 +2234,6 @@
           "name": "Uncut onyx",
           "type": "normal",
           "dropRate": 0.001953125,
-          "manualAdjustment": 1.0,
           "geValue": 2160056.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FUncut_onyx.png"
         },
@@ -2453,7 +2252,6 @@
           "name": "Tanzanite mutagen",
           "type": "normal",
           "dropRate": 0.000152590219,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTanzanite_mutagen.png"
         },
@@ -2462,7 +2260,6 @@
           "name": "Magma mutagen",
           "type": "normal",
           "dropRate": 0.000152590219,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FMagma_mutagen.png"
         },
@@ -2471,7 +2268,6 @@
           "name": "Jar of Swamp",
           "type": "jar",
           "dropRate": 0.0003333333333,
-          "manualAdjustment": 0.5,
           "geValue": 61373.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FJar_of_Swamp.png"
         },
@@ -2480,7 +2276,6 @@
           "name": "Pet Snakeling",
           "type": "normal",
           "dropRate": 0.00025,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPet_Snakeling.png"
         }
@@ -2496,7 +2291,6 @@
           "name": "Arcane prayer scroll",
           "type": "normal",
           "dropRate": 0.01336541032,
-          "manualAdjustment": 1.2,
           "geValue": 5467956,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FArcane_prayer_scroll.png"
         },
@@ -2505,7 +2299,6 @@
           "name": "Dexterous prayer scroll",
           "type": "normal",
           "dropRate": 0.01336541032,
-          "manualAdjustment": 1.2,
           "geValue": 23833333,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDexterous_prayer_scroll.png"
         },
@@ -2514,7 +2307,6 @@
           "name": "Dragon hunter crossbow",
           "type": "normal",
           "dropRate": 0.002673010612,
-          "manualAdjustment": 1.0,
           "geValue": 46969220,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDragon_hunter_crossbow.png"
         },
@@ -2523,7 +2315,6 @@
           "name": "Twisted buckler",
           "type": "normal",
           "dropRate": 0.002673010612,
-          "manualAdjustment": 1.0,
           "geValue": 16780775.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTwisted_buckler.png"
         },
@@ -2532,7 +2323,6 @@
           "name": "Dinh's bulwark",
           "type": "normal",
           "dropRate": 0.002004771356,
-          "manualAdjustment": 1.0,
           "geValue": 15392088.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDinh%2527s_bulwark.png"
         },
@@ -2541,7 +2331,6 @@
           "name": "Ancestral hat",
           "type": "normal",
           "dropRate": 0.002004771356,
-          "manualAdjustment": 1.0,
           "geValue": 61402500,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAncestral_hat.png"
         },
@@ -2550,7 +2339,6 @@
           "name": "Ancestral robe bottom",
           "type": "normal",
           "dropRate": 0.002004771356,
-          "manualAdjustment": 1.0,
           "geValue": 105156425.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAncestral_robe_bottom.png"
         },
@@ -2559,7 +2347,6 @@
           "name": "Ancestral robe top",
           "type": "normal",
           "dropRate": 0.002004771356,
-          "manualAdjustment": 1.0,
           "geValue": 149216829,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAncestral_robe_top.png"
         },
@@ -2568,7 +2355,6 @@
           "name": "Dragon claws",
           "type": "normal",
           "dropRate": 0.002004771356,
-          "manualAdjustment": 1.0,
           "geValue": 48068807.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDragon_claws.png"
         },
@@ -2577,7 +2363,6 @@
           "name": "Elder maul",
           "type": "normal",
           "dropRate": 0.001336505306,
-          "manualAdjustment": 1.0,
           "geValue": 98999052,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FElder_maul.png"
         },
@@ -2586,7 +2371,6 @@
           "name": "Kodai insignia",
           "type": "normal",
           "dropRate": 0.001336505306,
-          "manualAdjustment": 1.0,
           "geValue": 83450000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FKodai_insignia.png"
         },
@@ -2595,7 +2379,6 @@
           "name": "Twisted bow",
           "type": "normal",
           "dropRate": 0.001336505306,
-          "manualAdjustment": 1.0,
           "geValue": 1583650000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTwisted_bow.png"
         },
@@ -2622,7 +2405,6 @@
           "name": "Olmlet",
           "type": "pet",
           "dropRate": 0.002127885945,
-          "manualAdjustment": 1.2,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FOlmlet.png"
         }
@@ -2640,7 +2422,6 @@
           "name": "Twisted ancestral colour kit",
           "type": "normal",
           "dropRate": 0.005079365079365079,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTwisted_ancestral_colour_kit.png"
         },
@@ -2649,7 +2430,6 @@
           "name": "Metamorphic dust",
           "type": "normal",
           "dropRate": 0.0017857142857142857,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FMetamorphic_dust.png"
         }
@@ -2665,7 +2445,6 @@
           "name": "Avernic defender hilt",
           "type": "normal",
           "dropRate": 0.01156737999,
-          "manualAdjustment": 1.0,
           "geValue": 40715423.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAvernic_defender_hilt.png"
         },
@@ -2674,7 +2453,6 @@
           "name": "Ghrazi rapier",
           "type": "normal",
           "dropRate": 0.002891844997,
-          "manualAdjustment": 1.0,
           "geValue": 33949280,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FGhrazi_rapier.png"
         },
@@ -2683,7 +2461,6 @@
           "name": "Sanguinesti staff (uncharged)",
           "type": "normal",
           "dropRate": 0.002891844997,
-          "manualAdjustment": 1.0,
           "geValue": 19884998.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSanguinesti_staff_%28uncharged%29.png"
         },
@@ -2692,7 +2469,6 @@
           "name": "Justiciar faceguard",
           "type": "normal",
           "dropRate": 0.002891844997,
-          "manualAdjustment": 1.0,
           "geValue": 14467250,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FJusticiar_faceguard.png"
         },
@@ -2701,7 +2477,6 @@
           "name": "Justiciar chestguard",
           "type": "normal",
           "dropRate": 0.002891844997,
-          "manualAdjustment": 1.0,
           "geValue": 14484253,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FJusticiar_chestguard.png"
         },
@@ -2710,7 +2485,6 @@
           "name": "Justiciar legguards",
           "type": "normal",
           "dropRate": 0.002891844997,
-          "manualAdjustment": 1.0,
           "geValue": 12956492,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FJusticiar_legguards.png"
         },
@@ -2719,7 +2493,6 @@
           "name": "Scythe of Vitur",
           "type": "normal",
           "dropRate": 0.001445922499,
-          "manualAdjustment": 1.0,
           "geValue": 1518250500,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FScythe_of_Vitur.png"
         },
@@ -2741,7 +2514,6 @@
           "name": "Lil' Zik",
           "type": "pet",
           "dropRate": 0.001538461538,
-          "manualAdjustment": 0.8,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FLil%2527_Zik.png"
         }
@@ -2759,7 +2531,6 @@
           "name": "Holy ornament kit",
           "type": "normal",
           "dropRate": 0.006929510156001003,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FHoly_ornament_kit.png"
         },
@@ -2768,7 +2539,6 @@
           "name": "Sanguine ornament kit",
           "type": "normal",
           "dropRate": 0.00395972008914343,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSanguine_ornament_kit.png"
         },
@@ -2777,7 +2547,6 @@
           "name": "Sanguine dust",
           "type": "normal",
           "dropRate": 0.002519821874581398,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSanguine_dust.png"
         }
@@ -2793,7 +2562,6 @@
           "name": "Osmumten's fang",
           "type": "normal",
           "dropRate": 0.008915039999773023,
-          "manualAdjustment": 1.0,
           "geValue": 23041260.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FOsmumten%2527s_fang.png"
         },
@@ -2802,7 +2570,6 @@
           "name": "Lightbearer",
           "type": "normal",
           "dropRate": 0.011143440000088366,
-          "manualAdjustment": 1.0,
           "geValue": 5700441,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FLightbearer.png"
         },
@@ -2811,7 +2578,6 @@
           "name": "Elidinis' ward",
           "type": "normal",
           "dropRate": 0.006685920000918512,
-          "manualAdjustment": 1.0,
           "geValue": 3828584,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FElidinis%2527_ward.png"
         },
@@ -2820,7 +2586,6 @@
           "name": "Masori mask",
           "type": "normal",
           "dropRate": 0.004457519999886511,
-          "manualAdjustment": 1.0,
           "geValue": 17894180,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FMasori_mask.png"
         },
@@ -2829,7 +2594,6 @@
           "name": "Masori body",
           "type": "normal",
           "dropRate": 0.004457519999886511,
-          "manualAdjustment": 1.0,
           "geValue": 56426975.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FMasori_body.png"
         },
@@ -2838,7 +2602,6 @@
           "name": "Masori chaps",
           "type": "normal",
           "dropRate": 0.004457519999886511,
-          "manualAdjustment": 1.0,
           "geValue": 38066664.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FMasori_chaps.png"
         },
@@ -2847,7 +2610,6 @@
           "name": "Tumeken's shadow (uncharged)",
           "type": "normal",
           "dropRate": 0.0022283999990328745,
-          "manualAdjustment": 1.0,
           "geValue": 912705001.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTumeken%2527s_shadow_%28uncharged%29.png"
         },
@@ -2869,7 +2631,6 @@
           "name": "Tumeken's guardian",
           "type": "normal",
           "dropRate": 0.0027979199999715733,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTumeken%2527s_guardian.png"
         }
@@ -2885,7 +2646,6 @@
           "name": "Claws of Callisto",
           "type": "normal",
           "dropRate": 0.001155802126675913,
-          "manualAdjustment": 1.0,
           "geValue": 47755,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FClaws_of_Callisto.png"
         },
@@ -2894,7 +2654,6 @@
           "name": "Voidwaker hilt",
           "type": "normal",
           "dropRate": 0.0007832080200501254,
-          "manualAdjustment": 1.0,
           "geValue": 9990851.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVoidwaker_hilt.png"
         },
@@ -2903,7 +2662,6 @@
           "name": "Tyrannical ring",
           "type": "normal",
           "dropRate": 0.0009976057462090981,
-          "manualAdjustment": 1.0,
           "geValue": 313220,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTyrannical_ring.png"
         },
@@ -2921,7 +2679,6 @@
           "name": "Dragon 2h sword",
           "type": "normal",
           "dropRate": 0.0019952114924181963,
-          "manualAdjustment": 1.0,
           "geValue": 134199,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDragon_2h_sword.png"
         },
@@ -2930,7 +2687,6 @@
           "name": "Dragon pickaxe",
           "type": "normal",
           "dropRate": 0.0019952114924181963,
-          "manualAdjustment": 1.0,
           "geValue": 448000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDragon_pickaxe.png"
         },
@@ -2939,7 +2695,6 @@
           "name": "Callisto cub",
           "type": "normal",
           "dropRate": 0.0003401360544217687,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FCallisto_cub.png"
         }
@@ -2956,7 +2711,6 @@
           "name": "Skull of Vet'ion",
           "type": "normal",
           "dropRate": 0.0012020342117040487,
-          "manualAdjustment": 1.0,
           "geValue": 50022.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSkull_of_Vet%2527ion.png"
         },
@@ -2965,7 +2719,6 @@
           "name": "Voidwaker blade",
           "type": "normal",
           "dropRate": 0.0008145363410902987,
-          "manualAdjustment": 1.0,
           "geValue": 2160000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVoidwaker_blade.png"
         },
@@ -2974,7 +2727,6 @@
           "name": "Ring of the gods",
           "type": "normal",
           "dropRate": 0.0010375099759995007,
-          "manualAdjustment": 1.0,
           "geValue": 741670.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FRing_of_the_gods.png"
         },
@@ -2992,7 +2744,6 @@
           "name": "Dragon 2h sword",
           "type": "normal",
           "dropRate": 0.0019952114924181963,
-          "manualAdjustment": 1.0,
           "geValue": 134199,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDragon_2h_sword.png"
         },
@@ -3001,7 +2752,6 @@
           "name": "Dragon pickaxe",
           "type": "normal",
           "dropRate": 0.0019952114924181963,
-          "manualAdjustment": 1.0,
           "geValue": 448000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDragon_pickaxe.png"
         },
@@ -3010,7 +2760,6 @@
           "name": "Vet'ion Jr.",
           "type": "normal",
           "dropRate": 0.0003537414966098693,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVet%2527ion_Jr..png"
         }
@@ -3027,7 +2776,6 @@
           "name": "Fangs of Venenatis",
           "type": "normal",
           "dropRate": 0.0018950437318106545,
-          "manualAdjustment": 1.0,
           "geValue": 53503,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FFangs_of_Venenatis.png"
         },
@@ -3036,7 +2784,6 @@
           "name": "Voidwaker gem",
           "type": "normal",
           "dropRate": 0.001031746031707819,
-          "manualAdjustment": 1.0,
           "geValue": 26554000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVoidwaker_gem.png"
         },
@@ -3045,7 +2792,6 @@
           "name": "Treasonous ring",
           "type": "normal",
           "dropRate": 0.0007254464282880511,
-          "manualAdjustment": 1.0,
           "geValue": 115000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTreasonous_ring.png"
         },
@@ -3063,7 +2809,6 @@
           "name": "Dragon 2h sword",
           "type": "normal",
           "dropRate": 0.0019952114924181963,
-          "manualAdjustment": 1.0,
           "geValue": 134199,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDragon_2h_sword.png"
         },
@@ -3072,7 +2817,6 @@
           "name": "Dragon pickaxe",
           "type": "normal",
           "dropRate": 0.0019952114924181963,
-          "manualAdjustment": 1.0,
           "geValue": 448000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDragon_pickaxe.png"
         },
@@ -3081,7 +2825,6 @@
           "name": "Venenatis spiderling",
           "type": "normal",
           "dropRate": 0.0003301587301782951,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVenenatis_spiderling.png"
         }
@@ -3099,7 +2842,6 @@
           "name": "Odium shard 1",
           "type": "normal",
           "dropRate": 0.0033482142857142855,
-          "manualAdjustment": 1.0,
           "geValue": 2227125,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FOdium_shard_1.png"
         },
@@ -3108,7 +2850,6 @@
           "name": "Malediction shard 1",
           "type": "normal",
           "dropRate": 0.0033482142857142855,
-          "manualAdjustment": 1.0,
           "geValue": 730000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FMalediction_shard_1.png"
         },
@@ -3117,7 +2858,6 @@
           "name": "Pet chaos elemental",
           "type": "normal",
           "dropRate": 0.0008571428571428571,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPet_chaos_elemental.png"
         }
@@ -3134,7 +2874,6 @@
           "name": "Odium shard 2",
           "type": "normal",
           "dropRate": 0.001506696428542001,
-          "manualAdjustment": 1.0,
           "geValue": 829100,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FOdium_shard_2.png"
         },
@@ -3143,7 +2882,6 @@
           "name": "Malediction shard 2",
           "type": "normal",
           "dropRate": 0.001506696428542001,
-          "manualAdjustment": 1.0,
           "geValue": 365500,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FMalediction_shard_2.png"
         },
@@ -3152,7 +2890,6 @@
           "name": "Fedora",
           "type": "normal",
           "dropRate": 0.0030133928576136994,
-          "manualAdjustment": 1.0,
           "geValue": 4825.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FFedora.png"
         }
@@ -3169,7 +2906,6 @@
           "name": "Odium shard 3",
           "type": "normal",
           "dropRate": 0.004017857143484933,
-          "manualAdjustment": 1.0,
           "geValue": 426975,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FOdium_shard_3.png"
         },
@@ -3178,7 +2914,6 @@
           "name": "Malediction shard 3",
           "type": "normal",
           "dropRate": 0.004017857143484933,
-          "manualAdjustment": 1.0,
           "geValue": 439039,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FMalediction_shard_3.png"
         },
@@ -3187,7 +2922,6 @@
           "name": "Scorpia's offspring",
           "type": "normal",
           "dropRate": 0.0006802721088435374,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FScorpia%2527s_offspring.png"
         }
@@ -3203,7 +2937,6 @@
           "name": "Catalytic talisman",
           "type": "normal",
           "dropRate": 0.005,
-          "manualAdjustment": 1.0,
           "geValue": 3702.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FCatalytic_talisman.png"
         },
@@ -3212,7 +2945,6 @@
           "name": "Abyssal needle",
           "type": "normal",
           "dropRate": 0.003333333333,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAbyssal_needle.png"
         },
@@ -3221,7 +2953,6 @@
           "name": "Abyssal lantern",
           "type": "normal",
           "dropRate": 0.001428571429,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAbyssal_lantern.png"
         },
@@ -3230,7 +2961,6 @@
           "name": "Abyssal red dye",
           "type": "normal",
           "dropRate": 0.0008333333333,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAbyssal_red_dye.png"
         },
@@ -3239,7 +2969,6 @@
           "name": "Abyssal green dye",
           "type": "normal",
           "dropRate": 0.0008333333333,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAbyssal_green_dye.png"
         },
@@ -3248,7 +2977,6 @@
           "name": "Abyssal blue dye",
           "type": "normal",
           "dropRate": 0.0008333333333,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAbyssal_blue_dye.png"
         },
@@ -3269,7 +2997,6 @@
           "name": "Abyssal protector",
           "type": "pet",
           "dropRate": 0.00025,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAbyssal_protector.png"
         }
@@ -3285,7 +3012,6 @@
           "name": "Burnt page",
           "type": "normal",
           "dropRate": 0.02222222222,
-          "manualAdjustment": 1.0,
           "geValue": 4785.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBurnt_page.png"
         },
@@ -3294,7 +3020,6 @@
           "name": "Warm gloves",
           "type": "normal",
           "dropRate": 0.006666666667,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FWarm_gloves.png"
         },
@@ -3303,7 +3028,6 @@
           "name": "Bruma torch",
           "type": "normal",
           "dropRate": 0.006666666667,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBruma_torch.png"
         },
@@ -3312,7 +3036,6 @@
           "name": "Pyromancer hood",
           "type": "normal",
           "dropRate": 0.006666666667,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPyromancer_hood.png"
         },
@@ -3321,7 +3044,6 @@
           "name": "Pyromancer garb",
           "type": "normal",
           "dropRate": 0.006666666667,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPyromancer_garb.png"
         },
@@ -3330,7 +3052,6 @@
           "name": "Pyromancer robe",
           "type": "normal",
           "dropRate": 0.006666666667,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPyromancer_robe.png"
         },
@@ -3339,7 +3060,6 @@
           "name": "Pyromancer boots",
           "type": "normal",
           "dropRate": 0.006666666667,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPyromancer_boots.png"
         },
@@ -3348,7 +3068,6 @@
           "name": "Tome of Fire",
           "type": "normal",
           "dropRate": 0.001,
-          "manualAdjustment": 1.0,
           "geValue": 1272293,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTome_of_Fire.png"
         },
@@ -3371,7 +3090,6 @@
           "name": "Phoenix",
           "type": "pet",
           "dropRate": 0.0002,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPhoenix.png"
         },
@@ -3380,7 +3098,6 @@
           "name": "Dragon axe",
           "type": "normal",
           "dropRate": 0.0001,
-          "manualAdjustment": 0.5,
           "geValue": 84532,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDragon_axe.png"
         }
@@ -3396,7 +3113,6 @@
           "name": "Soaked page",
           "type": "normal",
           "dropRate": 0.02,
-          "manualAdjustment": 1.0,
           "geValue": 2204.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSoaked_page.png"
         },
@@ -3405,7 +3121,6 @@
           "name": "Fish barrel",
           "type": "normal",
           "dropRate": 0.0025,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FFish_barrel.png"
         },
@@ -3414,7 +3129,6 @@
           "name": "Tackle box",
           "type": "normal",
           "dropRate": 0.0025,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTackle_box.png"
         },
@@ -3423,7 +3137,6 @@
           "name": "Big harpoonfish",
           "type": "normal",
           "dropRate": 0.000625,
-          "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FBig_harpoonfish.png"
         },
@@ -3432,7 +3145,6 @@
           "name": "Tome of Water",
           "type": "normal",
           "dropRate": 0.000625,
-          "manualAdjustment": 1.0,
           "geValue": 422540,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTome_of_Water.png"
         },
@@ -3452,7 +3164,6 @@
           "name": "Tiny tempor",
           "type": "pet",
           "dropRate": 0.000125,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FTiny_tempor.png"
         },
@@ -3461,7 +3172,6 @@
           "name": "Dragon harpoon",
           "type": "normal",
           "dropRate": 0.000125,
-          "manualAdjustment": 0.75,
           "geValue": 2885054,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FDragon_harpoon.png"
         }
@@ -3477,7 +3187,6 @@
           "name": "Crystal tool seed",
           "type": "normal",
           "dropRate": 0.001218917601,
-          "manualAdjustment": 1.0,
           "geValue": 18816323.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FCrystal_tool_seed.png"
         },
@@ -3486,7 +3195,6 @@
           "name": "Zalcano shard",
           "type": "normal",
           "dropRate": 0.001333333333,
-          "manualAdjustment": 1.0,
           "geValue": 62927,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FZalcano_shard.png"
         },
@@ -3503,7 +3211,6 @@
           "name": "Smolcano",
           "type": "pet",
           "dropRate": 0.0004444444444,
-          "manualAdjustment": 0.75,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FSmolcano.png"
         },
@@ -3512,7 +3219,6 @@
           "name": "Onyx (Zalcano)",
           "type": "jar",
           "dropRate": 0.000125,
-          "manualAdjustment": 0.3,
           "geValue": 2209996.5,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FUncut_onyx.png"
         }
@@ -3529,7 +3235,6 @@
           "name": "Hallowfell",
           "type": "normal",
           "dropRate": 0.007874015748031496,
-          "manualAdjustment": 1.0,
           "geValue": null,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FHallowfell.png"
         },
@@ -3538,7 +3243,6 @@
           "name": "Jar of Light",
           "type": "normal",
           "dropRate": 0.001,
-          "manualAdjustment": 1.0,
           "geValue": null,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FJar_of_Light.png"
         },
@@ -3547,7 +3251,6 @@
           "name": "Aggy",
           "type": "pet",
           "dropRate": 0.0005,
-          "manualAdjustment": 0.75,
           "geValue": null,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FAggy.png"
         }
@@ -3563,7 +3266,6 @@
           "name": "Elder venator fang",
           "type": "normal",
           "dropRate": 0.0029411764705882353,
-          "manualAdjustment": 1.0,
           "geValue": null,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FElder_venator_fang.png"
         },
@@ -3572,7 +3274,6 @@
           "name": "Crimson kisten",
           "type": "normal",
           "dropRate": 0.0019230769230769232,
-          "manualAdjustment": 1.0,
           "geValue": null,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FCrimson_kisten.png"
         },
@@ -3589,7 +3290,6 @@
           "name": "Maggot marquess",
           "type": "pet",
           "dropRate": 0.00028571428571428574,
-          "manualAdjustment": 0.75,
           "geValue": null,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FMaggot_marquess.png"
         }

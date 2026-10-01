@@ -111,7 +111,7 @@ function effectiveKPH(bossName) {
 function effectiveManualAdjustment(bossName, item) {
   const key = bossName + '||' + item.name;
   if (STATE.manualAdjustments && STATE.manualAdjustments[key] != null) return STATE.manualAdjustments[key];
-  return item.manualAdjustment;
+  return item.manualAdjustment != null ? item.manualAdjustment : 1;
 }
 function itemPointValue(bossName, item) {
   const kph = effectiveKPH(bossName);
