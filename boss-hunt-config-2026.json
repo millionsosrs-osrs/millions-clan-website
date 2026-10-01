@@ -1722,9 +1722,7 @@
           "groupLabel": "Blood moon uniques",
           "requiredCount": 4,
           "memberItems": [
-            "Eclipse Moon helm",
-            "Eclipse Moon chestplate",
-            "Eclipse Moon tassets",
+            "Dual macuahuitl",
             "Blood Moon helm",
             "Blood Moon chestplate",
             "Blood Moon tassets"
@@ -1772,12 +1770,6 @@
           "groupLabel": "Blue moon uniques",
           "requiredCount": 4,
           "memberItems": [
-            "Eclipse Moon helm",
-            "Eclipse Moon chestplate",
-            "Eclipse Moon tassets",
-            "Blood Moon helm",
-            "Blood Moon chestplate",
-            "Blood Moon tassets",
             "Blue Moon spear",
             "Blue Moon helm",
             "Blue Moon chestplate",
