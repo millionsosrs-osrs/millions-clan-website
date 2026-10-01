@@ -178,7 +178,8 @@ function renderKphTable(){
   const TYPE_ORDER = ['Slayer','God Wars','Desert Treasure','General','Dagannoth','Wilderness','Raids','Skilling'];
   const byType = {};
   CONFIG.bosses.forEach(b => {
-    if (filterVal && !b.boss.toLowerCase().includes(filterVal)) return;
+    const label = b.kphLabel || b.boss;
+    if (filterVal && !b.boss.toLowerCase().includes(filterVal) && !label.toLowerCase().includes(filterVal)) return;
     const type = b.bossType || 'Wilderness';
     (byType[type] = byType[type] || []).push(b);
   });
@@ -188,7 +189,7 @@ function renderKphTable(){
     const rows = byType[type].map(b => {
       const current = STATE.kph[b.boss];
       return `<tr data-boss="${b.boss}">
-        <td>${b.boss}</td>
+        <td>${b.kphLabel || b.boss}</td>
         <td><input type="number" step="0.1" min="0.1" class="kph-input" value="${current ?? ''}" placeholder="-"></td>
       </tr>`;
     }).join('');
@@ -236,7 +237,7 @@ function renderAdjTable(){
     b.displayItems.forEach(di => {
       if (di.kind !== 'item') return;
       if (filterVal && !di.name.toLowerCase().includes(filterVal) && !b.boss.toLowerCase().includes(filterVal)) return;
-      (byType[type] = byType[type] || []).push({ boss: b.boss, item: di.name, defaultAdj: di.manualAdjustment });
+      (byType[type] = byType[type] || []).push({ boss: b.boss, item: di.name, defaultAdj: di.manualAdjustment, label: b.kphLabel || b.boss });
     });
   });
   if (byType['General']) byType['General'].sort((a, b) => a.boss.localeCompare(b.boss) || a.item.localeCompare(b.item));
@@ -247,7 +248,7 @@ function renderAdjTable(){
       const current = override != null ? override : r.defaultAdj;
       return `<tr data-boss="${r.boss}" data-item="${r.item}">
         <td>${r.item}</td>
-        <td class="sub">${r.boss}</td>
+        <td class="sub">${r.label}</td>
         <td><input type="number" step="0.05" min="0" max="10" class="adj-input" value="${current}"></td>
       </tr>`;
     }).join('');

@@ -330,10 +330,28 @@ function render() {
   const META_BONUS_SECTION = {
     slayer_all_uniques: 'Slayer', gwd_all_uniques: 'God Wars',
     dt2_full_sra: 'Desert Treasure', dt2_full_virtus: 'Desert Treasure',
+    odium_all_shards: 'Wilderness', malediction_all_shards: 'Wilderness',
   };
 
-  function renderBossCard(b) {
-    const rowsHtml = b.displayItems.map(di => {
+  // Bosses that share a `displayGroup` (e.g. Theatre of Blood / Theatre of
+  // Blood (HM)) are separate autofill/KPH entries but render as one combined
+  // card here, so the scoreboard stays readable while the point math and
+  // Discord submission still treat each mode as its own boss.
+  function groupBosses(bosses) {
+    const groups = [];
+    const byLabel = {};
+    for (const b of bosses) {
+      const label = b.displayGroup || b.boss;
+      if (!byLabel[label]) { byLabel[label] = { label, members: [] }; groups.push(byLabel[label]); }
+      byLabel[label].members.push(b);
+    }
+    return groups;
+  }
+
+  function renderBossCard(group) {
+    const { label, members } = group;
+    const primary = members.find(m => m.boss === label) || members[0];
+    const rowsHtml = members.map(b => b.displayItems.map(di => {
       if (di.kind === 'item') {
         const pv = itemPointValue(b.boss, di);
         const cells = TEAMS.map(team => {
@@ -358,12 +376,12 @@ function render() {
         return `<tr><td colspan="${2+TEAMS.length}"><div class="bonus-row">${bonusName}${potentialTxt}: ${perTeam}</div></td></tr>`;
       }
       return '';
-    }).join('');
+    }).join('')).join('');
 
-    return `<div class="boss-card" data-boss="${b.boss}">
+    return `<div class="boss-card" data-boss="${label}">
       <div class="boss-head">
-        <img class="bimg" src="${b.img}" onerror="this.style.display='none'" alt="">
-        <span class="bname">${b.boss}</span>
+        <img class="bimg" src="${primary.img}" onerror="this.style.display='none'" alt="">
+        <span class="bname">${label}</span>
       </div>
       <div class="boss-body">
         <table class="items"><thead><tr><th>Item</th><th>Pts</th>${TEAMS.map(t=>`<th>${t}</th>`).join('')}</tr></thead>
@@ -399,9 +417,10 @@ function render() {
   });
 
   const bosses = bossesByType[activeType] || [];
+  const groups = groupBosses(bosses);
   const metaCards = CONFIG.metaBonuses.filter(mb => META_BONUS_SECTION[mb.id] === activeType).map(renderMetaCard).join('');
   $('bossList').innerHTML = `<div class="type-section">
-    ${bosses.map(renderBossCard).join('')}
+    ${groups.map(renderBossCard).join('')}
     ${metaCards}
   </div>`;
 }

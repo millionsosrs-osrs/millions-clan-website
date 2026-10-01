@@ -2,7 +2,6 @@
   "bosses": [
     {
       "boss": "Shellbane Gryphon",
-      "actualKPH": 65.0,
       "bossType": "Slayer",
       "displayItems": [
         {
@@ -37,7 +36,6 @@
     },
     {
       "boss": "Grotesque Guardians",
-      "actualKPH": 24.0,
       "bossType": "Slayer",
       "displayItems": [
         {
@@ -119,7 +117,6 @@
     },
     {
       "boss": "Abyssal Sire",
-      "actualKPH": 32.0,
       "bossType": "Slayer",
       "displayItems": [
         {
@@ -201,7 +198,6 @@
     },
     {
       "boss": "Kraken",
-      "actualKPH": 60.0,
       "bossType": "Slayer",
       "displayItems": [
         {
@@ -253,7 +249,6 @@
     },
     {
       "boss": "Cerberus",
-      "actualKPH": 35.0,
       "bossType": "Slayer",
       "displayItems": [
         {
@@ -325,7 +320,6 @@
     },
     {
       "boss": "Araxxor",
-      "actualKPH": 25.0,
       "bossType": "Slayer",
       "displayItems": [
         {
@@ -397,7 +391,6 @@
     },
     {
       "boss": "Thermonuclear Smoke Devil",
-      "actualKPH": 70.0,
       "bossType": "Slayer",
       "displayItems": [
         {
@@ -458,7 +451,6 @@
     },
     {
       "boss": "Alchemical Hydra",
-      "actualKPH": 20.0,
       "bossType": "Slayer",
       "displayItems": [
         {
@@ -555,7 +547,6 @@
     },
     {
       "boss": "Commander Zilyana",
-      "actualKPH": 25.0,
       "bossType": "God Wars",
       "displayItems": [
         {
@@ -618,7 +609,6 @@
     },
     {
       "boss": "General Graardor",
-      "actualKPH": 25.0,
       "bossType": "God Wars",
       "displayItems": [
         {
@@ -681,7 +671,6 @@
     },
     {
       "boss": "Kree'Arra",
-      "actualKPH": 25.0,
       "bossType": "God Wars",
       "displayItems": [
         {
@@ -744,7 +733,6 @@
     },
     {
       "boss": "K'ril Tsutsaroth",
-      "actualKPH": 25.0,
       "bossType": "God Wars",
       "displayItems": [
         {
@@ -812,7 +800,6 @@
     },
     {
       "boss": "Duke Sucellus",
-      "actualKPH": 25.0,
       "bossType": "Desert Treasure",
       "displayItems": [
         {
@@ -896,7 +883,6 @@
     },
     {
       "boss": "The Leviathan",
-      "actualKPH": 24.0,
       "bossType": "Desert Treasure",
       "displayItems": [
         {
@@ -980,7 +966,6 @@
     },
     {
       "boss": "Vardorvis",
-      "actualKPH": 30.0,
       "bossType": "Desert Treasure",
       "displayItems": [
         {
@@ -1064,7 +1049,6 @@
     },
     {
       "boss": "The Whisperer",
-      "actualKPH": 18.0,
       "bossType": "Desert Treasure",
       "displayItems": [
         {
@@ -1158,7 +1142,6 @@
     },
     {
       "boss": "Barrows",
-      "actualKPH": 10.0,
       "bossType": "General",
       "displayItems": [
         {
@@ -1454,7 +1437,6 @@
     },
     {
       "boss": "Corporeal Beast",
-      "actualKPH": 40.0,
       "bossType": "General",
       "displayItems": [
         {
@@ -1516,7 +1498,6 @@
     },
     {
       "boss": "Dagannoth Kings",
-      "actualKPH": 20.0,
       "bossType": "General",
       "displayItems": [
         {
@@ -1597,7 +1578,6 @@
     },
     {
       "boss": "Doom of Mokhaiotl",
-      "actualKPH": 5.0,
       "bossType": "General",
       "displayItems": [
         {
@@ -1650,7 +1630,6 @@
     },
     {
       "boss": "Moons of Peril",
-      "actualKPH": null,
       "bossType": "General",
       "displayItems": [
         {
@@ -1810,7 +1789,6 @@
     },
     {
       "boss": "Nex",
-      "actualKPH": 10.0,
       "bossType": "General",
       "displayItems": [
         {
@@ -1893,7 +1871,6 @@
     },
     {
       "boss": "Nightmare",
-      "actualKPH": 10.0,
       "bossType": "General",
       "displayItems": [
         {
@@ -2014,7 +1991,6 @@
     },
     {
       "boss": "Phantom Muspah",
-      "actualKPH": 20.0,
       "bossType": "General",
       "displayItems": [
         {
@@ -2057,7 +2033,6 @@
     },
     {
       "boss": "Sarachnis",
-      "actualKPH": 60.0,
       "bossType": "General",
       "displayItems": [
         {
@@ -2092,7 +2067,6 @@
     },
     {
       "boss": "The Fortis Colloseum",
-      "actualKPH": 1.35,
       "bossType": "General",
       "displayItems": [
         {
@@ -2165,7 +2139,6 @@
     },
     {
       "boss": "The Corrupted Gauntlet",
-      "actualKPH": 7.0,
       "bossType": "General",
       "displayItems": [
         {
@@ -2218,7 +2191,6 @@
     },
     {
       "boss": "The Hueycoatl",
-      "actualKPH": 15.0,
       "bossType": "General",
       "displayItems": [
         {
@@ -2271,7 +2243,6 @@
     },
     {
       "boss": "The Royal Titans",
-      "actualKPH": 40.0,
       "bossType": "General",
       "displayItems": [
         {
@@ -2314,7 +2285,6 @@
     },
     {
       "boss": "Vorkath",
-      "actualKPH": 30.0,
       "bossType": "General",
       "displayItems": [
         {
@@ -2376,7 +2346,6 @@
     },
     {
       "boss": "Yama",
-      "actualKPH": 18.0,
       "bossType": "General",
       "displayItems": [
         {
@@ -2439,7 +2408,6 @@
     },
     {
       "boss": "Zulrah",
-      "actualKPH": 40.0,
       "bossType": "General",
       "displayItems": [
         {
@@ -2529,7 +2497,6 @@
     },
     {
       "boss": "Chambers of Xeric",
-      "actualKPH": 3.5,
       "bossType": "Raids",
       "displayItems": [
         {
@@ -2666,7 +2633,16 @@
           "manualAdjustment": 1.2,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FOlmlet.png"
-        },
+        }
+      ],
+      "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FGreat_Olm.png",
+      "displayGroup": "Chambers of Xeric"
+    },
+    {
+      "boss": "Chambers of Xeric (CM)",
+      "bossType": "Raids",
+      "displayGroup": "Chambers of Xeric",
+      "displayItems": [
         {
           "kind": "item",
           "name": "Twisted ancestral colour kit",
@@ -2690,7 +2666,6 @@
     },
     {
       "boss": "Theatre of Blood",
-      "actualKPH": 3.1,
       "bossType": "Raids",
       "displayItems": [
         {
@@ -2777,7 +2752,16 @@
           "manualAdjustment": 0.8,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FLil%2527_Zik.png"
-        },
+        }
+      ],
+      "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVerzik_Vitur_%2528final_form%2529.png",
+      "displayGroup": "Theatre of Blood"
+    },
+    {
+      "boss": "Theatre of Blood (HM)",
+      "bossType": "Raids",
+      "displayGroup": "Theatre of Blood",
+      "displayItems": [
         {
           "kind": "item",
           "name": "Holy ornament kit",
@@ -2810,7 +2794,6 @@
     },
     {
       "boss": "Tombs of Amascut",
-      "actualKPH": 2.5,
       "bossType": "Raids",
       "displayItems": [
         {
@@ -2903,7 +2886,6 @@
     },
     {
       "boss": "Callisto/Artio",
-      "actualKPH": null,
       "bossType": null,
       "displayItems": [
         {
@@ -2970,11 +2952,11 @@
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FCallisto_cub.png"
         }
       ],
-      "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FCallisto.png"
+      "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FCallisto.png",
+      "kphLabel": "Artio"
     },
     {
       "boss": "Vet'ion/Calvar'ion",
-      "actualKPH": null,
       "bossType": null,
       "displayItems": [
         {
@@ -3041,11 +3023,11 @@
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVet%2527ion_Jr..png"
         }
       ],
-      "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVet%2527ion.png"
+      "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVet%2527ion.png",
+      "kphLabel": "Calvar'ion"
     },
     {
       "boss": "Venenatis/Spindel",
-      "actualKPH": null,
       "bossType": null,
       "displayItems": [
         {
@@ -3112,12 +3094,13 @@
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVenenatis_spiderling.png"
         }
       ],
-      "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVenenatis.png"
+      "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FVenenatis.png",
+      "kphLabel": "Spindel"
     },
     {
-      "boss": "Odium/Malediction",
-      "actualKPH": null,
-      "bossType": null,
+      "boss": "Chaos Fanatic",
+      "bossType": "Wilderness",
+      "displayGroup": "Odium/Malediction",
       "displayItems": [
         {
           "kind": "item",
@@ -3130,41 +3113,38 @@
         },
         {
           "kind": "item",
-          "name": "Odium shard 2",
-          "type": "normal",
-          "dropRate": 0.001506696428542001,
-          "manualAdjustment": 1.0,
-          "geValue": 829100,
-          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FOdium_shard_2.png"
-        },
-        {
-          "kind": "item",
-          "name": "Odium shard 3",
-          "type": "normal",
-          "dropRate": 0.004017857143484933,
-          "manualAdjustment": 1.0,
-          "geValue": 426975,
-          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FOdium_shard_3.png"
-        },
-        {
-          "kind": "sub_group",
-          "name": "All odium shards (3)",
-          "groupLabel": "odium shards",
-          "requiredCount": 3,
-          "memberItems": [
-            "Odium shard 1",
-            "Odium shard 2",
-            "Odium shard 3"
-          ]
-        },
-        {
-          "kind": "item",
           "name": "Malediction shard 1",
           "type": "normal",
           "dropRate": 0.0033482142857142855,
           "manualAdjustment": 1.0,
           "geValue": 730000,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FMalediction_shard_1.png"
+        },
+        {
+          "kind": "item",
+          "name": "Pet chaos elemental",
+          "type": "normal",
+          "dropRate": 0.0008571428571428571,
+          "manualAdjustment": 1.0,
+          "geValue": 0,
+          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPet_chaos_elemental.png"
+        }
+      ],
+      "img": "https://oldschool.runescape.wiki/images/Chaos_Fanatic.png"
+    },
+    {
+      "boss": "Crazy Archaeologist",
+      "bossType": "Wilderness",
+      "displayGroup": "Odium/Malediction",
+      "displayItems": [
+        {
+          "kind": "item",
+          "name": "Odium shard 2",
+          "type": "normal",
+          "dropRate": 0.001506696428542001,
+          "manualAdjustment": 1.0,
+          "geValue": 829100,
+          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FOdium_shard_2.png"
         },
         {
           "kind": "item",
@@ -3177,23 +3157,38 @@
         },
         {
           "kind": "item",
+          "name": "Fedora",
+          "type": "normal",
+          "dropRate": 0.0030133928576136994,
+          "manualAdjustment": 1.0,
+          "geValue": 4825.5,
+          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FFedora.png"
+        }
+      ],
+      "img": "https://oldschool.runescape.wiki/images/Crazy_Archaeologist.png"
+    },
+    {
+      "boss": "Scorpia",
+      "bossType": "Wilderness",
+      "displayGroup": "Odium/Malediction",
+      "displayItems": [
+        {
+          "kind": "item",
+          "name": "Odium shard 3",
+          "type": "normal",
+          "dropRate": 0.004017857143484933,
+          "manualAdjustment": 1.0,
+          "geValue": 426975,
+          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FOdium_shard_3.png"
+        },
+        {
+          "kind": "item",
           "name": "Malediction shard 3",
           "type": "normal",
           "dropRate": 0.004017857143484933,
           "manualAdjustment": 1.0,
           "geValue": 439039,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FMalediction_shard_3.png"
-        },
-        {
-          "kind": "sub_group",
-          "name": "All malediction shards (3)",
-          "groupLabel": "malediction shards",
-          "requiredCount": 3,
-          "memberItems": [
-            "Malediction shard 1",
-            "Malediction shard 2",
-            "Malediction shard 3"
-          ]
         },
         {
           "kind": "item",
@@ -3203,31 +3198,12 @@
           "manualAdjustment": 1.0,
           "geValue": 0,
           "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FScorpia%2527s_offspring.png"
-        },
-        {
-          "kind": "item",
-          "name": "Fedora",
-          "type": "normal",
-          "dropRate": 0.0030133928576136994,
-          "manualAdjustment": 1.0,
-          "geValue": 4825.5,
-          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FFedora.png"
-        },
-        {
-          "kind": "item",
-          "name": "Pet chaos elemental",
-          "type": "normal",
-          "dropRate": 0.0008571428571428571,
-          "manualAdjustment": 1.0,
-          "geValue": 0,
-          "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FPet_chaos_elemental.png"
         }
       ],
-      "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FOdium%252FMalediction.png"
+      "img": "https://oldschool.runescape.wiki/images/Scorpia.png"
     },
     {
       "boss": "Guardians of the Rift",
-      "actualKPH": 20.0,
       "bossType": "Skilling",
       "displayItems": [
         {
@@ -3310,7 +3286,6 @@
     },
     {
       "boss": "Wintertodt",
-      "actualKPH": 30.0,
       "bossType": "Skilling",
       "displayItems": [
         {
@@ -3422,7 +3397,6 @@
     },
     {
       "boss": "Tempoross",
-      "actualKPH": 50.0,
       "bossType": "Skilling",
       "displayItems": [
         {
@@ -3504,7 +3478,6 @@
     },
     {
       "boss": "Zalcano",
-      "actualKPH": 13.0,
       "bossType": "Skilling",
       "displayItems": [
         {
@@ -3556,7 +3529,6 @@
     },
     {
       "boss": "Mad Angel",
-      "actualKPH": null,
       "bossType": "General",
       "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FMad_Angel.png",
       "displayItems": [
@@ -3591,7 +3563,6 @@
     },
     {
       "boss": "Maggot King",
-      "actualKPH": null,
       "bossType": "General",
       "img": "/api/img?src=https%3A%2F%2Foldschool.runescape.wiki%2Fimages%2FMaggot_King.png",
       "displayItems": [
@@ -3969,6 +3940,54 @@
         {
           "boss": "Duke Sucellus",
           "item": "Virtus robe bottom (DS)"
+        }
+      ]
+    },
+    {
+      "id": "odium_all_shards",
+      "name": "All Odium Shards (3)",
+      "contributingBosses": [
+        "Chaos Fanatic",
+        "Crazy Archaeologist",
+        "Scorpia"
+      ],
+      "requiredCount": 3,
+      "memberItems": [
+        {
+          "boss": "Chaos Fanatic",
+          "item": "Odium shard 1"
+        },
+        {
+          "boss": "Crazy Archaeologist",
+          "item": "Odium shard 2"
+        },
+        {
+          "boss": "Scorpia",
+          "item": "Odium shard 3"
+        }
+      ]
+    },
+    {
+      "id": "malediction_all_shards",
+      "name": "All Malediction Shards (3)",
+      "contributingBosses": [
+        "Chaos Fanatic",
+        "Crazy Archaeologist",
+        "Scorpia"
+      ],
+      "requiredCount": 3,
+      "memberItems": [
+        {
+          "boss": "Chaos Fanatic",
+          "item": "Malediction shard 1"
+        },
+        {
+          "boss": "Crazy Archaeologist",
+          "item": "Malediction shard 2"
+        },
+        {
+          "boss": "Scorpia",
+          "item": "Malediction shard 3"
         }
       ]
     }
